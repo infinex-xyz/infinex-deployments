@@ -1,0 +1,55 @@
+name = "infinex-gp"
+version = "0.1.1"
+preset = "StW"
+description = "Infinex Governance Points Deployments"
+
+[setting.OWNER]
+defaultValue = "0x33FaF56Cb2c854231bdA8De328bbAddcF76D9836"
+description = "The Council multisig"
+
+[setting.STWPOINTS]
+defaultValue = "<%= parseEther('33000000') %>"
+description = "The amount of STW points to be distributed"
+
+[provision.InfinexGovernancePoints]
+options.SALT = "GP_0_1_1"
+options.OWNER = "0x33FaF56Cb2c854231bdA8De328bbAddcF76D9836"
+options.CONTRACT_FACTORY = "0x31D6167C54a4112386E8BdAbB9f8a2082e34C8C6" 
+options.INFINEX_FORWARDER = "0x80E281CcFBA9e362EE467D6101F9b60ABF646E86"
+options.USDC = "0x036CbD53842c5426634e7929541eC2318f3dCF7e" 
+options.REWARDS_DURATION =  "604800"
+# options.SOLANA_MULTIPLIER = "<%= parseEther('1') %>"
+source = "infinex-governance-points:latest@stw"
+
+# ---------- Initialise GP Contracts  ---------- #
+
+# [invoke.upgrade]
+# target = ["InfinexGovernancePoints.GovernancePointsInitialProxy"]
+# func = "upgradeTo"
+# args = ["<%= imports.InfinexGovernancePoints.contracts.GovernancePointsImplementation.address %>"]
+# depends = ["provision.InfinexGovernancePoints"]
+# factory.CoreProxy.abiOf = ["InfinexGovernancePoints.GovernancePointsImplementation"]
+# factory.CoreProxy.event = "Upgraded"
+# factory.CoreProxy.arg = 0
+# factory.CoreProxy.highlight = true
+
+[invoke.GovernancePointsProxyInitialize]
+target = ["InfinexGovernancePoints.GovernancePointsProxy"]
+func = "initialize"
+args = ["<%= settings.OWNER %>"]
+depends = ["provision.InfinexGovernancePoints"]
+
+# ---------- Setting Post deployment parameters  ---------- #
+
+[invoke.attachSTWCampaign]
+target = ["InfinexGovernancePoints.GovernancePointsProxy"]
+func = "addAuthorisedMinter"
+args = [ "<%= imports.InfinexGovernancePoints.contracts.StWStakingRewards.address %>" ]
+from = "<%= settings.OWNER %>"
+depends = ["invoke.GovernancePointsProxyInitialize"]
+
+[invoke.StWStakingRewardsNotifyRewardAmount]
+target = ["InfinexGovernancePoints.StWStakingRewards"]
+func = "notifyRewardAmount"
+args = [ "<%= settings.STWPOINTS %>" ]
+depends = ["invoke.attachSTWCampaign"]

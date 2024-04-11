@@ -1,0 +1,1288 @@
+{
+  "address": "0xef0888C631bfe25de71447365E38994608Dd3E03",
+  "abi": [
+    {
+      "type": "constructor",
+      "inputs": [
+        {
+          "name": "_owner",
+          "type": "address",
+          "internalType": "address"
+        },
+        {
+          "name": "_infinexBeaconArgs",
+          "type": "tuple",
+          "internalType": "struct IInfinexProtocolConfigBeacon.InfinexBeaconConstructorArgs",
+          "components": [
+            {
+              "name": "trustedForwarder",
+              "type": "address",
+              "internalType": "address"
+            },
+            {
+              "name": "latestAccountImplementation",
+              "type": "address",
+              "internalType": "address"
+            },
+            {
+              "name": "initialProxyImplementation",
+              "type": "address",
+              "internalType": "address"
+            },
+            {
+              "name": "latestSynthetixInformationBeacon",
+              "type": "address",
+              "internalType": "address"
+            },
+            {
+              "name": "revenuePool",
+              "type": "address",
+              "internalType": "address"
+            },
+            {
+              "name": "tradingFeePool",
+              "type": "address",
+              "internalType": "address"
+            },
+            {
+              "name": "USDC",
+              "type": "address",
+              "internalType": "address"
+            },
+            {
+              "name": "minimumUSDCBridgeAmount",
+              "type": "uint256",
+              "internalType": "uint256"
+            },
+            {
+              "name": "circleBridge",
+              "type": "address",
+              "internalType": "address"
+            },
+            {
+              "name": "circleBridgeDestinationDomain",
+              "type": "uint32",
+              "internalType": "uint32"
+            },
+            {
+              "name": "wormholeCircleBridge",
+              "type": "address",
+              "internalType": "address"
+            },
+            {
+              "name": "wormholeDestinationDomain",
+              "type": "uint16",
+              "internalType": "uint16"
+            }
+          ]
+        }
+      ],
+      "stateMutability": "nonpayable"
+    },
+    {
+      "type": "function",
+      "name": "USDC",
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "",
+          "type": "address",
+          "internalType": "address"
+        }
+      ],
+      "stateMutability": "view"
+    },
+    {
+      "type": "function",
+      "name": "acceptOwnership",
+      "inputs": [],
+      "outputs": [],
+      "stateMutability": "nonpayable"
+    },
+    {
+      "type": "function",
+      "name": "bridgeConfiguration",
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "minimumUSDCBridgeAmount",
+          "type": "uint256",
+          "internalType": "uint256"
+        },
+        {
+          "name": "circleBridge",
+          "type": "address",
+          "internalType": "address"
+        },
+        {
+          "name": "circleBridgeDestinationDomain",
+          "type": "uint32",
+          "internalType": "uint32"
+        },
+        {
+          "name": "wormholeCircleBridge",
+          "type": "address",
+          "internalType": "address"
+        },
+        {
+          "name": "wormholeDestinationDomain",
+          "type": "uint16",
+          "internalType": "uint16"
+        }
+      ],
+      "stateMutability": "view"
+    },
+    {
+      "type": "function",
+      "name": "defaultGasFeeRebate",
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256",
+          "internalType": "uint256"
+        }
+      ],
+      "stateMutability": "view"
+    },
+    {
+      "type": "function",
+      "name": "defaultTradingFees",
+      "inputs": [
+        {
+          "name": "marketId",
+          "type": "uint128",
+          "internalType": "uint128"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "marketId",
+          "type": "uint128",
+          "internalType": "uint128"
+        },
+        {
+          "name": "makerFee",
+          "type": "uint256",
+          "internalType": "uint256"
+        },
+        {
+          "name": "takerFee",
+          "type": "uint256",
+          "internalType": "uint256"
+        }
+      ],
+      "stateMutability": "view"
+    },
+    {
+      "type": "function",
+      "name": "getCircleBridge",
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "",
+          "type": "address",
+          "internalType": "address"
+        }
+      ],
+      "stateMutability": "view"
+    },
+    {
+      "type": "function",
+      "name": "getCircleBridgeDestinationDomain",
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint32",
+          "internalType": "uint32"
+        }
+      ],
+      "stateMutability": "view"
+    },
+    {
+      "type": "function",
+      "name": "getCircleBridgeParams",
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "",
+          "type": "address",
+          "internalType": "address"
+        },
+        {
+          "name": "",
+          "type": "uint32",
+          "internalType": "uint32"
+        }
+      ],
+      "stateMutability": "view"
+    },
+    {
+      "type": "function",
+      "name": "getDefaultTradingFees",
+      "inputs": [
+        {
+          "name": "_marketId",
+          "type": "uint128",
+          "internalType": "uint128"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "",
+          "type": "tuple",
+          "internalType": "struct IncrementalFee",
+          "components": [
+            {
+              "name": "marketId",
+              "type": "uint128",
+              "internalType": "uint128"
+            },
+            {
+              "name": "makerFee",
+              "type": "uint256",
+              "internalType": "uint256"
+            },
+            {
+              "name": "takerFee",
+              "type": "uint256",
+              "internalType": "uint256"
+            }
+          ]
+        }
+      ],
+      "stateMutability": "view"
+    },
+    {
+      "type": "function",
+      "name": "getMinimumUSDCBridgeAmount",
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256",
+          "internalType": "uint256"
+        }
+      ],
+      "stateMutability": "view"
+    },
+    {
+      "type": "function",
+      "name": "getUserSpecificGasFeeRebates",
+      "inputs": [
+        {
+          "name": "_user",
+          "type": "address",
+          "internalType": "address"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256",
+          "internalType": "uint256"
+        }
+      ],
+      "stateMutability": "view"
+    },
+    {
+      "type": "function",
+      "name": "getUserSpecificGasFeeRebatesSet",
+      "inputs": [
+        {
+          "name": "_user",
+          "type": "address",
+          "internalType": "address"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "",
+          "type": "bool",
+          "internalType": "bool"
+        }
+      ],
+      "stateMutability": "view"
+    },
+    {
+      "type": "function",
+      "name": "getUserSpecificTradingFees",
+      "inputs": [
+        {
+          "name": "_user",
+          "type": "address",
+          "internalType": "address"
+        },
+        {
+          "name": "_marketId",
+          "type": "uint128",
+          "internalType": "uint128"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "",
+          "type": "tuple",
+          "internalType": "struct IncrementalFee",
+          "components": [
+            {
+              "name": "marketId",
+              "type": "uint128",
+              "internalType": "uint128"
+            },
+            {
+              "name": "makerFee",
+              "type": "uint256",
+              "internalType": "uint256"
+            },
+            {
+              "name": "takerFee",
+              "type": "uint256",
+              "internalType": "uint256"
+            }
+          ]
+        }
+      ],
+      "stateMutability": "view"
+    },
+    {
+      "type": "function",
+      "name": "getUserSpecificTradingFeesSet",
+      "inputs": [
+        {
+          "name": "_user",
+          "type": "address",
+          "internalType": "address"
+        },
+        {
+          "name": "_marketId",
+          "type": "uint128",
+          "internalType": "uint128"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "",
+          "type": "bool",
+          "internalType": "bool"
+        }
+      ],
+      "stateMutability": "view"
+    },
+    {
+      "type": "function",
+      "name": "getWormholeCCTPBridgeParams",
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "",
+          "type": "address",
+          "internalType": "address"
+        },
+        {
+          "name": "",
+          "type": "uint16",
+          "internalType": "uint16"
+        }
+      ],
+      "stateMutability": "view"
+    },
+    {
+      "type": "function",
+      "name": "getWormholeCircleBridge",
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "",
+          "type": "address",
+          "internalType": "address"
+        }
+      ],
+      "stateMutability": "view"
+    },
+    {
+      "type": "function",
+      "name": "getWormholeDestinationDomain",
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint16",
+          "internalType": "uint16"
+        }
+      ],
+      "stateMutability": "view"
+    },
+    {
+      "type": "function",
+      "name": "initialProxyImplementation",
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "",
+          "type": "address",
+          "internalType": "address"
+        }
+      ],
+      "stateMutability": "view"
+    },
+    {
+      "type": "function",
+      "name": "latestAccountImplementation",
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "",
+          "type": "address",
+          "internalType": "address"
+        }
+      ],
+      "stateMutability": "view"
+    },
+    {
+      "type": "function",
+      "name": "latestInfinexProtocolConfigBeacon",
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "",
+          "type": "address",
+          "internalType": "address"
+        }
+      ],
+      "stateMutability": "view"
+    },
+    {
+      "type": "function",
+      "name": "latestSynthetixInformationBeacon",
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "",
+          "type": "address",
+          "internalType": "address"
+        }
+      ],
+      "stateMutability": "view"
+    },
+    {
+      "type": "function",
+      "name": "owner",
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "",
+          "type": "address",
+          "internalType": "address"
+        }
+      ],
+      "stateMutability": "view"
+    },
+    {
+      "type": "function",
+      "name": "pendingOwner",
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "",
+          "type": "address",
+          "internalType": "address"
+        }
+      ],
+      "stateMutability": "view"
+    },
+    {
+      "type": "function",
+      "name": "renounceOwnership",
+      "inputs": [],
+      "outputs": [],
+      "stateMutability": "nonpayable"
+    },
+    {
+      "type": "function",
+      "name": "revenuePool",
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "",
+          "type": "address",
+          "internalType": "address"
+        }
+      ],
+      "stateMutability": "view"
+    },
+    {
+      "type": "function",
+      "name": "setCircleBridgeParams",
+      "inputs": [
+        {
+          "name": "_circleBridge",
+          "type": "address",
+          "internalType": "address"
+        },
+        {
+          "name": "_circleBridgeDestinationDomain",
+          "type": "uint32",
+          "internalType": "uint32"
+        }
+      ],
+      "outputs": [],
+      "stateMutability": "nonpayable"
+    },
+    {
+      "type": "function",
+      "name": "setDefaultGasFeeRebate",
+      "inputs": [
+        {
+          "name": "_defaultGasFeeRebate",
+          "type": "uint256",
+          "internalType": "uint256"
+        }
+      ],
+      "outputs": [],
+      "stateMutability": "nonpayable"
+    },
+    {
+      "type": "function",
+      "name": "setDefaultTradingFees",
+      "inputs": [
+        {
+          "name": "_marketId",
+          "type": "uint128",
+          "internalType": "uint128"
+        },
+        {
+          "name": "_makerFee",
+          "type": "uint256",
+          "internalType": "uint256"
+        },
+        {
+          "name": "_takerFee",
+          "type": "uint256",
+          "internalType": "uint256"
+        }
+      ],
+      "outputs": [],
+      "stateMutability": "nonpayable"
+    },
+    {
+      "type": "function",
+      "name": "setDefaultTradingFeesMultipleMarkets",
+      "inputs": [
+        {
+          "name": "_defaultTradingFees",
+          "type": "tuple[]",
+          "internalType": "struct IncrementalFee[]",
+          "components": [
+            {
+              "name": "marketId",
+              "type": "uint128",
+              "internalType": "uint128"
+            },
+            {
+              "name": "makerFee",
+              "type": "uint256",
+              "internalType": "uint256"
+            },
+            {
+              "name": "takerFee",
+              "type": "uint256",
+              "internalType": "uint256"
+            }
+          ]
+        }
+      ],
+      "outputs": [],
+      "stateMutability": "nonpayable"
+    },
+    {
+      "type": "function",
+      "name": "setFeeConfiguration",
+      "inputs": [
+        {
+          "name": "_defaultTradingFees",
+          "type": "tuple[]",
+          "internalType": "struct IncrementalFee[]",
+          "components": [
+            {
+              "name": "marketId",
+              "type": "uint128",
+              "internalType": "uint128"
+            },
+            {
+              "name": "makerFee",
+              "type": "uint256",
+              "internalType": "uint256"
+            },
+            {
+              "name": "takerFee",
+              "type": "uint256",
+              "internalType": "uint256"
+            }
+          ]
+        },
+        {
+          "name": "_withdrawalFee",
+          "type": "uint256",
+          "internalType": "uint256"
+        }
+      ],
+      "outputs": [],
+      "stateMutability": "nonpayable"
+    },
+    {
+      "type": "function",
+      "name": "setInitialProxyImplementation",
+      "inputs": [
+        {
+          "name": "_initialProxyImplementation",
+          "type": "address",
+          "internalType": "address"
+        }
+      ],
+      "outputs": [],
+      "stateMutability": "nonpayable"
+    },
+    {
+      "type": "function",
+      "name": "setLatestAccountImplementation",
+      "inputs": [
+        {
+          "name": "_latestAccountImplementation",
+          "type": "address",
+          "internalType": "address"
+        }
+      ],
+      "outputs": [],
+      "stateMutability": "nonpayable"
+    },
+    {
+      "type": "function",
+      "name": "setLatestInfinexProtocolConfigBeacon",
+      "inputs": [
+        {
+          "name": "_latestInfinexProtocolConfigBeacon",
+          "type": "address",
+          "internalType": "address"
+        }
+      ],
+      "outputs": [],
+      "stateMutability": "nonpayable"
+    },
+    {
+      "type": "function",
+      "name": "setLatestSynthetixInformationBeacon",
+      "inputs": [
+        {
+          "name": "_latestSynthetixInformationBeacon",
+          "type": "address",
+          "internalType": "address"
+        }
+      ],
+      "outputs": [],
+      "stateMutability": "nonpayable"
+    },
+    {
+      "type": "function",
+      "name": "setMinimumUSDCBridgeAmount",
+      "inputs": [
+        {
+          "name": "_amount",
+          "type": "uint256",
+          "internalType": "uint256"
+        }
+      ],
+      "outputs": [],
+      "stateMutability": "nonpayable"
+    },
+    {
+      "type": "function",
+      "name": "setRevenuePool",
+      "inputs": [
+        {
+          "name": "_revenuePool",
+          "type": "address",
+          "internalType": "address"
+        }
+      ],
+      "outputs": [],
+      "stateMutability": "nonpayable"
+    },
+    {
+      "type": "function",
+      "name": "setTradingFeePool",
+      "inputs": [
+        {
+          "name": "_tradingFeePool",
+          "type": "address",
+          "internalType": "address"
+        }
+      ],
+      "outputs": [],
+      "stateMutability": "nonpayable"
+    },
+    {
+      "type": "function",
+      "name": "setUSDCAddress",
+      "inputs": [
+        {
+          "name": "_USDC",
+          "type": "address",
+          "internalType": "address"
+        }
+      ],
+      "outputs": [],
+      "stateMutability": "nonpayable"
+    },
+    {
+      "type": "function",
+      "name": "setUserSpecificGasFeeRebate",
+      "inputs": [
+        {
+          "name": "_user",
+          "type": "address",
+          "internalType": "address"
+        },
+        {
+          "name": "_userSpecificGasFeeRebate",
+          "type": "uint256",
+          "internalType": "uint256"
+        }
+      ],
+      "outputs": [],
+      "stateMutability": "nonpayable"
+    },
+    {
+      "type": "function",
+      "name": "setUserSpecificGasFeeRebateSetFlag",
+      "inputs": [
+        {
+          "name": "_user",
+          "type": "address",
+          "internalType": "address"
+        },
+        {
+          "name": "_isSet",
+          "type": "bool",
+          "internalType": "bool"
+        }
+      ],
+      "outputs": [],
+      "stateMutability": "nonpayable"
+    },
+    {
+      "type": "function",
+      "name": "setUserSpecificTradingFees",
+      "inputs": [
+        {
+          "name": "_user",
+          "type": "address",
+          "internalType": "address"
+        },
+        {
+          "name": "_marketId",
+          "type": "uint128",
+          "internalType": "uint128"
+        },
+        {
+          "name": "_makerFee",
+          "type": "uint256",
+          "internalType": "uint256"
+        },
+        {
+          "name": "_takerFee",
+          "type": "uint256",
+          "internalType": "uint256"
+        }
+      ],
+      "outputs": [],
+      "stateMutability": "nonpayable"
+    },
+    {
+      "type": "function",
+      "name": "setUserSpecificTradingFeesMultipleMarkets",
+      "inputs": [
+        {
+          "name": "_user",
+          "type": "address",
+          "internalType": "address"
+        },
+        {
+          "name": "_tradingFees",
+          "type": "tuple[]",
+          "internalType": "struct IncrementalFee[]",
+          "components": [
+            {
+              "name": "marketId",
+              "type": "uint128",
+              "internalType": "uint128"
+            },
+            {
+              "name": "makerFee",
+              "type": "uint256",
+              "internalType": "uint256"
+            },
+            {
+              "name": "takerFee",
+              "type": "uint256",
+              "internalType": "uint256"
+            }
+          ]
+        }
+      ],
+      "outputs": [],
+      "stateMutability": "nonpayable"
+    },
+    {
+      "type": "function",
+      "name": "setUserSpecificTradingFeesSetFlag",
+      "inputs": [
+        {
+          "name": "_user",
+          "type": "address",
+          "internalType": "address"
+        },
+        {
+          "name": "_marketId",
+          "type": "uint128",
+          "internalType": "uint128"
+        },
+        {
+          "name": "_isSet",
+          "type": "bool",
+          "internalType": "bool"
+        }
+      ],
+      "outputs": [],
+      "stateMutability": "nonpayable"
+    },
+    {
+      "type": "function",
+      "name": "setWithdrawalFee",
+      "inputs": [
+        {
+          "name": "_withdrawalFee",
+          "type": "uint256",
+          "internalType": "uint256"
+        }
+      ],
+      "outputs": [],
+      "stateMutability": "nonpayable"
+    },
+    {
+      "type": "function",
+      "name": "setWithdrawalsActive",
+      "inputs": [
+        {
+          "name": "_withdrawalsActive",
+          "type": "bool",
+          "internalType": "bool"
+        }
+      ],
+      "outputs": [],
+      "stateMutability": "nonpayable"
+    },
+    {
+      "type": "function",
+      "name": "setWormholeCCTPBridgeParams",
+      "inputs": [
+        {
+          "name": "_wormholeCircleBridge",
+          "type": "address",
+          "internalType": "address"
+        },
+        {
+          "name": "_wormholeDestinationDomain",
+          "type": "uint16",
+          "internalType": "uint16"
+        }
+      ],
+      "outputs": [],
+      "stateMutability": "nonpayable"
+    },
+    {
+      "type": "function",
+      "name": "tradingFeePool",
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "",
+          "type": "address",
+          "internalType": "address"
+        }
+      ],
+      "stateMutability": "view"
+    },
+    {
+      "type": "function",
+      "name": "transferOwnership",
+      "inputs": [
+        {
+          "name": "newOwner",
+          "type": "address",
+          "internalType": "address"
+        }
+      ],
+      "outputs": [],
+      "stateMutability": "nonpayable"
+    },
+    {
+      "type": "function",
+      "name": "trustedForwarder",
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "",
+          "type": "address",
+          "internalType": "address"
+        }
+      ],
+      "stateMutability": "view"
+    },
+    {
+      "type": "function",
+      "name": "userSpecificGasFeeRebates",
+      "inputs": [
+        {
+          "name": "",
+          "type": "address",
+          "internalType": "address"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256",
+          "internalType": "uint256"
+        }
+      ],
+      "stateMutability": "view"
+    },
+    {
+      "type": "function",
+      "name": "userSpecificGasFeeRebatesSet",
+      "inputs": [
+        {
+          "name": "",
+          "type": "address",
+          "internalType": "address"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "",
+          "type": "bool",
+          "internalType": "bool"
+        }
+      ],
+      "stateMutability": "view"
+    },
+    {
+      "type": "function",
+      "name": "userSpecificTradingFees",
+      "inputs": [
+        {
+          "name": "",
+          "type": "address",
+          "internalType": "address"
+        },
+        {
+          "name": "marketId",
+          "type": "uint128",
+          "internalType": "uint128"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "marketId",
+          "type": "uint128",
+          "internalType": "uint128"
+        },
+        {
+          "name": "makerFee",
+          "type": "uint256",
+          "internalType": "uint256"
+        },
+        {
+          "name": "takerFee",
+          "type": "uint256",
+          "internalType": "uint256"
+        }
+      ],
+      "stateMutability": "view"
+    },
+    {
+      "type": "function",
+      "name": "userSpecificTradingFeesSet",
+      "inputs": [
+        {
+          "name": "",
+          "type": "address",
+          "internalType": "address"
+        },
+        {
+          "name": "marketId",
+          "type": "uint128",
+          "internalType": "uint128"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "",
+          "type": "bool",
+          "internalType": "bool"
+        }
+      ],
+      "stateMutability": "view"
+    },
+    {
+      "type": "function",
+      "name": "withdrawalFee",
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256",
+          "internalType": "uint256"
+        }
+      ],
+      "stateMutability": "view"
+    },
+    {
+      "type": "function",
+      "name": "withdrawalsActive",
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "",
+          "type": "bool",
+          "internalType": "bool"
+        }
+      ],
+      "stateMutability": "view"
+    },
+    {
+      "type": "event",
+      "name": "DefaultGasFeeRebateSet",
+      "inputs": [
+        {
+          "name": "defaultGasFeeRebate",
+          "type": "uint256",
+          "indexed": false,
+          "internalType": "uint256"
+        }
+      ],
+      "anonymous": false
+    },
+    {
+      "type": "event",
+      "name": "DefaultTradingFeesSet",
+      "inputs": [
+        {
+          "name": "marketId",
+          "type": "uint128",
+          "indexed": true,
+          "internalType": "uint128"
+        },
+        {
+          "name": "makerFee",
+          "type": "uint256",
+          "indexed": false,
+          "internalType": "uint256"
+        },
+        {
+          "name": "takerFee",
+          "type": "uint256",
+          "indexed": false,
+          "internalType": "uint256"
+        }
+      ],
+      "anonymous": false
+    },
+    {
+      "type": "event",
+      "name": "MinimumUSDCBridgeAmountSet",
+      "inputs": [
+        {
+          "name": "amount",
+          "type": "uint256",
+          "indexed": false,
+          "internalType": "uint256"
+        }
+      ],
+      "anonymous": false
+    },
+    {
+      "type": "event",
+      "name": "OwnershipTransferStarted",
+      "inputs": [
+        {
+          "name": "previousOwner",
+          "type": "address",
+          "indexed": true,
+          "internalType": "address"
+        },
+        {
+          "name": "newOwner",
+          "type": "address",
+          "indexed": true,
+          "internalType": "address"
+        }
+      ],
+      "anonymous": false
+    },
+    {
+      "type": "event",
+      "name": "OwnershipTransferred",
+      "inputs": [
+        {
+          "name": "previousOwner",
+          "type": "address",
+          "indexed": true,
+          "internalType": "address"
+        },
+        {
+          "name": "newOwner",
+          "type": "address",
+          "indexed": true,
+          "internalType": "address"
+        }
+      ],
+      "anonymous": false
+    },
+    {
+      "type": "event",
+      "name": "UserSpecificGasFeeRebateSet",
+      "inputs": [
+        {
+          "name": "user",
+          "type": "address",
+          "indexed": true,
+          "internalType": "address"
+        },
+        {
+          "name": "gasFeeRebate",
+          "type": "uint256",
+          "indexed": false,
+          "internalType": "uint256"
+        }
+      ],
+      "anonymous": false
+    },
+    {
+      "type": "event",
+      "name": "UserSpecificTradingFeesSet",
+      "inputs": [
+        {
+          "name": "user",
+          "type": "address",
+          "indexed": true,
+          "internalType": "address"
+        },
+        {
+          "name": "marketId",
+          "type": "uint128",
+          "indexed": true,
+          "internalType": "uint128"
+        },
+        {
+          "name": "makerFee",
+          "type": "uint256",
+          "indexed": false,
+          "internalType": "uint256"
+        },
+        {
+          "name": "takerFee",
+          "type": "uint256",
+          "indexed": false,
+          "internalType": "uint256"
+        }
+      ],
+      "anonymous": false
+    },
+    {
+      "type": "event",
+      "name": "WithdrawalFeeSet",
+      "inputs": [
+        {
+          "name": "withdrawalFee",
+          "type": "uint256",
+          "indexed": false,
+          "internalType": "uint256"
+        }
+      ],
+      "anonymous": false
+    },
+    {
+      "type": "event",
+      "name": "WithdrawalsStatusSet",
+      "inputs": [
+        {
+          "name": "withdrawalsActive",
+          "type": "bool",
+          "indexed": false,
+          "internalType": "bool"
+        }
+      ],
+      "anonymous": false
+    },
+    {
+      "type": "error",
+      "name": "NullAddress",
+      "inputs": []
+    },
+    {
+      "type": "error",
+      "name": "OwnableInvalidOwner",
+      "inputs": [
+        {
+          "name": "owner",
+          "type": "address",
+          "internalType": "address"
+        }
+      ]
+    },
+    {
+      "type": "error",
+      "name": "OwnableUnauthorizedAccount",
+      "inputs": [
+        {
+          "name": "account",
+          "type": "address",
+          "internalType": "address"
+        }
+      ]
+    },
+    {
+      "type": "error",
+      "name": "ZeroValue",
+      "inputs": []
+    }
+  ],
+  "constructorArgs": [
+    "0xa7DB9b0a95D253022068d43BD1d64756f92eF83C",
+    {
+      "trustedForwarder": "0x4D0E68631382Ae19E15c395d3231be42D8634A8B",
+      "latestAccountImplementation": "0x98588BeB2883d8c63EFa7499BA74A01b0B90506c",
+      "initialProxyImplementation": "0x4fa1d0a9882ea5A6e405267be3AC8cB015dCa362",
+      "revenuePool": "0xa7DB9b0a95D253022068d43BD1d64756f92eF83C",
+      "tradingFeePool": "0xa7DB9b0a95D253022068d43BD1d64756f92eF83C",
+      "circleBridge": "0x9f3B8679c73C2Fef8b59B4f3444d4e156fb70AA5",
+      "circleBridgeDestinationDomain": "6",
+      "USDC": "0x1c7D4B196Cb0C7B01d743Fbc6116a902379C7238",
+      "minimumUSDCBridgeAmount": "10000000",
+      "wormholeCircleBridge": "0x2703483B1a5a7c577e8680de9Df8Be03c6f30e3c",
+      "wormholeDestinationDomain": "10004",
+      "latestSynthetixInformationBeacon": "0xa7DB9b0a95D253022068d43BD1d64756f92eF83C"
+    }
+  ],
+  "linkedLibraries": {},
+  "deployTxnHash": "0x0d243a7802eb1cd21313c3725f445e11949391ecee5dce3533347f05663068f1",
+  "sourceName": "src/beacons/InfinexProtocolConfigBeacon.sol",
+  "contractName": "InfinexProtocolConfigBeacon",
+  "deployedOn": "contract.InfinexProtocolConfigBeacon",
+  "highlight": true,
+  "gasUsed": 1735871,
+  "gasCost": "1629324601"
+}

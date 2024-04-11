@@ -1,0 +1,143 @@
+name = "infinex-multichain"
+version = "0.1.1"
+preset = "O2"
+description = "Infinex MultiChain Deployments"
+# --chain-id 8453
+
+[setting.OWNER]
+defaultValue = "0x88485E0486600C3259b72695FDa2201Eb0E53356"
+description = "The Council multisig"
+ 
+[setting.WITHDRAWAL_FEE_USDC]
+description = "The withdrawal fee in USDC"
+defaultValue = "<%= parseUnits(String(1), 6) %>"
+
+# ---- Chain Ids ---- #
+
+[setting.ETHEREUM_CHAIN_ID]
+description = "Chain Id for Ethereum"
+type = "number"
+defaultValue = "1"
+
+[setting.OPTIMISM_CHAIN_ID]
+description = "Chain Id for Optimism"
+type = "number"
+defaultValue = "10"
+
+[setting.ARBITRUM_CHAIN_ID]
+description = "Chain Id for Arbitrum"
+type = "number"
+defaultValue = "42161"
+
+[setting.BASE_CHAIN_ID]
+description = "Chain Id for Base"
+type = "number"
+defaultValue = "8453"
+
+[setting.POLYGON_CHAIN_ID]
+description = "Chain Id for Polygon"
+type = "number"
+defaultValue = "137"
+
+# ---- Wormhole Destination Domains ---- #
+
+[setting.WORMHOLE_DESTINATION_DOMAIN_ETHEREUM]
+desctiption = "The Wormhole destination domain of the target chain, Ethereum"
+type="number"
+defaultValue = "2"
+
+[setting.WORMHOLE_DESTINATION_DOMAIN_OPTIMISM]
+desctiption = "The Wormhole destination domain of the target chain, Optimism"
+type="number"
+defaultValue = "24"
+
+[setting.WORMHOLE_DESTINATION_DOMAIN_ARBITRUM]
+desctiption = "The Wormhole destination domain of the target chain, Arbitrum"
+type="number"
+defaultValue = "23"
+
+[setting.WORMHOLE_DESTINATION_DOMAIN_BASE]
+desctiption = "The Wormhole destination domain of the target chain, Base"
+type="number"
+defaultValue = "30"
+
+[setting.WORMHOLE_DESTINATION_DOMAIN_POLYGON]
+desctiption = "The Wormhole destination domain of the target chain, Polygon"
+type="number"
+defaultValue = "5"
+
+# ---- Circle Destination Domains ---- # 
+
+[setting.CIRCLE_DESTINATION_DOMAIN_ETHEREUM]
+description = "The Circle destination domain for Ethereum"
+type = "number"
+defaultValue = "0"
+
+[setting.CIRCLE_DESTINATION_DOMAIN_OPTIMISM]
+description = "The Circle destination domain for Optimism"
+type = "number"
+defaultValue = "2"
+
+[setting.CIRCLE_DESTINATION_DOMAIN_ARBITRUM]
+description = "The Circle destination domain for Arbitrum"
+type = "number"
+defaultValue = "3"
+
+[setting.CIRCLE_DESTINATION_DOMAIN_BASE]
+description = "The Circle destination domain for Base"
+type = "number"
+defaultValue = "6"
+
+[setting.CIRCLE_DESTINATION_DOMAIN_POLYGON]
+description = "The Circle destination domain for Polygon"
+type = "number"
+defaultValue = "7"
+
+[provision.infinex]
+options.SALT = "Infinex-Mainnet-0.1.1"
+options.OWNER = "<%= settings.OWNER %>"
+options.REVENUE_POOL = "0x88485E0486600C3259b72695FDa2201Eb0E53356"
+options.MINIMUM_BRIDGE_AMOUNT =  "<%= parseUnits(String(0.1), 6) %>"
+options.USDC = "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913"
+options.CIRCLE_BRIDGE = "0x1682Ae6375C4E4A97e4B583BC394c861A46D8962"
+options.CIRCLE_MINTER = "0xe45B133ddc64bE80252b0e9c75A8E74EF280eEd6"
+options.CIRCLE_BRIDGE_DEFAULT_DESTINATION_DOMAIN = "6"
+options.WORMHOLE_CIRCLE_BRIDGE = "0x03faBB06Fa052557143dC28eFCFc63FC12843f1D"
+options.WORMHOLE_DEFAULT_DESTINATION_DOMAIN = "30"
+source = "infinex:0.1.0@O2"
+
+# ---------- Setting Post deployment parameters  ---------- #
+
+[invoke.setInfinexProtocolConfigBeaconFee]
+target = ["infinex.InfinexProtocolConfigBeacon"]
+func = "setWithdrawalFeeUSDC"
+args = [ "<%= settings.WITHDRAWAL_FEE_USDC %>"]
+from = "<%= settings.OWNER %>"
+depends = ["provision.infinex"]
+
+[invoke.AccountFactoryInitialize]
+target = ["infinex.AccountFactory"]
+func = "initialize"
+args = [
+    "<%= imports.infinex.contracts.InfinexProtocolConfigBeacon.address %>"
+]
+depends = ["provision.infinex"]
+from = "<%= settings.OWNER %>"
+
+[invoke.setValidChainIdsBatchEVM]
+target = ["infinex.InfinexProtocolConfigBeacon"]
+func = "setIsValidChainIdsBatch"
+args = [["<%= settings.ETHEREUM_CHAIN_ID %>", "<%= settings.OPTIMISM_CHAIN_ID %>", "<%= settings.ARBITRUM_CHAIN_ID %>", "<%= settings.BASE_CHAIN_ID %>", "<%= settings.POLYGON_CHAIN_ID %>"],true,true]
+from = "<%= settings.OWNER %>"
+
+[invoke.setWormholeDestinationDomainBatchEVM]
+target = ["infinex.InfinexProtocolConfigBeacon"]
+func = "setWormholeDestinationDomainsBatch"
+args = [["<%= settings.ETHEREUM_CHAIN_ID %>", "<%= settings.OPTIMISM_CHAIN_ID %>", "<%= settings.ARBITRUM_CHAIN_ID %>", "<%= settings.BASE_CHAIN_ID %>", "<%= settings.POLYGON_CHAIN_ID %>"], ["<%= settings.WORMHOLE_DESTINATION_DOMAIN_ETHEREUM %>", "<%= settings.WORMHOLE_DESTINATION_DOMAIN_OPTIMISM %>", "<%= settings.WORMHOLE_DESTINATION_DOMAIN_ARBITRUM %>", "<%= settings.WORMHOLE_DESTINATION_DOMAIN_BASE %>","<%= settings.WORMHOLE_DESTINATION_DOMAIN_POLYGON %>" ]]
+from = "<%= settings.OWNER %>"
+
+[invoke.setCircleDestinationDomainsBatchEVM]
+target = ["infinex.InfinexProtocolConfigBeacon"]
+func = "setCircleDestinationDomainsBatch"
+args = [["<%= settings.ETHEREUM_CHAIN_ID %>", "<%= settings.OPTIMISM_CHAIN_ID %>", "<%= settings.ARBITRUM_CHAIN_ID %>", "<%= settings.BASE_CHAIN_ID %>", "<%= settings.POLYGON_CHAIN_ID %>"], ["<%= settings.CIRCLE_DESTINATION_DOMAIN_ETHEREUM %>", "<%= settings.CIRCLE_DESTINATION_DOMAIN_OPTIMISM %>", "<%= settings.CIRCLE_DESTINATION_DOMAIN_ARBITRUM %>", "<%= settings.CIRCLE_DESTINATION_DOMAIN_BASE %>","<%= settings.CIRCLE_DESTINATION_DOMAIN_POLYGON %>" ]]
+from = "<%= settings.OWNER %>"

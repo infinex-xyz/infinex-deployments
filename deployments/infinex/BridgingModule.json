@@ -1,0 +1,69 @@
+{
+  "address": "0xD247c6B63aeA66Dd4Fa361C0403D9D1F7eD893c3",
+  "abi": [
+    {
+      "type": "function",
+      "name": "bridgeUSDCWithCircle",
+      "inputs": [],
+      "outputs": [],
+      "stateMutability": "nonpayable"
+    },
+    {
+      "type": "function",
+      "name": "bridgeUSDCWithWormhole",
+      "inputs": [],
+      "outputs": [],
+      "stateMutability": "nonpayable"
+    },
+    {
+      "type": "event",
+      "name": "TokenBridged",
+      "inputs": [
+        {
+          "name": "token",
+          "type": "address",
+          "indexed": true,
+          "internalType": "address"
+        },
+        {
+          "name": "destinationAddress",
+          "type": "address",
+          "indexed": true,
+          "internalType": "address"
+        },
+        {
+          "name": "destinationDomain",
+          "type": "uint32",
+          "indexed": true,
+          "internalType": "uint32"
+        },
+        {
+          "name": "bridge",
+          "type": "address",
+          "indexed": false,
+          "internalType": "address"
+        },
+        {
+          "name": "amount",
+          "type": "uint256",
+          "indexed": false,
+          "internalType": "uint256"
+        }
+      ],
+      "anonymous": false
+    },
+    {
+      "type": "error",
+      "name": "InsufficientBalance",
+      "inputs": []
+    }
+  ],
+  "constructorArgs": [],
+  "linkedLibraries": {},
+  "deployTxnHash": "0x63a93805e190ea504fcc236ba3ed4ad83aa5f2613d9f1c3761324757484a7d6a",
+  "sourceName": "src/accounts/modules/BridgingModule.sol",
+  "contractName": "BridgingModule",
+  "deployedOn": "contract.BridgingModule",
+  "gasUsed": 470736,
+  "gasCost": "1763678039"
+}

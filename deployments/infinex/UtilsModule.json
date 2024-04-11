@@ -1,0 +1,1071 @@
+{
+  "address": "0x95Aa6d79E23a8F53094d95eBf7f009E97bf4aAF2",
+  "abi": [
+    {
+      "type": "function",
+      "name": "addDeviceKey",
+      "inputs": [
+        {
+          "name": "_request",
+          "type": "tuple",
+          "internalType": "struct RequestTypes.Request",
+          "components": [
+            {
+              "name": "newDeviceKey",
+              "type": "address",
+              "internalType": "address"
+            },
+            {
+              "name": "newMFAKey",
+              "type": "address",
+              "internalType": "address"
+            },
+            {
+              "name": "newRecoveryKey",
+              "type": "address",
+              "internalType": "address"
+            },
+            {
+              "name": "withdrawalAddress",
+              "type": "address",
+              "internalType": "address"
+            },
+            {
+              "name": "destinationDomain",
+              "type": "uint16",
+              "internalType": "uint16"
+            },
+            {
+              "name": "isValid",
+              "type": "bool",
+              "internalType": "bool"
+            },
+            {
+              "name": "token",
+              "type": "address",
+              "internalType": "address"
+            },
+            {
+              "name": "amount",
+              "type": "uint256",
+              "internalType": "uint256"
+            },
+            {
+              "name": "nonce",
+              "type": "bytes32",
+              "internalType": "bytes32"
+            }
+          ]
+        },
+        {
+          "name": "_signatures",
+          "type": "tuple",
+          "internalType": "struct RequestTypes.Signatures",
+          "components": [
+            {
+              "name": "mfaKeySignature",
+              "type": "bytes",
+              "internalType": "bytes"
+            },
+            {
+              "name": "recoveryKeySignature",
+              "type": "bytes",
+              "internalType": "bytes"
+            }
+          ]
+        }
+      ],
+      "outputs": [],
+      "stateMutability": "nonpayable"
+    },
+    {
+      "type": "function",
+      "name": "checkWeakDeviceKey",
+      "inputs": [
+        {
+          "name": "_deviceKey",
+          "type": "address",
+          "internalType": "address"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "",
+          "type": "bool",
+          "internalType": "bool"
+        }
+      ],
+      "stateMutability": "nonpayable"
+    },
+    {
+      "type": "function",
+      "name": "getCircleBridgeParams",
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "",
+          "type": "address",
+          "internalType": "address"
+        },
+        {
+          "name": "",
+          "type": "uint32",
+          "internalType": "uint32"
+        }
+      ],
+      "stateMutability": "view"
+    },
+    {
+      "type": "function",
+      "name": "getGasOwed",
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256",
+          "internalType": "uint256"
+        }
+      ],
+      "stateMutability": "view"
+    },
+    {
+      "type": "function",
+      "name": "getReferralTokenId",
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256",
+          "internalType": "uint256"
+        }
+      ],
+      "stateMutability": "view"
+    },
+    {
+      "type": "function",
+      "name": "getUSDCAddress",
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "",
+          "type": "address",
+          "internalType": "address"
+        }
+      ],
+      "stateMutability": "view"
+    },
+    {
+      "type": "function",
+      "name": "getWormholeCCTPBridgeParams",
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "",
+          "type": "address",
+          "internalType": "address"
+        },
+        {
+          "name": "",
+          "type": "uint16",
+          "internalType": "uint16"
+        }
+      ],
+      "stateMutability": "view"
+    },
+    {
+      "type": "function",
+      "name": "infinexProtocolConfigBeacon",
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "",
+          "type": "address",
+          "internalType": "address"
+        }
+      ],
+      "stateMutability": "view"
+    },
+    {
+      "type": "function",
+      "name": "isStrongDeviceKey",
+      "inputs": [
+        {
+          "name": "_strongDeviceKey",
+          "type": "address",
+          "internalType": "address"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "",
+          "type": "bool",
+          "internalType": "bool"
+        }
+      ],
+      "stateMutability": "view"
+    },
+    {
+      "type": "function",
+      "name": "isValidMFAKey",
+      "inputs": [
+        {
+          "name": "_mfaKey",
+          "type": "address",
+          "internalType": "address"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "",
+          "type": "bool",
+          "internalType": "bool"
+        }
+      ],
+      "stateMutability": "view"
+    },
+    {
+      "type": "function",
+      "name": "isValidRecoveryKey",
+      "inputs": [
+        {
+          "name": "_recoveryKey",
+          "type": "address",
+          "internalType": "address"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "",
+          "type": "bool",
+          "internalType": "bool"
+        }
+      ],
+      "stateMutability": "view"
+    },
+    {
+      "type": "function",
+      "name": "isWeakDeviceKey",
+      "inputs": [
+        {
+          "name": "_weakDeviceKey",
+          "type": "address",
+          "internalType": "address"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "",
+          "type": "bool",
+          "internalType": "bool"
+        }
+      ],
+      "stateMutability": "view"
+    },
+    {
+      "type": "function",
+      "name": "revokeStrongDeviceKey",
+      "inputs": [
+        {
+          "name": "_strongDeviceKey",
+          "type": "address",
+          "internalType": "address"
+        }
+      ],
+      "outputs": [],
+      "stateMutability": "nonpayable"
+    },
+    {
+      "type": "function",
+      "name": "revokeWeakDeviceKey",
+      "inputs": [
+        {
+          "name": "_weakDeviceKey",
+          "type": "address",
+          "internalType": "address"
+        }
+      ],
+      "outputs": [],
+      "stateMutability": "nonpayable"
+    },
+    {
+      "type": "function",
+      "name": "setMFAKeyStatusWithMFAKey",
+      "inputs": [
+        {
+          "name": "_request",
+          "type": "tuple",
+          "internalType": "struct RequestTypes.Request",
+          "components": [
+            {
+              "name": "newDeviceKey",
+              "type": "address",
+              "internalType": "address"
+            },
+            {
+              "name": "newMFAKey",
+              "type": "address",
+              "internalType": "address"
+            },
+            {
+              "name": "newRecoveryKey",
+              "type": "address",
+              "internalType": "address"
+            },
+            {
+              "name": "withdrawalAddress",
+              "type": "address",
+              "internalType": "address"
+            },
+            {
+              "name": "destinationDomain",
+              "type": "uint16",
+              "internalType": "uint16"
+            },
+            {
+              "name": "isValid",
+              "type": "bool",
+              "internalType": "bool"
+            },
+            {
+              "name": "token",
+              "type": "address",
+              "internalType": "address"
+            },
+            {
+              "name": "amount",
+              "type": "uint256",
+              "internalType": "uint256"
+            },
+            {
+              "name": "nonce",
+              "type": "bytes32",
+              "internalType": "bytes32"
+            }
+          ]
+        },
+        {
+          "name": "_signatures",
+          "type": "tuple",
+          "internalType": "struct RequestTypes.Signatures",
+          "components": [
+            {
+              "name": "mfaKeySignature",
+              "type": "bytes",
+              "internalType": "bytes"
+            },
+            {
+              "name": "recoveryKeySignature",
+              "type": "bytes",
+              "internalType": "bytes"
+            }
+          ]
+        }
+      ],
+      "outputs": [],
+      "stateMutability": "nonpayable"
+    },
+    {
+      "type": "function",
+      "name": "setMFAKeyStatusWithRecoveryKey",
+      "inputs": [
+        {
+          "name": "_request",
+          "type": "tuple",
+          "internalType": "struct RequestTypes.Request",
+          "components": [
+            {
+              "name": "newDeviceKey",
+              "type": "address",
+              "internalType": "address"
+            },
+            {
+              "name": "newMFAKey",
+              "type": "address",
+              "internalType": "address"
+            },
+            {
+              "name": "newRecoveryKey",
+              "type": "address",
+              "internalType": "address"
+            },
+            {
+              "name": "withdrawalAddress",
+              "type": "address",
+              "internalType": "address"
+            },
+            {
+              "name": "destinationDomain",
+              "type": "uint16",
+              "internalType": "uint16"
+            },
+            {
+              "name": "isValid",
+              "type": "bool",
+              "internalType": "bool"
+            },
+            {
+              "name": "token",
+              "type": "address",
+              "internalType": "address"
+            },
+            {
+              "name": "amount",
+              "type": "uint256",
+              "internalType": "uint256"
+            },
+            {
+              "name": "nonce",
+              "type": "bytes32",
+              "internalType": "bytes32"
+            }
+          ]
+        },
+        {
+          "name": "_signatures",
+          "type": "tuple",
+          "internalType": "struct RequestTypes.Signatures",
+          "components": [
+            {
+              "name": "mfaKeySignature",
+              "type": "bytes",
+              "internalType": "bytes"
+            },
+            {
+              "name": "recoveryKeySignature",
+              "type": "bytes",
+              "internalType": "bytes"
+            }
+          ]
+        }
+      ],
+      "outputs": [],
+      "stateMutability": "nonpayable"
+    },
+    {
+      "type": "function",
+      "name": "setRecoveryKeyStatusWithMFAKey",
+      "inputs": [
+        {
+          "name": "_request",
+          "type": "tuple",
+          "internalType": "struct RequestTypes.Request",
+          "components": [
+            {
+              "name": "newDeviceKey",
+              "type": "address",
+              "internalType": "address"
+            },
+            {
+              "name": "newMFAKey",
+              "type": "address",
+              "internalType": "address"
+            },
+            {
+              "name": "newRecoveryKey",
+              "type": "address",
+              "internalType": "address"
+            },
+            {
+              "name": "withdrawalAddress",
+              "type": "address",
+              "internalType": "address"
+            },
+            {
+              "name": "destinationDomain",
+              "type": "uint16",
+              "internalType": "uint16"
+            },
+            {
+              "name": "isValid",
+              "type": "bool",
+              "internalType": "bool"
+            },
+            {
+              "name": "token",
+              "type": "address",
+              "internalType": "address"
+            },
+            {
+              "name": "amount",
+              "type": "uint256",
+              "internalType": "uint256"
+            },
+            {
+              "name": "nonce",
+              "type": "bytes32",
+              "internalType": "bytes32"
+            }
+          ]
+        },
+        {
+          "name": "_signatures",
+          "type": "tuple",
+          "internalType": "struct RequestTypes.Signatures",
+          "components": [
+            {
+              "name": "mfaKeySignature",
+              "type": "bytes",
+              "internalType": "bytes"
+            },
+            {
+              "name": "recoveryKeySignature",
+              "type": "bytes",
+              "internalType": "bytes"
+            }
+          ]
+        }
+      ],
+      "outputs": [],
+      "stateMutability": "nonpayable"
+    },
+    {
+      "type": "function",
+      "name": "setRecoveryKeyStatusWithRecoveryKey",
+      "inputs": [
+        {
+          "name": "_request",
+          "type": "tuple",
+          "internalType": "struct RequestTypes.Request",
+          "components": [
+            {
+              "name": "newDeviceKey",
+              "type": "address",
+              "internalType": "address"
+            },
+            {
+              "name": "newMFAKey",
+              "type": "address",
+              "internalType": "address"
+            },
+            {
+              "name": "newRecoveryKey",
+              "type": "address",
+              "internalType": "address"
+            },
+            {
+              "name": "withdrawalAddress",
+              "type": "address",
+              "internalType": "address"
+            },
+            {
+              "name": "destinationDomain",
+              "type": "uint16",
+              "internalType": "uint16"
+            },
+            {
+              "name": "isValid",
+              "type": "bool",
+              "internalType": "bool"
+            },
+            {
+              "name": "token",
+              "type": "address",
+              "internalType": "address"
+            },
+            {
+              "name": "amount",
+              "type": "uint256",
+              "internalType": "uint256"
+            },
+            {
+              "name": "nonce",
+              "type": "bytes32",
+              "internalType": "bytes32"
+            }
+          ]
+        },
+        {
+          "name": "_signatures",
+          "type": "tuple",
+          "internalType": "struct RequestTypes.Signatures",
+          "components": [
+            {
+              "name": "mfaKeySignature",
+              "type": "bytes",
+              "internalType": "bytes"
+            },
+            {
+              "name": "recoveryKeySignature",
+              "type": "bytes",
+              "internalType": "bytes"
+            }
+          ]
+        }
+      ],
+      "outputs": [],
+      "stateMutability": "nonpayable"
+    },
+    {
+      "type": "function",
+      "name": "synthetixInformationBeacon",
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "",
+          "type": "address",
+          "internalType": "address"
+        }
+      ],
+      "stateMutability": "view"
+    },
+    {
+      "type": "function",
+      "name": "updateCircleBridgeParams",
+      "inputs": [],
+      "outputs": [],
+      "stateMutability": "nonpayable"
+    },
+    {
+      "type": "function",
+      "name": "updateSynthetixInformationBeacon",
+      "inputs": [
+        {
+          "name": "_newSynthetixInformationBeacon",
+          "type": "address",
+          "internalType": "address"
+        }
+      ],
+      "outputs": [],
+      "stateMutability": "nonpayable"
+    },
+    {
+      "type": "function",
+      "name": "updateUSDCAddress",
+      "inputs": [],
+      "outputs": [],
+      "stateMutability": "nonpayable"
+    },
+    {
+      "type": "function",
+      "name": "updateWormholeCCTPBridgeParams",
+      "inputs": [],
+      "outputs": [],
+      "stateMutability": "nonpayable"
+    },
+    {
+      "type": "function",
+      "name": "upgradeProtocolBeaconParameters",
+      "inputs": [
+        {
+          "name": "_newInfinexProtocolConfigBeacon",
+          "type": "address",
+          "internalType": "address"
+        }
+      ],
+      "outputs": [],
+      "stateMutability": "nonpayable"
+    },
+    {
+      "type": "function",
+      "name": "verifyWeakDeviceKey",
+      "inputs": [
+        {
+          "name": "_weakDeviceKey",
+          "type": "address",
+          "internalType": "address"
+        }
+      ],
+      "outputs": [],
+      "stateMutability": "nonpayable"
+    },
+    {
+      "type": "event",
+      "name": "AccountCircleBridgeParamsUpgraded",
+      "inputs": [
+        {
+          "name": "circleBridge",
+          "type": "address",
+          "indexed": false,
+          "internalType": "address"
+        },
+        {
+          "name": "circleBridgeDestinationDomain",
+          "type": "uint32",
+          "indexed": false,
+          "internalType": "uint32"
+        }
+      ],
+      "anonymous": false
+    },
+    {
+      "type": "event",
+      "name": "AccountInfinexProtocolBeaconImplementationUpgraded",
+      "inputs": [
+        {
+          "name": "infinexProtocolConfigBeacon",
+          "type": "address",
+          "indexed": false,
+          "internalType": "address"
+        }
+      ],
+      "anonymous": false
+    },
+    {
+      "type": "event",
+      "name": "AccountSynthetixInformationBeaconUpgraded",
+      "inputs": [
+        {
+          "name": "synthetixInformationBeacon",
+          "type": "address",
+          "indexed": false,
+          "internalType": "address"
+        }
+      ],
+      "anonymous": false
+    },
+    {
+      "type": "event",
+      "name": "AccountUSDCAddressUpgraded",
+      "inputs": [
+        {
+          "name": "USDC",
+          "type": "address",
+          "indexed": false,
+          "internalType": "address"
+        }
+      ],
+      "anonymous": false
+    },
+    {
+      "type": "event",
+      "name": "AccountWormholeCCTPBridgeParamsUpgraded",
+      "inputs": [
+        {
+          "name": "wormholeCircleBridge",
+          "type": "address",
+          "indexed": false,
+          "internalType": "address"
+        },
+        {
+          "name": "wormholeDestinationDomain",
+          "type": "uint16",
+          "indexed": false,
+          "internalType": "uint16"
+        }
+      ],
+      "anonymous": false
+    },
+    {
+      "type": "event",
+      "name": "DeviceKeyAdded",
+      "inputs": [
+        {
+          "name": "deviceKey",
+          "type": "address",
+          "indexed": true,
+          "internalType": "address"
+        }
+      ],
+      "anonymous": false
+    },
+    {
+      "type": "event",
+      "name": "MFAKeyStatusSet",
+      "inputs": [
+        {
+          "name": "mfaKey",
+          "type": "address",
+          "indexed": true,
+          "internalType": "address"
+        },
+        {
+          "name": "isValid",
+          "type": "bool",
+          "indexed": false,
+          "internalType": "bool"
+        }
+      ],
+      "anonymous": false
+    },
+    {
+      "type": "event",
+      "name": "PayloadProcessed",
+      "inputs": [
+        {
+          "name": "request",
+          "type": "tuple",
+          "indexed": false,
+          "internalType": "struct RequestTypes.Request",
+          "components": [
+            {
+              "name": "newDeviceKey",
+              "type": "address",
+              "internalType": "address"
+            },
+            {
+              "name": "newMFAKey",
+              "type": "address",
+              "internalType": "address"
+            },
+            {
+              "name": "newRecoveryKey",
+              "type": "address",
+              "internalType": "address"
+            },
+            {
+              "name": "withdrawalAddress",
+              "type": "address",
+              "internalType": "address"
+            },
+            {
+              "name": "destinationDomain",
+              "type": "uint16",
+              "internalType": "uint16"
+            },
+            {
+              "name": "isValid",
+              "type": "bool",
+              "internalType": "bool"
+            },
+            {
+              "name": "token",
+              "type": "address",
+              "internalType": "address"
+            },
+            {
+              "name": "amount",
+              "type": "uint256",
+              "internalType": "uint256"
+            },
+            {
+              "name": "nonce",
+              "type": "bytes32",
+              "internalType": "bytes32"
+            }
+          ]
+        },
+        {
+          "name": "signatures",
+          "type": "tuple",
+          "indexed": false,
+          "internalType": "struct RequestTypes.Signatures",
+          "components": [
+            {
+              "name": "mfaKeySignature",
+              "type": "bytes",
+              "internalType": "bytes"
+            },
+            {
+              "name": "recoveryKeySignature",
+              "type": "bytes",
+              "internalType": "bytes"
+            }
+          ]
+        },
+        {
+          "name": "requiresMFAKey",
+          "type": "bool",
+          "indexed": false,
+          "internalType": "bool"
+        },
+        {
+          "name": "requiresRecoveryKey",
+          "type": "bool",
+          "indexed": false,
+          "internalType": "bool"
+        }
+      ],
+      "anonymous": false
+    },
+    {
+      "type": "event",
+      "name": "RecoveryKeyStatusSet",
+      "inputs": [
+        {
+          "name": "recoveryKey",
+          "type": "address",
+          "indexed": true,
+          "internalType": "address"
+        },
+        {
+          "name": "isValid",
+          "type": "bool",
+          "indexed": false,
+          "internalType": "bool"
+        }
+      ],
+      "anonymous": false
+    },
+    {
+      "type": "event",
+      "name": "StrongDeviceKeyRevoked",
+      "inputs": [
+        {
+          "name": "strongDeviceKey",
+          "type": "address",
+          "indexed": true,
+          "internalType": "address"
+        }
+      ],
+      "anonymous": false
+    },
+    {
+      "type": "event",
+      "name": "TrustedForwarderAdded",
+      "inputs": [
+        {
+          "name": "forwarder",
+          "type": "address",
+          "indexed": false,
+          "internalType": "address"
+        }
+      ],
+      "anonymous": false
+    },
+    {
+      "type": "event",
+      "name": "TrustedForwarderRemoved",
+      "inputs": [
+        {
+          "name": "forwarder",
+          "type": "address",
+          "indexed": false,
+          "internalType": "address"
+        }
+      ],
+      "anonymous": false
+    },
+    {
+      "type": "event",
+      "name": "WeakDeviceKeyRevoked",
+      "inputs": [
+        {
+          "name": "weakDeviceKey",
+          "type": "address",
+          "indexed": true,
+          "internalType": "address"
+        }
+      ],
+      "anonymous": false
+    },
+    {
+      "type": "event",
+      "name": "WeakDeviceKeyVerified",
+      "inputs": [
+        {
+          "name": "weakDeviceKey",
+          "type": "address",
+          "indexed": true,
+          "internalType": "address"
+        }
+      ],
+      "anonymous": false
+    },
+    {
+      "type": "event",
+      "name": "WeakDeviceKeyVerified",
+      "inputs": [
+        {
+          "name": "weakDeviceKey",
+          "type": "address",
+          "indexed": true,
+          "internalType": "address"
+        }
+      ],
+      "anonymous": false
+    },
+    {
+      "type": "error",
+      "name": "ECDSAInvalidSignature",
+      "inputs": []
+    },
+    {
+      "type": "error",
+      "name": "ECDSAInvalidSignatureLength",
+      "inputs": [
+        {
+          "name": "length",
+          "type": "uint256",
+          "internalType": "uint256"
+        }
+      ]
+    },
+    {
+      "type": "error",
+      "name": "ECDSAInvalidSignatureS",
+      "inputs": [
+        {
+          "name": "s",
+          "type": "bytes32",
+          "internalType": "bytes32"
+        }
+      ]
+    },
+    {
+      "type": "error",
+      "name": "ImplementationMismatch",
+      "inputs": [
+        {
+          "name": "implementation",
+          "type": "address",
+          "internalType": "address"
+        },
+        {
+          "name": "latestImplementation",
+          "type": "address",
+          "internalType": "address"
+        }
+      ]
+    },
+    {
+      "type": "error",
+      "name": "InvalidKeySignature",
+      "inputs": [
+        {
+          "name": "from",
+          "type": "address",
+          "internalType": "address"
+        }
+      ]
+    },
+    {
+      "type": "error",
+      "name": "InvalidNonce",
+      "inputs": [
+        {
+          "name": "nonce",
+          "type": "bytes32",
+          "internalType": "bytes32"
+        }
+      ]
+    },
+    {
+      "type": "error",
+      "name": "KeyAlreadyInvalid",
+      "inputs": []
+    },
+    {
+      "type": "error",
+      "name": "KeyAlreadyValid",
+      "inputs": []
+    },
+    {
+      "type": "error",
+      "name": "KeyNotFound",
+      "inputs": []
+    },
+    {
+      "type": "error",
+      "name": "NullAddress",
+      "inputs": []
+    },
+    {
+      "type": "error",
+      "name": "SameAddress",
+      "inputs": []
+    },
+    {
+      "type": "error",
+      "name": "UnableToRemoveLastKey",
+      "inputs": []
+    }
+  ],
+  "constructorArgs": [],
+  "linkedLibraries": {},
+  "deployTxnHash": "0x76b54417e1910886e5837358d4c91bd120009e1fbf130f44e2ba7950c3cddcd0",
+  "sourceName": "src/accounts/modules/UtilsModule.sol",
+  "contractName": "UtilsModule",
+  "deployedOn": "contract.UtilsModule",
+  "gasUsed": 2181570,
+  "gasCost": "1759036745"
+}

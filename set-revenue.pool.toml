@@ -1,0 +1,5 @@
+[invoke.setRevenuePool]
+target = ["infinex.InfinexProtocolConfigBeacon"]
+func = "setRevenuePool"
+args = ["0xa7DB9b0a95D253022068d43BD1d64756f92eF83C"]
+fromCall.func = "owner"
