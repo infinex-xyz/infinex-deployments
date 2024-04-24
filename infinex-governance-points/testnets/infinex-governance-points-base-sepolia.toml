@@ -1,25 +1,29 @@
 name = "infinex-gp"
-version = "0.1.1"
+version = "0.1.4"
 preset = "StW"
 description = "Infinex Governance Points Deployments"
 
-[setting.OWNER]
-defaultValue = "0x33FaF56Cb2c854231bdA8De328bbAddcF76D9836"
-description = "The Council multisig"
+# --chain-id 84532
 
-[setting.STWPOINTS]
-defaultValue = "<%= parseEther('33000000') %>"
-description = "The amount of STW points to be distributed"
+[var.Deploy]
+GP_DEPLOYER = "0x3F768E3aC5eE75A2F39CFD7d72Eb3a40Bddb5ecB"
+GP_MULTI_SIG = "0x3F768E3aC5eE75A2F39CFD7d72Eb3a40Bddb5ecB"
+GP_TRUSTED_KEEPER = "0x3F768E3aC5eE75A2F39CFD7d72Eb3a40Bddb5ecB"
+STWPOINTS = "<%= parseEther('33000000') %>"
+SOLANA_MULTIPLIER = "<%= parseEther('1') %>"
 
-[provision.InfinexGovernancePoints]
-options.SALT = "GP_0_1_1"
-options.OWNER = "0x33FaF56Cb2c854231bdA8De328bbAddcF76D9836"
-options.CONTRACT_FACTORY = "0x31D6167C54a4112386E8BdAbB9f8a2082e34C8C6" 
-options.INFINEX_FORWARDER = "0x80E281CcFBA9e362EE467D6101F9b60ABF646E86"
-options.USDC = "0x036CbD53842c5426634e7929541eC2318f3dCF7e" 
-options.REWARDS_DURATION =  "604800"
-# options.SOLANA_MULTIPLIER = "<%= parseEther('1') %>"
-source = "infinex-governance-points:latest@stw"
+[pull.InfinexMultichain]
+source = "infinex-multichain:0.1.4@O2"
+
+[clone.InfinexGovernancePoints]
+options.GP_SALT = "GP_0_1_3"
+options.GP_DEPLOYER = "<%= settings.GP_DEPLOYER %>"
+options.ACCOUNT_FACTORY = "<%= imports.InfinexMultichain.imports.infinex.contracts.AccountFactory.address %>"
+options.FORWARDER = "<%= imports.InfinexMultichain.imports.infinex.contracts.Forwarder.address %>"
+options.INX_USDC = "<%= imports.InfinexMultichain.imports.infinex.settings.USDC %>"
+options.REWARDS_DURATION =  "2419200"
+source = "infinex-governance-points:0.1.4@stw"
+depends = ["pull.InfinexMultichain"]
 
 # ---------- Initialise GP Contracts  ---------- #
 
@@ -36,8 +40,8 @@ source = "infinex-governance-points:latest@stw"
 [invoke.GovernancePointsProxyInitialize]
 target = ["InfinexGovernancePoints.GovernancePointsProxy"]
 func = "initialize"
-args = ["<%= settings.OWNER %>"]
-depends = ["provision.InfinexGovernancePoints"]
+args = ["<%= settings.GP_DEPLOYER %>"]
+depends = ["clone.InfinexGovernancePoints"]
 
 # ---------- Setting Post deployment parameters  ---------- #
 
@@ -45,11 +49,27 @@ depends = ["provision.InfinexGovernancePoints"]
 target = ["InfinexGovernancePoints.GovernancePointsProxy"]
 func = "addAuthorisedMinter"
 args = [ "<%= imports.InfinexGovernancePoints.contracts.StWStakingRewards.address %>" ]
-from = "<%= settings.OWNER %>"
+from = "<%= settings.GP_DEPLOYER %>"
 depends = ["invoke.GovernancePointsProxyInitialize"]
+
+[invoke.setSolanaMultiplier]
+target = ["InfinexGovernancePoints.StWStakingRewards"]
+func = "setSolanaMultiplier"
+args = [ "<%= settings.SOLANA_MULTIPLIER %>" ]
+from = "<%= settings.GP_DEPLOYER %>"
+depends = ["clone.InfinexGovernancePoints"]
+
+[invoke.setAuthorizedKeeper]
+target = ["InfinexGovernancePoints.StWStakingRewards"]
+func = "setAuthorizedKeeper"
+args = [ "<%= settings.GP_TRUSTED_KEEPER %>" , true]
+from = "<%= settings.GP_DEPLOYER %>"
+depends = ["clone.InfinexGovernancePoints"]
 
 [invoke.StWStakingRewardsNotifyRewardAmount]
 target = ["InfinexGovernancePoints.StWStakingRewards"]
 func = "notifyRewardAmount"
 args = [ "<%= settings.STWPOINTS %>" ]
+from = "<%= settings.GP_DEPLOYER %>"
 depends = ["invoke.attachSTWCampaign"]
+

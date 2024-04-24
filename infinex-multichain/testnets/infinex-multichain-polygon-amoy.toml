@@ -2,8 +2,7 @@ name = "infinex-multichain"
 version = "0.1.4"
 preset = "O2"
 description = "Infinex MultiChain Deployments"
-# --chain-id 11155420 
-
+# --chain-id 80002 
 
 [var.Deploy]
 DEPLOYER = "0x3F768E3aC5eE75A2F39CFD7d72Eb3a40Bddb5ecB"
@@ -16,7 +15,7 @@ options.SALT = "INFINEX_0_1_4"
 options.DEPLOYER = "<%= settings.DEPLOYER %>"
 options.REVENUE_POOL = "<%= settings.REVENUE_POOL %>"
 options.MINIMUM_BRIDGE_AMOUNT =  "<%= parseUnits(String(1), 6) %>"
-options.USDC = "0x5fd84259d66Cd46123540766Be93DFE6D43130D7"
+options.USDC = "0x41e94eb019c0762f9bfcf9fb1e58725bfb0e7582"
 options.CIRCLE_BRIDGE = "0x9f3B8679c73C2Fef8b59B4f3444d4e156fb70AA5"
 options.CIRCLE_MINTER = "0xE997d7d2F6E065a9A93Fa2175E878Fb9081F1f0A"
 options.DEFAULT_DESTINATION_CCTP_DOMAIN = "6"
@@ -37,7 +36,6 @@ options.WORMHOLE_CHAIN_ID_ETHEREUM = "10002"
 options.WORMHOLE_CHAIN_ID_OPTIMISM = "10005"
 options.WORMHOLE_CHAIN_ID_POLYGON = "10007"
 source = "infinex:0.1.4@O2"
-
 
 # ---------- Setting Post deployment parameters  ---------- #
 

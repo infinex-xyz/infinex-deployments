@@ -1,0 +1,20 @@
+#!/bin/bash
+# TODO: rewrite as ysh/oilshell script
+
+set -e
+
+# This file is in environments with standard toolchain installed, and acts as a flag
+# It stops us trying to run containers inside containers
+if [[ -f "$HOME/.toolchain" ]]; then
+	exec "$@"
+fi
+
+exec "${DOCKER:-podman}" run \
+	--rm -it --tty --userns=keep-id:uid=1000,gid=1000 \
+	-p=127.0.0.1:13370:13370 \
+	-e HOME=/home --workdir=/home/infinex-deployments \
+	-e RPC_URL -e DEBUG -e CANNON_ETHERSCAN_API_URL\
+	--mount type=bind,source="$PWD",target=/home/infinex-deployments \
+	--mount type=bind,source="$HOME/.local/share/cannon",target=/home/.local/share/cannon \
+	localhost/evm-contracts-toolchain:latest \
+	"$@"
