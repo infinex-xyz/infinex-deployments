@@ -1,5 +1,5 @@
 name = "infinex-gp"
-version = "0.1.4"
+version = "0.1.5"
 preset = "StW"
 description = "Infinex Governance Points Deployments"
 
@@ -13,16 +13,16 @@ STWPOINTS = "<%= parseEther('33000000') %>"
 SOLANA_MULTIPLIER = "<%= parseEther('1') %>"
 
 [pull.InfinexMultichain]
-source = "infinex-multichain:0.1.4@O2"
+source = "infinex-multichain:0.1.5@O2"
 
 [clone.InfinexGovernancePoints]
-options.GP_SALT = "GP_0_1_3"
+options.GP_SALT = "GP_0_1_5"
 options.GP_DEPLOYER = "<%= settings.GP_DEPLOYER %>"
 options.ACCOUNT_FACTORY = "<%= imports.InfinexMultichain.imports.infinex.contracts.AccountFactory.address %>"
 options.FORWARDER = "<%= imports.InfinexMultichain.imports.infinex.contracts.Forwarder.address %>"
 options.INX_USDC = "<%= imports.InfinexMultichain.imports.infinex.settings.USDC %>"
 options.REWARDS_DURATION =  "2419200"
-source = "infinex-governance-points:0.1.4@stw"
+source = "infinex-governance-points:0.1.5@stw"
 depends = ["pull.InfinexMultichain"]
 
 # ---------- Initialise GP Contracts  ---------- #

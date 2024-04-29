@@ -1,8 +1,9 @@
 name = "infinex-multichain"
-version = "0.1.4"
+version = "0.1.5"
 preset = "O2"
 description = "Infinex MultiChain Deployments"
 # --chain-id 80002 
+# CANNON_ETHERSCAN_API_URL=https://api-testnet.polygonscan.com/api   ./run pnpm cannon verify infinex-multichain:0.1.5@O2 --chain-id 80002 --api-key
 
 [var.Deploy]
 DEPLOYER = "0x3F768E3aC5eE75A2F39CFD7d72Eb3a40Bddb5ecB"
@@ -11,7 +12,7 @@ MULTI_SIG = "0x5A2B4096754Bd094C40A0e89BC7E017fE38e300c"
 WITHDRAWAL_FEE_USDC = "<%= parseUnits(String(1), 6) %>"
 
 [clone.infinex]
-options.SALT = "INFINEX_0_1_4"
+options.SALT = "INFINEX_0_1_5_1"
 options.DEPLOYER = "<%= settings.DEPLOYER %>"
 options.REVENUE_POOL = "<%= settings.REVENUE_POOL %>"
 options.MINIMUM_BRIDGE_AMOUNT =  "<%= parseUnits(String(1), 6) %>"
@@ -23,7 +24,7 @@ options.WORMHOLE_CIRCLE_BRIDGE = "0x2703483B1a5a7c577e8680de9Df8Be03c6f30e3c"
 options.DEFAULT_DESTINATION_WORMHOLE_CHAIN_ID = "10004" # set the default domain to base for keeper bridging
 # ------- Solana Vars ------- #
 options.SOLANA_CCTP_DESTINATION_DOMAIN = "5"
-options.SOLANA_WALLET_SEED =  "<%= hexlify('wallet') %>"
+options.SOLANA_WALLET_SEED =  "<%= hexlify('wallet_authority') %>"
 options.SOLANA_FIXED_PDA_SEED = "<%= hexlify('ProgramDerivedAddress') %>"
 options.SOLANA_WALLET_PROGRAM_ADDRESS = "0x0dd613b80b79792f2b77dbc1bc2a88a69da961324d890ed3aa9df8d517a500b3" #gitleaks:allow
 options.SOLANA_TOKEN_MINT_ADDRESS = "0x3b442cb3912157f13a933d0134282d032b5ffecd01a2dbf1b7790608df002ea7" #gitleaks:allow
@@ -35,7 +36,7 @@ options.WORMHOLE_CHAIN_ID_BASE = "10004"
 options.WORMHOLE_CHAIN_ID_ETHEREUM = "10002"
 options.WORMHOLE_CHAIN_ID_OPTIMISM = "10005"
 options.WORMHOLE_CHAIN_ID_POLYGON = "10007"
-source = "infinex:0.1.4@O2"
+source = "infinex:0.1.5@O2"
 
 # ---------- Setting Post deployment parameters  ---------- #
 
