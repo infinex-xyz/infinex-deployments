@@ -1,23 +1,24 @@
 name = "infinex-gp"
-version = "0.1.7"
+version = "1.0.0staging"
 preset = "StW"
 description = "Infinex Governance Points Deployments"
 
-# --chain-id 84532
+#  ./run pnpm cannon build infinex-governance-points/staging/infinex-governance-points-base.toml --chain-id 8453 --private-key 
+#   CANNON_ETHERSCAN_API_URL=https://api.basescan.org/api ./run pnpm cannon verify infinex-gp:[version]g@StW --chain-id 8453 --api-key
+
 
 [var.Deploy]
 GP_DEPLOYER = "0x3F768E3aC5eE75A2F39CFD7d72Eb3a40Bddb5ecB"
 GP_MULTI_SIG = "0x3F768E3aC5eE75A2F39CFD7d72Eb3a40Bddb5ecB"
-GP_TRUSTED_KEEPER = "
-"
+GP_TRUSTED_KEEPER = "0xD29C3ba6a1fF5FB3048Dd7C77D79C55D4F72Bd06"
 STWPOINTS = "<%= parseEther('33000000') %>"
 SOLANA_MULTIPLIER = "<%= parseEther('1') %>"
 
 [pull.InfinexMultichain]
-source = "infinex-multichain:0.1.7@O2"
+source = "infinex-multichain:1.0.0staging@O2"
 
 [clone.InfinexGovernancePoints]
-options.GP_SALT = "GP_0_1_5"
+options.GP_SALT = "GP_1_0_0"
 options.GP_DEPLOYER = "<%= settings.GP_DEPLOYER %>"
 options.ACCOUNT_FACTORY = "<%= imports.InfinexMultichain.imports.infinex.contracts.AccountFactory.address %>"
 options.FORWARDER = "<%= imports.InfinexMultichain.imports.infinex.contracts.Forwarder.address %>"
@@ -66,11 +67,3 @@ func = "setAuthorizedKeeper"
 args = [ "<%= settings.GP_TRUSTED_KEEPER %>" , true]
 from = "<%= settings.GP_DEPLOYER %>"
 depends = ["clone.InfinexGovernancePoints"]
-
-[invoke.StWStakingRewardsNotifyRewardAmount]
-target = ["InfinexGovernancePoints.StWStakingRewards"]
-func = "notifyRewardAmount"
-args = [ "<%= settings.STWPOINTS %>" ]
-from = "<%= settings.GP_DEPLOYER %>"
-depends = ["invoke.attachSTWCampaign"]
-
