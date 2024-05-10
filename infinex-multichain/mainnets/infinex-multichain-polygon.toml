@@ -2,13 +2,15 @@ name = "infinex-multichain"
 version = "1.0.0"
 preset = "O2"
 description = "Infinex MultiChain Deployments"
-# --chain-id 137
+#   ./run pnpm cannon build infinex-multichain/mainnets/infinex-multichain-polygon.toml --chain-id 137 --private-key 
+#  CANNON_ETHERSCAN_API_URL=https://api.polygonscan.com/api cannon verify infinex-multichain:1.0.0@O2 --chain-id 137 --api-key
 
 [var.deploy]
-DEPLOYER = "0x3F768E3aC5eE75A2F39CFD7d72Eb3a40Bddb5ecB"
-REVENUE_POOL = "0x33FaF56Cb2c854231bdA8De328bbAddcF76D9836"
-MULTI_SIG = "0x5A2B4096754Bd094C40A0e89BC7E017fE38e300c"
-WITHDRAWAL_FEE_USDC = "<%= parseUnits(String(1), 6) %>"
+DEPLOYER = "0x7Bb5DfC8622D296bF259c951490dC9E1Cc0951d3"
+REVENUE_POOL = "0x87213Fa8BA3b8170E940aAF47096A4322a344De3"
+MULTI_SIG = "0x87213Fa8BA3b8170E940aAF47096A4322a344De3"
+WITHDRAWAL_FEE_USDC = "<%= parseUnits(String(0), 6) %>"
+TRUSTED_RECOVERY_KEEPER = "0x07D19647E3273cfa905E762D7cE45D0f5c661cC1"
 
 [clone.infinex]
 options.SALT = "INFINEX_1_0_0"
@@ -19,7 +21,7 @@ options.USDC = "0x3c499c542cef5e3811e1192ce70d8cc03d5c3359"
 options.CIRCLE_BRIDGE = "0x9daF8c91AEFAE50b9c0E69629D3F6Ca40cA3B3FE"
 options.CIRCLE_MINTER = "0x10f7835F827D6Cf035115E10c50A853d7FB2D2EC"
 options.DEFAULT_DESTINATION_CCTP_DOMAIN = "6"
-options.WORMHOLE_CIRCLE_BRIDGE = "0x2703483B1a5a7c577e8680de9Df8Be03c6f30e3c"
+options.WORMHOLE_CIRCLE_BRIDGE = "0x0FF28217dCc90372345954563486528aa865cDd6"
 options.DEFAULT_DESTINATION_WORMHOLE_CHAIN_ID = "30" # set the default domain to base for keeper bridging
 
 # ------- Solana Vars ------- #
@@ -37,7 +39,7 @@ options.WORMHOLE_CHAIN_ID_BASE = "30"
 options.WORMHOLE_CHAIN_ID_ETHEREUM = "2"
 options.WORMHOLE_CHAIN_ID_OPTIMISM = "24"
 options.WORMHOLE_CHAIN_ID_POLYGON = "5"
-source = "infinex:1.0.0@O2"
+source = "infinex:0.1.7@O2"
 
 # ---------- Setting Post deployment parameters  ---------- #
 [invoke.setInfinexProtocolConfigBeaconFee]
@@ -55,5 +57,15 @@ func = "initialize"
 args = [
     "<%= imports.infinex.contracts.InfinexProtocolConfigBeacon.address %>"
 ]
+from = "<%= settings.DEPLOYER %>"
+depends = ["clone.infinex"]
+
+[invoke.setTrustedRecoveryKeeper]
+target = ["infinex.InfinexProtocolConfigBeacon"]
+func = "setTrustedRecoveryKeeper"
+args = [
+    "<%= settings.TRUSTED_RECOVERY_KEEPER %>", 
+    true
+    ]
 from = "<%= settings.DEPLOYER %>"
 depends = ["clone.infinex"]
