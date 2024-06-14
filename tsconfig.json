@@ -1,0 +1,20 @@
+{
+    "compilerOptions": {
+      "esModuleInterop": true,
+      "forceConsistentCasingInFileNames": true,
+      "module": "ESNext",
+      "moduleResolution": "Bundler",
+      "skipLibCheck": true,
+      "strict": true,
+      "target": "ESNext"
+    },
+    "include": ["scripts"],
+    "exclude": [
+      "./archive",
+      "./deployments",
+      "./infinex-goverance-points",
+      "./infinex-multichain",
+      "./node_modules",
+    ]
+  }
+  
