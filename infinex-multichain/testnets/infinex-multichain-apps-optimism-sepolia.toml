@@ -1,0 +1,20 @@
+name = "infinex-multichain"
+version = "1.0.0"
+preset = "apps"
+description = "Infinex App integrations"
+#   pnpm cannon build infinex-multichain/testnets/infinex-multichain-apps-optimism-sepolia.toml --chain-id 11155420 --private-key 
+# CANNON_ETHERSCAN_API_URL=https://api-sepolia-optimism.etherscan.io/api pnpm cannon verify infinex-multichain:0.1.7@O2 --chain-id 11155420 --api-key
+
+[var.Deploy]
+DEPLOYER = "0x3F768E3aC5eE75A2F39CFD7d72Eb3a40Bddb5ecB"
+REVENUE_POOL = "0x33FaF56Cb2c854231bdA8De328bbAddcF76D9836"
+MULTI_SIG = "0x5A2B4096754Bd094C40A0e89BC7E017fE38e300c"
+
+[clone.infinex]
+options.APPS_DEPLOYER = "<%= settings.DEPLOYER %>"
+# Curve Stableswap Config
+options.CRV_DEPLOYER = "<%= settings.DEPLOYER %>"
+options.APPS_USDC = "0x5fd84259d66Cd46123540766Be93DFE6D43130D7"
+options.APPS_CRV_CURVE_STABLESWAP_FACTORY = "<%= keccak256('0x12341234').slice(0,42) %>" 
+source = "infinex:1.0.0@apps"
+target = "infinex:1.0.0@apps"
