@@ -3,7 +3,7 @@ version = "0.1.7"
 preset = "O2"
 description = "Infinex MultiChain Deployments"
 #   ./run pnpm cannon build infinex-multichain/testnets/infinex-multichain-optimism-sepolia.toml --chain-id 11155420 --private-key 
-
+# CANNON_ETHERSCAN_API_URL=https://api-sepolia-optimism.etherscan.io/api pnpm cannon verify infinex-multichain:0.1.7@O2 --chain-id 11155420 --api-key
 
 [var.Deploy]
 DEPLOYER = "0x3F768E3aC5eE75A2F39CFD7d72Eb3a40Bddb5ecB"
