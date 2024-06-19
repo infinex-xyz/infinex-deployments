@@ -11,9 +11,10 @@ const program = new Command();
 
 const PackageScopeDefault = 'infinex-multichain';
 const PackageVersionDefault = 'latest';
-const PackagePresetsDefault = 'O2';
+const PackagePresetsDefault = ['O2'];
 
 const IncludeChainsDefault = [
+  'cannon',
   'arbitrum',
   'optimism',
   'polygon',
@@ -39,7 +40,9 @@ program
     'Package version',
     PackageVersionDefault,
   )
-  .option('--package-preset <preset>', 'Package preset', PackagePresetsDefault)
+  .option('--package-presets <preset...>', 'Package presets', (val) =>
+    val.split(',').map((x) => x.trim()),
+  )
   .option('--include-chains <chains...>', 'Chains to include', (val) =>
     val.split(',').map((x) => x.trim()),
   );
@@ -50,17 +53,19 @@ const options = program.opts();
 
 const PackageScope = options.packageScope;
 const PackageVersion = options.packageVersion;
-const PackagePreset = options.packagePreset;
+const PackagePresets = options?.packagePresets?.length 
+  ? options.packagePresets 
+  : PackagePresetsDefault;
 
 const IncludeChains = options?.includeChains?.length
   ? options.includeChains
   : IncludeChainsDefault;
 
-type Presets = 'O2' | 'APPS';
+type Presets = ('O2' | 'apps' | 'craterun')[];
 
 interface CannonDeployment {
   chainId: keyof typeof types.ChainNameMapping | string;
-  preset: Presets;
+  presets: Presets;
   name: string;
   version: string;
 }
@@ -133,12 +138,15 @@ type Results = Record<string, Record<keyof typeof types.ChainNameMapping, Artifa
 async function getPublishedContracts(versions: CannonDeployment[]) {
   const results: Results = {};
 
+  console.log(versions);
   await Promise.all(
     versions.map(async (deployment) => {
-      const { name, version, preset, chainId } = deployment;
-      const packageRef = `${name}:${version}@${preset}`;
-      await executeCannonInspect(packageRef, chainId);
-
+      const { name, version, presets, chainId } = deployment;
+      
+      presets.forEach(async (preset) => {
+        const packageRef = `${name}:${version}@${preset}`;
+        await executeCannonInspect(packageRef, chainId);
+      });
       if (!results[version]) {
         // @ts-expect-error ignore
         results[version] = {};
@@ -154,7 +162,7 @@ async function getPublishedContracts(versions: CannonDeployment[]) {
 function formatOutput(artifacts: Results): string {
   let output = `# Scope: ${PackageScope} \n\n`;
   output += `## Version: ${PackageVersion} \n\n`;
-  output += `## Preset: ${PackagePreset} \n\n`;
+  output += `## Preset: ${PackagePresets} \n\n`;
 
   for (const [, versionData] of Object.entries(artifacts)) {
     for (const [chainId, chainDeployments] of Object.entries(versionData)) {
@@ -187,7 +195,7 @@ const versionedDeployments: CannonDeployment[] = Object.entries(
   .filter(([, chainName]) => IncludeChains.includes(chainName as types.EvmChains))
   .map(([chainId]) => ({
     chainId: chainId,
-    preset: PackagePreset,
+    presets: PackagePresets,
     name: PackageScope,
     version: PackageVersion,
   }));
