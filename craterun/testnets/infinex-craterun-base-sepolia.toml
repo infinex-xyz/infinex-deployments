@@ -1,0 +1,37 @@
+name = "infinex-multichain"
+preset = "craterun"
+version = "1.0.0"
+description = "Smart Contracts used for the Infinex Craterun Campaign"
+
+# --chain-id 84532
+
+[pull.O2]
+source = "infinex-multichain:0.1.7@O2"
+
+[var.Deploy]
+CRATERUN_DEPLOYER = "0x3F768E3aC5eE75A2F39CFD7d72Eb3a40Bddb5ecB"
+CRATE_POINTS_NAME = "Infinex CratePoints"
+
+[pull.InfinexMultichain]
+source = "infinex-multichain:0.1.7@O2"
+
+[clone.InfinexCraterun]
+options.DEPLOYER = "<%= settings.CRATERUN_DEPLOYER %>"
+options.ENTROPY_ = "0x41c9e39574F40Ad34c79f1C99B66A45eFB830d4c"         # Pyth Entropy contract address
+options.ENTROPY_PROVIDER = "0x6CC14824Ea2918f5De5C2f75A9Da968ad4BD6344" # Pyth Entropy provider address
+options.FORWARDER= "<%= imports.InfinexMultichain.imports.infinex.contracts.Forwarder.address %>"         # Forwarder contract address
+options.ACCOUNT_FACTORY = "<%= imports.InfinexMultichain.imports.infinex.contracts.AccountFactory.address %>" # AccountFactory contract address
+options.CRATE_POINTS_NAME = "<%= settings.CRATE_POINTS_NAME %>"
+options.PRIZE_INDEX_START = "2500000"
+options.TOTAL_CRATES = "5000000"
+options.REWARDS_DURATION = "604800"
+source = "infinex:1.0.0@craterun"
+target = "infinex:1.0.0@craterun"
+depends = ["pull.InfinexMultichain"]
+
+# ---------- Setting Post deployment parameters  ---------- #
+[invoke.CratePointsInitialize]
+target = ["InfinexCraterun.CratePointsProxy"]
+func = "initialize"
+args = ["<%= settings.CRATERUN_DEPLOYER %>", "<%= settings.CRATE_POINTS_NAME %>"]
+depends = ["clone.InfinexCraterun"]
