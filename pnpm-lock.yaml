@@ -22,7 +22,7 @@ devDependencies:
     version: 4.15.6
   viem:
     specifier: ^2.13.10
-    version: 2.15.0(zod@3.23.8)
+    version: 2.13.10(zod@3.23.8)
 
 packages:
 
@@ -436,7 +436,7 @@ packages:
     resolution: {integrity: sha512-k1Ka9ekQW5LMEJSFGOTfVGxDj1Fmm2fqT4qfmXnLvQnSMn9CJcs9CsneIXIPnflNV00LPH6WOtsDAbfFf5usfg==}
     dependencies:
       abitype: 1.0.2(zod@3.23.8)
-      viem: 2.15.0(zod@3.23.8)
+      viem: 2.13.10(zod@3.23.8)
       zod: 3.23.8
     transitivePeerDependencies:
       - bufferutil
@@ -945,7 +945,7 @@ packages:
       pako: 2.1.0
       promise-events: 0.2.4
       typestub-ipfs-only-hash: 4.0.0
-      viem: 2.15.0(zod@3.23.8)
+      viem: 2.13.10(zod@3.23.8)
       zod: 3.23.8
     transitivePeerDependencies:
       - bufferutil
@@ -976,7 +976,7 @@ packages:
       table: 6.8.2
       tildify: 3.0.0
       untildify: 4.0.0
-      viem: 2.15.0(zod@3.23.8)
+      viem: 2.13.10(zod@3.23.8)
       znv: 0.4.0(zod@3.23.8)
       zod: 3.23.8
     transitivePeerDependencies:
@@ -3288,8 +3288,8 @@ packages:
     resolution: {integrity: sha512-cXEIW6cfr15lFv563k4GuVuW/fiwjknytD37jIOLSdSWuOI6WnO/oKwmP2FQTU2l01LP8/M5TSAJpzUaGe3uWg==}
     dev: true
 
-  /viem@2.15.0(zod@3.23.8):
-    resolution: {integrity: sha512-Jm+cNjAKbyqvCkZq90DpQPeCvSR+piAUMkm+8Jznx7aB8HfbCAXGi7X1LkpRrLJ9jqisOF+mkAjvEQOriVWpDg==}
+  /viem@2.13.10(zod@3.23.8):
+    resolution: {integrity: sha512-fPnbjqlLfWniczYCbnK47MKjyp1/O/b5wMe5ZpflpccD3GUz/f47dLxwLjfSYxXkwS+GERWHWd+2OXb6N/BBQA==}
     peerDependencies:
       typescript: '>=5.0.4'
     peerDependenciesMeta:

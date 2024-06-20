@@ -1,5 +1,5 @@
 name = "infinex-multichain"
-version = "1.0.0"
+version = "1.1.0"
 preset = "O2"
 description = "Infinex MultiChain Deployments"
 #   ./run pnpm cannon build infinex-multichain/mainnets/infinex-multichain-base.toml --chain-id 8453 --private-key
@@ -39,7 +39,8 @@ options.WORMHOLE_CHAIN_ID_BASE = "30"
 options.WORMHOLE_CHAIN_ID_ETHEREUM = "2"
 options.WORMHOLE_CHAIN_ID_OPTIMISM = "24"
 options.WORMHOLE_CHAIN_ID_POLYGON = "5"
-source = "infinex:0.1.7@O2"
+source = "infinex:1.1.0@O2"
+target = "infinex:1.1.0@O2"
 
 # ---------- Setting Post deployment parameters  ---------- #
 [invoke.setInfinexProtocolConfigBeaconFee]
@@ -51,16 +52,6 @@ args = [
 from = "<%= settings.DEPLOYER %>"
 depends = ["clone.infinex"]
 
-[invoke.AccountFactoryInitialize]
-target = ["infinex.AccountFactory"]
-func = "initialize"
-args = [
-    "<%= imports.infinex.contracts.InfinexProtocolConfigBeacon.address %>"
-]
-from = "<%= settings.DEPLOYER %>"
-depends = ["clone.infinex"]
-
-
 [invoke.setTrustedRecoveryKeeper]
 target = ["infinex.InfinexProtocolConfigBeacon"]
 func = "setTrustedRecoveryKeeper"
@@ -70,3 +61,50 @@ args = [
     ]
 from = "<%= settings.DEPLOYER %>"
 depends = ["clone.infinex"]
+
+[invoke.setFundsRecoveryActive]
+target = ["infinex.InfinexProtocolConfigBeacon"]
+func = "setFundsRecoveryActive"
+args = []
+from = "<%= settings.DEPLOYER %>"
+depends = ["clone.infinex"]
+
+# ---------- Update Factory and old beacons  ---------- #
+# [invoke.AccountFactoryUpdateInfinexProtocolConfigBeacon]
+# target = ["infinex.AccountFactory"]
+# func = "updateInfinexProtocolConfigBeacon"
+# args = ["<%= imports.infinex.contracts.InfinexProtocolConfigBeacon.address %>"]
+# fromCall.func = "owner"
+# depends = ["clone.infinex","invoke.OldBeaconSetLatestInfinexProtocolConfigBeacon"]
+
+[pull.infinexOld]
+source = "infinex-multichain:1.0.0@O2"
+
+# [invoke.OldBeaconSetLatestInfinexProtocolConfigBeacon]
+# target = ["infinexOld.infinex.InfinexProtocolConfigBeacon"]
+# func = "setLatestInfinexProtocolConfigBeacon"
+# args = ["<%= imports.infinex.contracts.InfinexProtocolConfigBeacon.address %>"]
+# fromCall.func = "owner"
+
+# ---------- Transfer and accept ownership of new contracts  ---------- #
+
+[invoke.transferOwnershipNewBeacon]
+target = ["infinex.InfinexProtocolConfigBeacon"]
+func = "transferOwnership"
+args = ["<%= settings.MULTI_SIG %>"]
+from = "<%= settings.DEPLOYER %>"
+
+# [invoke.acceptOwnershipNewBeacon]
+# target = ["infinex.InfinexProtocolConfigBeacon"]
+# func = "acceptOwnership"
+# from = "<%= settings.MULTI_SIG %>"
+# depends = ["invoke.transferOwnershipNewBeacon"]
+
+# [invoke.AccountFactoryInitialize]
+# target = ["infinex.AccountFactory"]
+# func = "initialize"
+# args = [
+#     "<%= imports.infinex.contracts.InfinexProtocolConfigBeacon.address %>"
+# ]
+# from = "<%= settings.DEPLOYER %>"
+# depends = ["clone.infinex"]
