@@ -3,20 +3,20 @@ preset = "craterun"
 version = "1.0.0"
 description = "Smart Contracts used for the Infinex Craterun Campaign"
 
-# --chain-id 84532
+# --chain-id 8453
 
 [var.Deploy]
 CRATERUN_DEPLOYER = "0x3F768E3aC5eE75A2F39CFD7d72Eb3a40Bddb5ecB"
-CRATERUN_KEEPER= "0x3F768E3aC5eE75A2F39CFD7d72Eb3a40Bddb5ecB"
+CRATERUN_KEEPER= "0xD29C3ba6a1fF5FB3048Dd7C77D79C55D4F72Bd06"
 CRATE_POINTS_NAME = "InfinexCratePoints"
 
 [pull.InfinexMultichain]
-source = "infinex-multichain:0.1.7@O2"
+source = "infinex-multichain:1.0.0staging@O2"
 
 [clone.InfinexCraterun]
 options.DEPLOYER = "<%= settings.CRATERUN_DEPLOYER %>"
-options.ENTROPY_ = "0x41c9e39574F40Ad34c79f1C99B66A45eFB830d4c"         # Pyth Entropy contract address
-options.ENTROPY_PROVIDER = "0x6CC14824Ea2918f5De5C2f75A9Da968ad4BD6344" # Pyth Entropy provider address
+options.ENTROPY_ = "0x6E7D74FA7d5c90FEF9F0512987605a6d546181Bb"         # Pyth Entropy contract address
+options.ENTROPY_PROVIDER = "0x52DeaA1c84233F7bb8C8A45baeDE41091c616506" # Pyth Entropy provider address
 options.FORWARDER= "<%= imports.InfinexMultichain.imports.infinex.contracts.Forwarder.address %>"         # Forwarder contract address
 options.ACCOUNT_FACTORY = "<%= imports.InfinexMultichain.imports.infinex.contracts.AccountFactory.address %>" # AccountFactory contract address
 options.CRATE_POINTS_NAME = "<%= settings.CRATE_POINTS_NAME %>"
