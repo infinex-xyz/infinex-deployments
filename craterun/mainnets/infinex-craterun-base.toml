@@ -12,7 +12,7 @@ CRATERUN_KEEPER= "0xc487D6ADF3de4D469E52804902b89c9427c74c2a"
 CRATE_POINTS_NAME = "Infinex CratePoints"
 
 [pull.InfinexMultichain]
-source = "infinex-multichain:1.0.0@O2"
+source = "infinex-multichain:1.1.0@O2"
 
 [clone.InfinexCraterun]
 options.DEPLOYER = "<%= settings.CRATERUN_DEPLOYER %>"
