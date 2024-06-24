@@ -1,0 +1,86 @@
+name = "infinex-multichain"
+preset = "craterun"
+version = "1.0.0"
+description = "Smart Contracts used for the Infinex Craterun Campaign"
+
+# --chain-id 8453
+
+[var.Deploy]
+CRATERUN_MULTI_SIG = "0x7299aF061A210157f7AcaEaDa22534ae3b72C956"
+CRATERUN_DEPLOYER = "0x3F768E3aC5eE75A2F39CFD7d72Eb3a40Bddb5ecB"
+CRATERUN_KEEPER= "0xc487D6ADF3de4D469E52804902b89c9427c74c2a"
+CRATE_POINTS_NAME = "InfinexCratePoints"
+
+[pull.InfinexMultichain]
+source = "infinex-multichain:1.1.0@O2"
+
+[clone.InfinexCraterun]
+options.DEPLOYER = "<%= settings.CRATERUN_DEPLOYER %>"
+options.ENTROPY_ = "0x6E7D74FA7d5c90FEF9F0512987605a6d546181Bb"         # Pyth Entropy contract address
+options.ENTROPY_PROVIDER = "0x52DeaA1c84233F7bb8C8A45baeDE41091c616506" # Pyth Entropy provider address
+options.FORWARDER= "<%= imports.InfinexMultichain.imports.infinex.contracts.Forwarder.address %>"         # Forwarder contract address
+options.ACCOUNT_FACTORY = "<%= imports.InfinexMultichain.imports.infinex.contracts.AccountFactory.address %>" # AccountFactory contract address
+options.CRATE_POINTS_NAME = "<%= settings.CRATE_POINTS_NAME %>"
+options.TOTAL_CRATES = "5000000" # 5 million
+options.REWARDS_DURATION = "3024000" # 35 days
+source = "infinex:1.0.0@craterun"
+target = "infinex:1.0.0@craterun"
+
+# ---------- Settings post deployment parameters  ---------- #
+
+# ---------- Initializers ---------- #
+
+[invoke.CratePointsInitialize]
+target = ["InfinexCraterun.CratePointsProxy"]
+func = "initialize"
+args = ["<%= settings.CRATERUN_DEPLOYER %>", "<%= settings.CRATE_POINTS_NAME %>"]
+
+# ---------- CratePoints Minters ---------- #
+
+[invoke.CratePointsSetMinterForCrateOpener]
+target=["InfinexCraterun.CratePointsProxy"]
+func="setAuthorizedMinter"
+args=["<%= imports.InfinexCraterun.contracts.CrateOpener.address  %>", true]
+from = "<%= settings.CRATERUN_DEPLOYER %>"
+
+[invoke.CratePointsSetMinterForStakingRewards]
+target=["InfinexCraterun.CratePointsProxy"]
+func="setAuthorizedMinter"
+args=["<%= imports.InfinexCraterun.contracts.CtPStakingRewards.address  %>", true]
+from = "<%= settings.CRATERUN_DEPLOYER %>"
+
+# ---------- Keepers ---------- #
+
+[invoke.CrateOpenerSetKeeper]
+target=["InfinexCraterun.CrateOpener"]
+func="setAuthorizedKeeper"
+args=["<%= settings.CRATERUN_KEEPER  %>", true]
+from = "<%= settings.CRATERUN_DEPLOYER %>"
+
+[invoke.StakingRewardsSetKeeper]
+target=["InfinexCraterun.CtPStakingRewards"]
+func="setAuthorizedKeeper"
+args=["<%= settings.CRATERUN_KEEPER  %>", true]
+from = "<%= settings.CRATERUN_DEPLOYER %>"
+
+# ---------- Ownership Transfer ---------- #
+
+[invoke.CrateOpenerTransferOwnership]
+target=["InfinexCraterun.CrateOpener"]
+func="transferOwnership"
+args=["<%= settings.CRATERUN_MULTI_SIG  %>"]
+from = "<%= settings.CRATERUN_DEPLOYER %>"
+
+[invoke.StakingRewardsTransferOwnership]
+target=["InfinexCraterun.CtPStakingRewards"]
+func="transferOwnership"
+args=["<%= settings.CRATERUN_MULTI_SIG  %>"]
+from = "<%= settings.CRATERUN_DEPLOYER %>"
+
+[invoke.CratePointsTransferOwnership]
+target=["InfinexCraterun.CratePointsProxy"]
+func="transferOwnership"
+args=["<%= settings.CRATERUN_MULTI_SIG  %>"]
+from = "<%= settings.CRATERUN_DEPLOYER %>"
+
+
