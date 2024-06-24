@@ -1,0 +1,9 @@
+# Scope: craterun
+
+## Version: 1.0.0 
+
+### Chain: base
+
+BASE_CRATEPOINTS_PROXY=
+BASE_CRATE_OPENER=
+BASE_CTP_STAKING_REWARDS=
