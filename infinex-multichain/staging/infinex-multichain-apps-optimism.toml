@@ -1,5 +1,5 @@
 name = "infinex-multichain"
-version = "1.0.0"
+version = "1.0.0staging"
 preset = "apps"
 description = "Infinex App integrations"
 #   pnpm cannon build infinex-multichain/staging/infinex-multichain-apps-optimism.toml --chain-id 10 --private-key 
@@ -14,4 +14,5 @@ options.APPS_USDC = "0x0b2c639c533813f4aa9d7837caf62653d097ff85"
 # Curve Stableswap Config
 options.APPS_CRV_CURVE_STABLESWAP_FACTORY = "0x5eeE3091f747E60a045a2E715a4c71e600e31F6E" 
 source = "infinex:1.0.0@apps"
-target = "infinex:1.0.0@apps"
+target = "infinex:1.0.0staging@apps"
+tags = ["1.0.0staging"]

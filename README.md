@@ -74,5 +74,18 @@ It is possible for Cannon to verify freshly deployed contracts, using the follow
 `./run pnpm cannon verify infinex-multichain:VERSION -c CHAIN_ID --api-key ETHERSCAN_KEY`
 
 
+## useful commands
+ ```
+  CANNON_REGISTRY_PRIORITY=local pnpm cannon alter --chain-id 421614  --subpkg clone.infinex infinex-multichain:0.1.7@O2 mark-complete deploy.Forwarder deploy.AccountFactory invoke.AccountFactoryInitialize deploy.InitialProxyImplementation
+  ```
+   generates an IPFS url that can be upgraded from if steps are executing that shouldn't. Cannon checks and redeploys a contract if the bytecode has changed, which can be for many reasons, including a different compiler version.
+
+   e.g. upgrade to function would reference the generated ipfs url 
+
+```
+ CANNON_REGISTRY_PRIORITY=local pnpm cannon build infinex-multichain/testnet/infinex-multichain-arbitrum-sepolia.toml --chain-id 421614 --private-key  XXXX --upgrade-from @ipfs:QmcU78qLgucSaPerrJqYEaanMCNVZhZbBgSiyGgcyvcpy3
+```
+
+also, when publishing, adding ` --tags 1.0.0` ensures that a package only gets published with the specified space separated tags, and not default which includes latest
 
 

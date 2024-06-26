@@ -1,5 +1,5 @@
 name = "infinex-multichain"
-version = "1.0.0"
+version = "1.0.0staging"
 preset = "apps"
 description = "Infinex App integrations"
 #   pnpm cannon build infinex-multichain/staging/infinex-multichain-apps-base.toml --chain-id 8453 --private-key 
@@ -14,7 +14,8 @@ options.APPS_USDC = "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913"
 # Curve Stableswap Config
 options.APPS_CRV_CURVE_STABLESWAP_FACTORY = "0xd2002373543Ce3527023C75e7518C274A51ce712" 
 source = "infinex:1.0.0@apps"
-target = "infinex:1.0.0@apps"
+target = "infinex:1.0.0staging@apps"
+tags = ["1.0.0staging"]
 
 # invoke the transfer of ownership from the deployer to the multisig
 

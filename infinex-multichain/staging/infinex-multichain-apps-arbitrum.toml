@@ -1,5 +1,5 @@
 name = "infinex-multichain"
-version = "1.0.0"
+version = "1.0.0staging"
 preset = "apps"
 description = "Infinex App integrations"
 #    pnpm cannon build infinex-multichain/testnets/infinex-multichain-apps-arbitrum.toml --chain-id 42161 --private-key 
@@ -14,7 +14,8 @@ options.APPS_USDC = "0xaf88d065e77c8cC2239327C5EDb3A432268e5831"
 # Curve Stableswap Config
 options.APPS_CRV_CURVE_STABLESWAP_FACTORY = "0x9AF14D26075f142eb3F292D5065EB3faa646167b" 
 source = "infinex:1.0.0@apps"
-target = "infinex:1.0.0@apps"
+target = "infinex:1.0.0staging@apps"
+tags = ["1.0.0staging"]
 
 
 
