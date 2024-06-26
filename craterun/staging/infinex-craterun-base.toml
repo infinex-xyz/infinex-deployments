@@ -1,6 +1,6 @@
 name = "infinex-multichain"
 preset = "craterun"
-version = "1.0.0"
+version = "1.0.0staging"
 description = "Smart Contracts used for the Infinex Craterun Campaign"
 
 # --chain-id 8453
@@ -23,7 +23,8 @@ options.CRATE_POINTS_NAME = "<%= settings.CRATE_POINTS_NAME %>"
 options.TOTAL_CRATES = "5000000" # 5 million
 options.REWARDS_DURATION = "604800" # 1 week
 source = "infinex:1.0.0@craterun"
-target = "infinex:1.0.0@craterun"
+target = "infinex:1.0.0staging@craterun"
+tags=["1.0.0staging"]
 
 # ---------- Settings post deployment parameters  ---------- #
 

@@ -24,6 +24,7 @@ options.TOTAL_CRATES = "5000000" # 5 million
 options.REWARDS_DURATION = "604800" # 1 week
 source = "infinex:1.0.0@craterun"
 target = "infinex:1.0.0@craterun"
+tags=["1.0.0"]
 
 # ---------- Settings post deployment parameters  ---------- #
 
