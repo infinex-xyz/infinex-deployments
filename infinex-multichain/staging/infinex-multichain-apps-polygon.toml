@@ -1,5 +1,5 @@
 name = "infinex-multichain"
-version = "1.0.0"
+version = "1.0.0staging"
 preset = "apps"
 description = "Infinex App integrations"
 #   pnpm cannon build infinex-multichain/staging/infinex-multichain-apps-polygon.toml --chain-id 137 --private-key  
@@ -16,4 +16,5 @@ options.CRV_DEPLOYER = "<%= settings.DEPLOYER %>"
 options.APPS_USDC = "0x3c499c542cef5e3811e1192ce70d8cc03d5c3359"
 options.APPS_CRV_CURVE_STABLESWAP_FACTORY = "0x1764ee18e8B3ccA4787249Ceb249356192594585" 
 source = "infinex:1.0.0@apps"
-target = "infinex:1.0.0@apps"
+target = "infinex:1.0.0staging@apps"
+tags = ["1.0.0staging"]
