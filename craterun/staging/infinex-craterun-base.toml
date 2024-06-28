@@ -1,12 +1,12 @@
 name = "infinex-multichain"
 preset = "craterun"
-version = "1.0.0staging"
+version = "1.0.1staging"
 description = "Smart Contracts used for the Infinex Craterun Campaign"
 
 # --chain-id 8453
 
 [var.Deploy]
-CRATERUN_DEPLOYER = "0x3F768E3aC5eE75A2F39CFD7d72Eb3a40Bddb5ecB"
+CRATERUN_DEPLOYER = "0xBF32844C0edF6Ab3f6565a5dfF1D7B30CE4ec01F"
 CRATERUN_KEEPER= "0xD29C3ba6a1fF5FB3048Dd7C77D79C55D4F72Bd06"
 CRATE_POINTS_NAME = "InfinexCratePoints"
 
@@ -22,18 +22,18 @@ options.ACCOUNT_FACTORY = "<%= imports.InfinexMultichain.imports.infinex.contrac
 options.CRATE_POINTS_NAME = "<%= settings.CRATE_POINTS_NAME %>"
 options.TOTAL_CRATES = "5000000" # 5 million
 options.REWARDS_DURATION = "604800" # 1 week
-source = "infinex:1.0.0@craterun"
-target = "infinex:1.0.0staging@craterun"
-tags=["1.0.0staging"]
+source = "infinex:1.0.1@craterun"
+target = "infinex:1.0.1staging@craterun"
+tags=["1.0.1staging"]
 
 # ---------- Settings post deployment parameters  ---------- #
 
 # ---------- Initializers ---------- #
 
-[invoke.CratePointsInitialize]
-target = ["InfinexCraterun.CratePointsProxy"]
-func = "initialize"
-args = ["<%= settings.CRATERUN_DEPLOYER %>", "<%= settings.CRATE_POINTS_NAME %>"]
+# [invoke.CratePointsInitialize]
+# target = ["InfinexCraterun.CratePointsProxy"]
+# func = "initialize"
+# args = ["<%= settings.CRATERUN_DEPLOYER %>", "<%= settings.CRATE_POINTS_NAME %>"]
 
 # ---------- CratePoints Minters ---------- #
 
