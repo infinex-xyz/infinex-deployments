@@ -5,9 +5,9 @@ description = "Infinex MultiChain Deployments"
 #  pnpm cannon build infinex-multichain/testnets/infinex-multichain-arbitrum-sepolia.toml --chain-id 421614 --upgrade-from infinex-multichain:0.1.7@O2 --private-key 
 
 [var.Deploy]
-DEPLOYER = "0x3F768E3aC5eE75A2F39CFD7d72Eb3a40Bddb5ecB"
-REVENUE_POOL = "0x33FaF56Cb2c854231bdA8De328bbAddcF76D9836"
-MULTI_SIG = "0x5A2B4096754Bd094C40A0e89BC7E017fE38e300c"
+DEPLOYER = "0xBF32844C0edF6Ab3f6565a5dfF1D7B30CE4ec01F"
+REVENUE_POOL = "0xBF32844C0edF6Ab3f6565a5dfF1D7B30CE4ec01F"
+MULTI_SIG = "0xBF32844C0edF6Ab3f6565a5dfF1D7B30CE4ec01F"
 TRUSTED_RECOVERY_KEEPER =  "0x3F768E3aC5eE75A2F39CFD7d72Eb3a40Bddb5ecB"
 INITIAL_BEACON = "0x2b8587b08bB3DB1fA969792A255b2dC6385266A9"
 
