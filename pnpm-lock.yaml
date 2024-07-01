@@ -12,8 +12,8 @@ devDependencies:
     specifier: ^20.14.2
     version: 20.14.4
   '@usecannon/cli':
-    specifier: 2.15.1
-    version: 2.15.1(hardhat@2.22.2)(solc@0.8.25)
+    specifier: 2.15.3
+    version: 2.15.3(hardhat@2.22.2)(solc@0.8.25)
   commander:
     specifier: ^12.1.0
     version: 12.1.0
@@ -930,8 +930,8 @@ packages:
       '@types/node': 20.14.4
     dev: true
 
-  /@usecannon/builder@2.15.1(hardhat@2.22.2)(solc@0.8.25):
-    resolution: {integrity: sha512-og0GqEGbbxf+FfxQOZTqmGlFGbGg9XAj3XI7HJdhicJnr7llh0qA/MFARHErtx+c3j/bxiJ7vPbZIulxaJwluw==}
+  /@usecannon/builder@2.15.3(hardhat@2.22.2)(solc@0.8.25):
+    resolution: {integrity: sha512-CJJvzZBhQT3GrbzL63sDeVQWNlvwgJcEU8yx1gcj8Oa/HEfJ595g0lZe/53cUbTZu6ekjvk5B35E19x/Fi3Qgg==}
     engines: {node: '>=16.0.0'}
     dependencies:
       '@synthetixio/router': 3.4.0(hardhat@2.22.2)(solc@0.8.25)
@@ -957,12 +957,12 @@ packages:
       - utf-8-validate
     dev: true
 
-  /@usecannon/cli@2.15.1(hardhat@2.22.2)(solc@0.8.25):
-    resolution: {integrity: sha512-T1AVDxPW9PnqN7CekSKyKgVMDx6+6/3VQEr8aPr3iGuh651eChYuoOnqH++V4lPifUHRhJUc8M5nUoHD99Jg3A==}
+  /@usecannon/cli@2.15.3(hardhat@2.22.2)(solc@0.8.25):
+    resolution: {integrity: sha512-bGkAIUDPDITb3/X/RsmULgXk+ZIXgUcUnGfy1jNJwMQvy1gGVZljT3VGPMR2u2YM3dWZ2kKl6iPkUdLpVhZDog==}
     hasBin: true
     dependencies:
       '@iarna/toml': 3.0.0
-      '@usecannon/builder': 2.15.1(hardhat@2.22.2)(solc@0.8.25)
+      '@usecannon/builder': 2.15.3(hardhat@2.22.2)(solc@0.8.25)
       abitype: 1.0.2(zod@3.23.8)
       chalk: 4.1.2
       commander: 9.5.0
