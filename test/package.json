@@ -1,0 +1,35 @@
+{
+  "name": "test",
+  "version": "1.0.0",
+  "description": "",
+  "type": "module",
+  "scripts": {
+    "init": "cp .env.mainnet.example .env.mainnet && cp .env.testnet.example .env.testnet",
+    "check:format": "prettier . --check",
+    "check:types": "tsc --noEmit",
+    "check": "pnpm run check:format && pnpm run check:types",
+    "fix:format": "prettier . --write",
+    "test:testnets": "ENV=testnets vitest --run || true",
+    "test:staging": "ENV=staging vitest --run || true",
+    "test:mainnets": "ENV=mainnets vitest --run || true",
+    "serve": "npx vite preview --outDir report"
+  },
+  "packageManager": "pnpm@8.15.5",
+  "engines": {
+    "node": "^20"
+  },
+  "dependencies": {
+    "@infinex/infinex-sdk": "1.0.21-viem",
+    "dotenv": "^16.4.5",
+    "ethers": "^6.13.1",
+    "prettier": "^3.3.2",
+    "smol-toml": "^1.2.2",
+    "typescript": "^5.5.3",
+    "vite": "^5.3.3",
+    "vitest": "^2.0.3",
+    "vitest-markdown-reporter": "^0.1.2"
+  },
+  "devDependencies": {
+    "@vitest/ui": "^2.0.3"
+  }
+}
