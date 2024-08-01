@@ -2,6 +2,7 @@ import { defineConfig } from "vitest/config";
 import { VitestMarkdownReporter } from "vitest-markdown-reporter";
 
 const env = process.env.ENV ?? "";
+const reportDir = process.env.REPORT_DIR ?? "./report";
 
 const markdownReporter = new VitestMarkdownReporter({
   title: `${env.replace(/^./, (s) => s.toUpperCase())} Report`,
@@ -12,9 +13,9 @@ export default defineConfig({
   test: {
     reporters: ["default", "html", "json", markdownReporter],
     outputFile: {
-      markdown: "report/report.md",
-      json: `report/report.json`,
-      html: `report/index.html`,
+      markdown: `${reportDir}/report.md`,
+      json: `${reportDir}/report.json`,
+      html: `${reportDir}/index.html`,
     },
   },
 });

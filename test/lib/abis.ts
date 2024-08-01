@@ -1,267 +1,87 @@
-import { ethers } from "ethers";
+import { Abi, parseAbi } from "viem";
 
 // Contract ABIs
 // (Generally only support views for smoke testing.)
 
-function getterAbi(
-  name: string,
-  type: string,
-  internalType?: string,
-): ethers.InterfaceAbi {
-  return [
-    {
-      type: "function",
-      name,
-      inputs: [],
-      outputs: [
-        {
-          name: "",
-          type,
-          internalType: internalType ?? type,
-        },
-      ],
-      stateMutability: "view",
-    },
-  ];
-}
-
-function mappingAbi(
-  name: string,
-  keyType: string,
-  valueType: string,
-): ethers.InterfaceAbi {
-  return [
-    {
-      type: "function",
-      name,
-      inputs: [
-        {
-          name: "",
-          type: keyType,
-          internalType: keyType,
-        },
-      ],
-      outputs: [
-        {
-          name: "",
-          type: valueType,
-          internalType: valueType,
-        },
-      ],
-      stateMutability: "view",
-    },
-  ];
-}
+export { erc20Abi } from "viem";
 
 // Common
 
-export const ownable2StepAbi: ethers.InterfaceAbi = [
-  ...getterAbi("owner", "address"),
-  ...getterAbi("pendingOwner", "address"),
-];
+const ownable2StepSigs = [
+  "function owner() view returns (address)",
+  "function pendingOwner() view returns (address)",
+] as const;
+export const ownable2StepAbi = parseAbi(ownable2StepSigs);
 
-export const pointsAbi: ethers.InterfaceAbi = getterAbi("name", "string");
+export const pointsSigs = ["function name() view returns (string)"] as const;
+export const pointsAbi = parseAbi(pointsSigs);
 
-export const erc165Abi: ethers.InterfaceAbi = mappingAbi(
-  "supportsInterface",
-  "bytes4",
-  "bool",
-);
+const erc165Sigs = [
+  "function supportsInterface(bytes4) view returns (bool)",
+] as const;
+export const erc165Abi = parseAbi(erc165Sigs);
 
-export const erc20Abi: ethers.InterfaceAbi = [
-  ...mappingAbi("balanceOf", "address", "uint256"),
-  ...getterAbi("symbol", "string"),
-  ...getterAbi("decimals", "uint8"),
-];
-
-export const pointsProxyAbi: ethers.InterfaceAbi = [
-  ...ownable2StepAbi,
-  ...pointsAbi,
-];
+export const pointsProxyAbi = parseAbi([...ownable2StepSigs, ...pointsSigs]);
 
 // Third party
 
-export const USDCBeaconAbi: ethers.InterfaceAbi = [
-  ...getterAbi("USDC", "address"),
-];
+const USDCBeaconSigs = ["function USDC() view returns (address)"] as const;
+export const USDCBeaconAbi = parseAbi(USDCBeaconSigs);
 
-export const pythEntropyAbi: ethers.InterfaceAbi = [
-  {
-    inputs: [
-      {
-        internalType: "address",
-        name: "provider",
-        type: "address",
-      },
-    ],
-    name: "getProviderInfo",
-    outputs: [
-      {
-        components: [
-          {
-            internalType: "uint128",
-            name: "feeInWei",
-            type: "uint128",
-          },
-          {
-            internalType: "uint128",
-            name: "accruedFeesInWei",
-            type: "uint128",
-          },
-          {
-            internalType: "bytes32",
-            name: "originalCommitment",
-            type: "bytes32",
-          },
-          {
-            internalType: "uint64",
-            name: "originalCommitmentSequenceNumber",
-            type: "uint64",
-          },
-          {
-            internalType: "bytes",
-            name: "commitmentMetadata",
-            type: "bytes",
-          },
-          {
-            internalType: "bytes",
-            name: "uri",
-            type: "bytes",
-          },
-          {
-            internalType: "uint64",
-            name: "endSequenceNumber",
-            type: "uint64",
-          },
-          {
-            internalType: "uint64",
-            name: "sequenceNumber",
-            type: "uint64",
-          },
-          {
-            internalType: "bytes32",
-            name: "currentCommitment",
-            type: "bytes32",
-          },
-          {
-            internalType: "uint64",
-            name: "currentCommitmentSequenceNumber",
-            type: "uint64",
-          },
-          {
-            internalType: "address",
-            name: "feeManager",
-            type: "address",
-          },
-        ],
-        internalType: "struct EntropyStructs.ProviderInfo",
-        name: "info",
-        type: "tuple",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-];
+export const pythEntropyAbi = parseAbi([
+  `struct ProviderInfo { uint128 feeInWei; uint128 accruedFeesInWei; bytes32 originalCommitment; uint64 originalCommitmentSequenceNumber; bytes commitmentMetadata; bytes uri; uint64 endSequenceNumber; bytes32 currentCommitment; uint64 currentCommitmentSequenceNumber; address feeManager; }`,
+  "function getProviderInfo(address) view returns (ProviderInfo)",
+]);
 
 // Infinex Multichain
 
-export const accountFactoryAbi: ethers.InterfaceAbi = [
-  ...ownable2StepAbi,
-  ...getterAbi("canCreateAccount", "bool"),
-  ...getterAbi("canPredictAddress", "bool"),
-  ...getterAbi(
-    "infinexProtocolConfigBeacon",
-    "address",
-    "contract IInfinexProtocolConfigBeacon",
-  ),
-];
+export const accountFactoryAbi = parseAbi([
+  ...ownable2StepSigs,
+  "function canCreateAccount() view returns (bool)",
+  "function canPredictAddress() view returns (bool)",
+  "function infinexProtocolConfigBeacon() view returns (address)",
+]);
 
-export const protocolConfigBeaconAbi: ethers.InterfaceAbi = [
-  ...ownable2StepAbi,
-  ...USDCBeaconAbi,
-  ...getterAbi("TRUSTED_FORWARDER", "address"),
-  ...getterAbi("revenuePool", "address"),
-  ...getterAbi("appRegistry", "address"),
-  ...getterAbi("getLatestAccountImplementation", "address"),
-  ...getterAbi("getLatestInfinexProtocolConfigBeacon", "address"),
-  ...mappingAbi("isTrustedRecoveryKeeper", "address", "bool"),
-];
+export const protocolConfigBeaconAbi = parseAbi([
+  ...ownable2StepSigs,
+  ...USDCBeaconSigs,
+  "function TRUSTED_FORWARDER() view returns (address)",
+  "function revenuePool() view returns (address)",
+  "function appRegistry() view returns (address)",
+  "function getLatestAccountImplementation() view returns (address)",
+  "function getLatestInfinexProtocolConfigBeacon() view returns (address)",
+  "function isTrustedRecoveryKeeper(address) view returns (bool)",
+]);
 
-export const forwarderAbi: ethers.InterfaceAbi = [
-  {
-    type: "function",
-    name: "eip712Domain",
-    inputs: [],
-    outputs: [
-      {
-        name: "fields",
-        type: "bytes1",
-        internalType: "bytes1",
-      },
-      {
-        name: "name",
-        type: "string",
-        internalType: "string",
-      },
-      {
-        name: "version",
-        type: "string",
-        internalType: "string",
-      },
-      {
-        name: "chainId",
-        type: "uint256",
-        internalType: "uint256",
-      },
-      {
-        name: "verifyingContract",
-        type: "address",
-        internalType: "address",
-      },
-      {
-        name: "salt",
-        type: "bytes32",
-        internalType: "bytes32",
-      },
-      {
-        name: "extensions",
-        type: "uint256[]",
-        internalType: "uint256[]",
-      },
-    ],
-    stateMutability: "view",
-  },
-];
+export const forwarderAbi: Abi = [] as const;
 
-export const appRegistryAbi: ethers.InterfaceAbi = [
-  ...ownable2StepAbi,
-  ...getterAbi("appAccountInterface", "bytes4"),
-  ...getterAbi("appBeaconInterface", "bytes4"),
-  ...mappingAbi("appBeacons", "address", "bool"),
-];
+export const appRegistryAbi = parseAbi([
+  ...ownable2StepSigs,
+  "function appAccountInterface() view returns (bytes4)",
+  "function appBeaconInterface() view returns (bytes4)",
+  "function appBeacons(address) view returns (bool)",
+]);
 
-export const curveStableswapAppBeaconAbi: ethers.InterfaceAbi = [
-  ...ownable2StepAbi,
-  ...erc165Abi,
-  ...USDCBeaconAbi,
-];
+export const curveStableswapAppBeaconAbi = parseAbi([
+  ...ownable2StepSigs,
+  ...erc165Sigs,
+  ...USDCBeaconSigs,
+]);
 
 // Craterun
 
-export const keepersAbi: ethers.InterfaceAbi = mappingAbi(
-  "authorizedKeepers",
-  "address",
-  "bool",
-);
+const keepersSigs = [
+  "function authorizedKeepers(address) view returns (bool)",
+] as const;
+export const keepersAbi = parseAbi(keepersSigs);
 
-export const crateOpenerAbi: ethers.InterfaceAbi = [
-  ...ownable2StepAbi,
-  ...keepersAbi,
-  ...getterAbi("remainingCrates", "uint256"),
-];
+export const crateOpenerAbi = parseAbi([
+  ...ownable2StepSigs,
+  ...keepersSigs,
+  "function remainingCrates() view returns (uint256)",
+]);
 
-export const ctpStakingRewardsAbi: ethers.InterfaceAbi = [
-  ...ownable2StepAbi,
-  ...keepersAbi,
-];
+export const ctpStakingRewardsAbi = parseAbi([
+  ...ownable2StepSigs,
+  ...keepersSigs,
+]);

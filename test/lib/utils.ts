@@ -1,11 +1,11 @@
 import { evmChains, type EvmChains } from "@infinex/infinex-sdk/sdk/types";
-import { ethers } from "ethers";
 import * as toml from "smol-toml";
 import fs from "node:fs/promises";
 import dotenv from "dotenv";
+import * as viem from "viem";
+import * as chains from "viem/chains";
 
 export { evmChains, type EvmChains } from "@infinex/infinex-sdk/sdk/types";
-export { ethers } from "ethers";
 
 export const envs = ["testnets", "staging", "mainnets"] as const;
 export type Env = (typeof envs)[number];
@@ -15,6 +15,15 @@ const platformApiUrls = {
   staging: "https://api.app.staging.infinex.xyz",
   mainnets: "https://api.app.infinex.xyz",
 };
+
+const chainById = Object.fromEntries(
+  Object.values(chains).map((c) => [c.id, c]),
+);
+export function getChainById(id: number): viem.Chain {
+  const ret = chainById[id];
+  if (!ret) throw Error(`Chain ${id} not supported by viem`);
+  return ret;
+}
 
 export function getEnv(): Env {
   const env = process.env.ENV;
@@ -43,7 +52,9 @@ export async function loadToml(path: string): Promise<any> {
   return toml.parse(doc);
 }
 
-export async function loadAddresses(path: string) {
+export async function loadAddresses(
+  path: string,
+): Promise<Record<string, string>> {
   const doc = await fs.readFile(path, { encoding: "utf8" });
   return dotenv.parse(doc);
 }
@@ -61,28 +72,39 @@ export async function loadLocalConfig({
   const doc = await fs.readFile(`./.env.${evmChainEnv}`, { encoding: "utf8" });
   const envVars = dotenv.parse(doc);
   return {
-    providers: {
-      arbitrum: new ethers.JsonRpcProvider(
-        `${envVars.RPC_ARBITRUM_URL}${envVars.RPC_ARBITRUM_API_KEY}`,
-      ),
-      base: new ethers.JsonRpcProvider(
-        `${envVars.RPC_BASE_URL}${envVars.RPC_BASE_API_KEY}`,
-      ),
-      ethereum: new ethers.JsonRpcProvider(
-        `${envVars.RPC_ETHEREUM_URL}${envVars.RPC_ETHEREUM_API_KEY}`,
-      ),
-      optimism: new ethers.JsonRpcProvider(
-        `${envVars.RPC_OPTIMISM_URL}${envVars.RPC_OPTIMISM_API_KEY}`,
-      ),
-      polygon: new ethers.JsonRpcProvider(
-        `${envVars.RPC_POLYGON_URL}${envVars.RPC_POLYGON_API_KEY}`,
-      ),
+    clients: {
+      arbitrum: viem.createPublicClient({
+        transport: viem.http(
+          `${envVars.RPC_ARBITRUM_URL}${envVars.RPC_ARBITRUM_API_KEY}`,
+        ),
+      }),
+      base: viem.createPublicClient({
+        transport: viem.http(
+          `${envVars.RPC_BASE_URL}${envVars.RPC_BASE_API_KEY}`,
+        ),
+      }),
+      ethereum: viem.createPublicClient({
+        transport: viem.http(
+          `${envVars.RPC_ETHEREUM_URL}${envVars.RPC_ETHEREUM_API_KEY}`,
+        ),
+      }),
+      optimism: viem.createPublicClient({
+        transport: viem.http(
+          `${envVars.RPC_OPTIMISM_URL}${envVars.RPC_OPTIMISM_API_KEY}`,
+        ),
+      }),
+      polygon: viem.createPublicClient({
+        transport: viem.http(
+          `${envVars.RPC_POLYGON_URL}${envVars.RPC_POLYGON_API_KEY}`,
+        ),
+      }),
     },
   };
 }
 
-export function getProvider(chain: EvmChains): ethers.Provider {
-  return localConfig.providers[chain];
+export type Client = viem.PublicClient<viem.HttpTransport>;
+export function getClient(chain: EvmChains): Client {
+  return localConfig.clients[chain];
 }
 
 export const env = getEnv();
