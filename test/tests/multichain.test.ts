@@ -10,12 +10,12 @@ import {
   platformConfig,
 } from "../lib/utils";
 import {
-  accountFactoryAbi,
-  appRegistryAbi,
-  curveStableswapAppBeaconAbi,
-  erc20Abi,
-  forwarderAbi,
-  protocolConfigBeaconAbi,
+  AccountFactoryAbi,
+  AppRegistryAbi,
+  CurveStableSwapAppBeaconAbi,
+  Erc20Abi,
+  InfinexERC2771ForwarderAbi,
+  InfinexProtocolConfigBeaconAbi,
 } from "../lib/abis";
 import { describe, expect, test } from "vitest";
 import * as viem from "viem";
@@ -48,17 +48,20 @@ describe.concurrent.each(Object.keys(evmChains))(
     }
     const accountFactory = getContract(
       `${CHAIN}_ACCOUNT_FACTORY_ADDRESS`,
-      accountFactoryAbi,
+      AccountFactoryAbi,
     );
-    const appRegistry = getContract(`${CHAIN}_APP_REGISTRY`, appRegistryAbi);
+    const appRegistry = getContract(`${CHAIN}_APP_REGISTRY`, AppRegistryAbi);
     const curveStableswapAppBeacon = getContract(
       `${CHAIN}_CURVE_STABLESWAP_APP_BEACON`,
-      curveStableswapAppBeaconAbi,
+      CurveStableSwapAppBeaconAbi,
     );
-    const forwarder = getContract(`${CHAIN}_FORWARDER_ADDRESS`, forwarderAbi);
+    const forwarder = getContract(
+      `${CHAIN}_FORWARDER_ADDRESS`,
+      InfinexERC2771ForwarderAbi,
+    );
     const protocolConfigBeacon = getContract(
       `${CHAIN}_INFINEX_PROTOCOL_CONFIG_BEACON_ADDRESS`,
-      protocolConfigBeaconAbi,
+      InfinexProtocolConfigBeaconAbi,
     );
 
     function getAddress(varName: string): `0x${string}` | undefined {
@@ -86,7 +89,7 @@ describe.concurrent.each(Object.keys(evmChains))(
     }
 
     async function checkUSDCAddress(address: `0x${string}`) {
-      const USDC = viem.getContract({ address, abi: erc20Abi, client });
+      const USDC = viem.getContract({ address, abi: Erc20Abi, client });
       expect(await USDC.read.symbol()).toBe("USDC");
     }
 
@@ -114,7 +117,7 @@ describe.concurrent.each(Object.keys(evmChains))(
       expect(await isContract(beaconAddress)).toBe(true);
       const beacon = viem.getContract({
         address: beaconAddress,
-        abi: protocolConfigBeaconAbi,
+        abi: InfinexProtocolConfigBeaconAbi,
         client,
       });
       const latestAddress =
@@ -178,7 +181,7 @@ describe.concurrent.each(Object.keys(evmChains))(
       expect(await isContract(address)).toBe(true);
       const contract = viem.getContract({
         address,
-        abi: appRegistryAbi,
+        abi: AppRegistryAbi,
         client,
       });
       const owner = await contract.read.owner();

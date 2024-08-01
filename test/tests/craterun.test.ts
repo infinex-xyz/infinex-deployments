@@ -7,10 +7,10 @@ import {
   platformConfig,
 } from "../lib/utils";
 import {
-  crateOpenerAbi,
-  ctpStakingRewardsAbi,
-  pointsProxyAbi,
-  pythEntropyAbi,
+  CrateOpenerAbi,
+  CtPStakingRewardsAbi,
+  CratePointsAbi,
+  PythEntropyAbi,
 } from "../lib/abis";
 import { describe, expect, test } from "vitest";
 import * as viem from "viem";
@@ -37,17 +37,17 @@ describe.concurrent(`Craterun (${env})`, async () => {
 
   const opener = viem.getContract({
     address: openerAddress,
-    abi: crateOpenerAbi,
+    abi: CrateOpenerAbi,
     client,
   });
   const pointsProxy = viem.getContract({
     address: pointsProxyAddress,
-    abi: pointsProxyAbi,
+    abi: CratePointsAbi,
     client,
   });
   const ctpStakingRewards = viem.getContract({
     address: ctpStakingRewardsAddress,
-    abi: ctpStakingRewardsAbi,
+    abi: CtPStakingRewardsAbi,
     client,
   });
 
@@ -126,7 +126,7 @@ describe.concurrent(`Craterun (${env})`, async () => {
     const entropyProvider =
       config.clone.InfinexCraterun.options.ENTROPY_PROVIDER;
     expect(await isContract(address)).toBe(true);
-    const entropy = viem.getContract({ address, abi: pythEntropyAbi, client });
+    const entropy = viem.getContract({ address, abi: PythEntropyAbi, client });
     const entropyProviderInfo = await entropy.read.getProviderInfo([
       entropyProvider,
     ]);

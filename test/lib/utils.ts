@@ -1,11 +1,11 @@
-import { evmChains, type EvmChains } from "@infinex/infinex-sdk/sdk/types";
+import { evmChains, type EvmChains } from "@infinex/infinex-sdk/src/types";
 import * as toml from "smol-toml";
 import fs from "node:fs/promises";
 import dotenv from "dotenv";
 import * as viem from "viem";
 import * as chains from "viem/chains";
 
-export { evmChains, type EvmChains } from "@infinex/infinex-sdk/sdk/types";
+export { evmChains, type EvmChains } from "@infinex/infinex-sdk/src/types";
 
 export const envs = ["testnets", "staging", "mainnets"] as const;
 export type Env = (typeof envs)[number];
