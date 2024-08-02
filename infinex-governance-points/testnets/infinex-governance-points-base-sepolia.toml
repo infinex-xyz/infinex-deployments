@@ -1,15 +1,15 @@
 name = "infinex-gp"
-version = "0.1.7"
+version = "2.0.0"
 preset = "StW"
 description = "Infinex Governance Points Deployments"
 
-# --chain-id 84532
+# pnpm cannon build infinex-governance-points/testnets/infinex-governance-points-base-sepolia.toml --dry-run --chain-id 84532 --registry-priority local --upgrade-from infinex-gp:latest@StW --private-key
+# CANNON_ETHERSCAN_API_URL=https://api-sepolia.basescan.org/api pnpm cannon verify infinex-governance-points:2.0.0@StW --chain-id 84532 --api-key
 
 [var.Deploy]
 GP_DEPLOYER = "0x3F768E3aC5eE75A2F39CFD7d72Eb3a40Bddb5ecB"
 GP_MULTI_SIG = "0x3F768E3aC5eE75A2F39CFD7d72Eb3a40Bddb5ecB"
-GP_TRUSTED_KEEPER = "
-"
+GP_TRUSTED_KEEPER = "0x6298551D56F825B3b6c3350D32129Ffd3cFb198C"
 STWPOINTS = "<%= parseEther('33000000') %>"
 SOLANA_MULTIPLIER = "<%= parseEther('1') %>"
 
@@ -22,21 +22,22 @@ options.GP_DEPLOYER = "<%= settings.GP_DEPLOYER %>"
 options.ACCOUNT_FACTORY = "<%= imports.InfinexMultichain.imports.infinex.contracts.AccountFactory.address %>"
 options.FORWARDER = "<%= imports.InfinexMultichain.imports.infinex.contracts.Forwarder.address %>"
 options.INX_USDC = "<%= imports.InfinexMultichain.imports.infinex.settings.USDC %>"
-options.REWARDS_DURATION =  "2419200"
-source = "infinex-governance-points:0.1.5@stw"
+options.REWARDS_DURATION = "2419200"
+source = "infinex-governance-points:2.0.0@stw"
+target = "infinex-governance-points:2.0.0@stw"
 depends = ["pull.InfinexMultichain"]
 
 # ---------- Initialise GP Contracts  ---------- #
 
-# [invoke.upgrade]
-# target = ["InfinexGovernancePoints.GovernancePointsInitialProxy"]
-# func = "upgradeTo"
-# args = ["<%= imports.InfinexGovernancePoints.contracts.GovernancePointsImplementation.address %>"]
-# depends = ["provision.InfinexGovernancePoints"]
-# factory.CoreProxy.abiOf = ["InfinexGovernancePoints.GovernancePointsImplementation"]
-# factory.CoreProxy.event = "Upgraded"
-# factory.CoreProxy.arg = 0
-# factory.CoreProxy.highlight = true
+[invoke.upgrade]
+target = ["InfinexGovernancePoints.GovernancePointsProxy"]
+func = "upgradeTo"
+args = ["<%= imports.InfinexGovernancePoints.contracts.GovernancePointsImplementation.address %>"]
+depends = ["clone.InfinexGovernancePoints"]
+factory.GovernancePointsProxy.abiOf = ["InfinexGovernancePoints.GovernancePointsImplementation"]
+factory.GovernancePointsProxy.event = "Upgraded"
+factory.GovernancePointsProxy.arg = 0
+factory.GovernancePointsProxy.highlight = true
 
 [invoke.GovernancePointsProxyInitialize]
 target = ["InfinexGovernancePoints.GovernancePointsProxy"]
@@ -46,31 +47,16 @@ depends = ["clone.InfinexGovernancePoints"]
 
 # ---------- Setting Post deployment parameters  ---------- #
 
-[invoke.attachSTWCampaign]
-target = ["InfinexGovernancePoints.GovernancePointsProxy"]
+[invoke.addAuthorisedMinter]
+target = ["GovernancePointsProxy"]
 func = "addAuthorisedMinter"
-args = [ "<%= imports.InfinexGovernancePoints.contracts.StWStakingRewards.address %>" ]
+args = [ "<%= settings.GP_TRUSTED_KEEPER %>"]
 from = "<%= settings.GP_DEPLOYER %>"
-depends = ["invoke.GovernancePointsProxyInitialize"]
+depends = ["invoke.upgrade"]
 
-[invoke.setSolanaMultiplier]
-target = ["InfinexGovernancePoints.StWStakingRewards"]
-func = "setSolanaMultiplier"
-args = [ "<%= settings.SOLANA_MULTIPLIER %>" ]
+[invoke.addAuthorisedTransferer]
+target = ["GovernancePointsProxy"]
+func = "addAuthorisedTransferer"
+args = [ "<%= settings.GP_TRUSTED_KEEPER %>"]
 from = "<%= settings.GP_DEPLOYER %>"
-depends = ["clone.InfinexGovernancePoints"]
-
-[invoke.setAuthorizedKeeper]
-target = ["InfinexGovernancePoints.StWStakingRewards"]
-func = "setAuthorizedKeeper"
-args = [ "<%= settings.GP_TRUSTED_KEEPER %>" , true]
-from = "<%= settings.GP_DEPLOYER %>"
-depends = ["clone.InfinexGovernancePoints"]
-
-[invoke.StWStakingRewardsNotifyRewardAmount]
-target = ["InfinexGovernancePoints.StWStakingRewards"]
-func = "notifyRewardAmount"
-args = [ "<%= settings.STWPOINTS %>" ]
-from = "<%= settings.GP_DEPLOYER %>"
-depends = ["invoke.attachSTWCampaign"]
-
+depends = ["invoke.upgrade"]
