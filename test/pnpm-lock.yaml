@@ -6,14 +6,11 @@ settings:
 
 dependencies:
   "@infinex/infinex-sdk":
-    specifier: 1.0.21-viem
-    version: 1.0.21-viem(typescript@5.5.3)
+    specifier: 1.2.2
+    version: 1.2.2(typescript@5.5.3)
   dotenv:
     specifier: ^16.4.5
     version: 16.4.5
-  ethers:
-    specifier: ^6.13.1
-    version: 6.13.1
   prettier:
     specifier: ^3.3.2
     version: 3.3.2
@@ -23,6 +20,9 @@ dependencies:
   typescript:
     specifier: ^5.5.3
     version: 5.5.3
+  viem:
+    specifier: ^2.18.6
+    version: 2.18.6(typescript@5.5.3)(zod@3.23.8)
   vite:
     specifier: ^5.3.3
     version: 5.3.3
@@ -63,13 +63,6 @@ packages:
     resolution:
       {
         integrity: sha512-nA9XHtlAkYfJxY7bce8DcN7eKxWWCWkU+1GR9d+U6MbNpfwQp8TI7vqOsBsMcHoT4mBu2kypKoSKnghEzOOq5Q==,
-      }
-    dev: false
-
-  /@adraffy/ens-normalize@1.10.1:
-    resolution:
-      {
-        integrity: sha512-96Z2IP3mYmF1Xg2cDm8f1gWGf/HUVedQ3FMifV4kG/PQ4yEP51xDtRAEfhVNt5f/uzpNkZHwWQuUcu6D6K+Ekw==,
       }
     dev: false
 
@@ -344,14 +337,14 @@ packages:
     engines: { node: ">=14" }
     dev: false
 
-  /@infinex/infinex-sdk@1.0.21-viem(typescript@5.5.3):
+  /@infinex/infinex-sdk@1.2.2(typescript@5.5.3):
     resolution:
       {
-        integrity: sha512-x2uxgfVaDxCJ24+K3TndHMjLz3IXfTlQSq90CfrE6sut0xkRY+zVlHqUGOtmmwNfg/4zPVk4XLKOkfqGQpNtqQ==,
+        integrity: sha512-M/U3YiaiNUWwk7WLO62xEhPYZBy6uhkYf+INut1cG7v4s+Af9N6e7RcXWcKG3QTaiUMrhfPWq4LfPgFvhakvrA==,
       }
     dependencies:
       abitype: 1.0.5(typescript@5.5.3)(zod@3.23.8)
-      viem: 2.17.1(typescript@5.5.3)(zod@3.23.8)
+      viem: 2.18.6(typescript@5.5.3)(zod@3.23.8)
       zod: 3.23.8
     transitivePeerDependencies:
       - bufferutil
@@ -399,15 +392,6 @@ packages:
       "@jridgewell/resolve-uri": 3.1.2
       "@jridgewell/sourcemap-codec": 1.4.15
 
-  /@noble/curves@1.2.0:
-    resolution:
-      {
-        integrity: sha512-oYclrNgRaM9SsBUBVbb8M6DTV7ZHRTKugureoYEncY5c65HOmRzvSiTE3y5CYaPYJA/GVkrhXEoF0M3Ya9PMnw==,
-      }
-    dependencies:
-      "@noble/hashes": 1.3.2
-    dev: false
-
   /@noble/curves@1.4.0:
     resolution:
       {
@@ -415,14 +399,6 @@ packages:
       }
     dependencies:
       "@noble/hashes": 1.4.0
-    dev: false
-
-  /@noble/hashes@1.3.2:
-    resolution:
-      {
-        integrity: sha512-MVC8EAQp7MvEcm30KWENFjgR+Mkmf+D189XJTkFIlwohU5hcBbn1ZkKq7KVTi2Hme3PMGF390DaL52beVrIihQ==,
-      }
-    engines: { node: ">= 16" }
     dev: false
 
   /@noble/hashes@1.4.0:
@@ -660,13 +636,6 @@ packages:
         integrity: sha512-/kYRxGDLWzHOB7q+wtSUQlFrtcdUccpfy+X+9iMBpHK8QLLhx2wIPYuS5DYtR9Wa/YlZAbIovy7qVdB1Aq6Lyw==,
       }
 
-  /@types/node@18.15.13:
-    resolution:
-      {
-        integrity: sha512-N+0kuo9KgrUQ1Sn/ifDXsvg0TTleP7rIy4zOBGECxAljqvqfqpTfzx0Q1NUedOixRMBfe2Whhb056a42cWs26Q==,
-      }
-    dev: false
-
   /@vitest/expect@2.0.3:
     resolution:
       {
@@ -780,13 +749,6 @@ packages:
     dependencies:
       typescript: 5.5.3
       zod: 3.23.8
-    dev: false
-
-  /aes-js@4.0.0-beta.5:
-    resolution:
-      {
-        integrity: sha512-G965FqalsNyrPqgEGON7nIx1e/OVENSgiEIzyC63haUMuvNnwIgIjMs52hlTCKhkBny7A2ORNlfY9Zu+jmGk1Q==,
-      }
     dev: false
 
   /ansi-regex@5.0.1:
@@ -1017,25 +979,6 @@ packages:
       }
     dependencies:
       "@types/estree": 1.0.5
-
-  /ethers@6.13.1:
-    resolution:
-      {
-        integrity: sha512-hdJ2HOxg/xx97Lm9HdCWk949BfYqYWpyw4//78SiwOLgASyfrNszfMUNB2joKjvGUdwhHfaiMMFFwacVVoLR9A==,
-      }
-    engines: { node: ">=14.0.0" }
-    dependencies:
-      "@adraffy/ens-normalize": 1.10.1
-      "@noble/curves": 1.2.0
-      "@noble/hashes": 1.3.2
-      "@types/node": 18.15.13
-      aes-js: 4.0.0-beta.5
-      tslib: 2.4.0
-      ws: 8.17.1
-    transitivePeerDependencies:
-      - bufferutil
-      - utf-8-validate
-    dev: false
 
   /execa@8.0.1:
     resolution:
@@ -1713,13 +1656,6 @@ packages:
       }
     engines: { node: ">=6" }
 
-  /tslib@2.4.0:
-    resolution:
-      {
-        integrity: sha512-d6xOpEDfsi2CZVlPQzGeux8XMwLT9hssAsaPYExaQMuYskwb+x1x7J371tWlbBdWHroy99KnVB6qIkUbs5X3UQ==,
-      }
-    dev: false
-
   /tunnel@0.0.6:
     resolution:
       {
@@ -1762,10 +1698,10 @@ packages:
     hasBin: true
     dev: false
 
-  /viem@2.17.1(typescript@5.5.3)(zod@3.23.8):
+  /viem@2.18.6(typescript@5.5.3)(zod@3.23.8):
     resolution:
       {
-        integrity: sha512-iLwFAfn7aWfvc1KY176YNTJQpPdepRhvaltae6TomZ+DU5M7LdASP2ywdAHw/rezdEmrH/ytwG2WWnjWioE0fA==,
+        integrity: sha512-KughUodIEjzkC+KfQ4+259yRXYfo0VLkZQ7NVC3RGfCMMOiVWaOxHjmcaY0FnZzKX3pwrlMyTAZbwH9tVAN/Yw==,
       }
     peerDependencies:
       typescript: ">=5.0.4"
@@ -1781,6 +1717,7 @@ packages:
       abitype: 1.0.5(typescript@5.5.3)(zod@3.23.8)
       isows: 1.0.4(ws@8.17.1)
       typescript: 5.5.3
+      webauthn-p256: 0.0.5
       ws: 8.17.1
     transitivePeerDependencies:
       - bufferutil
@@ -1916,6 +1853,16 @@ packages:
       - sugarss
       - supports-color
       - terser
+
+  /webauthn-p256@0.0.5:
+    resolution:
+      {
+        integrity: sha512-drMGNWKdaixZNobeORVIqq7k5DsRC9FnG201K2QjeOoQLmtSDaSsVZdkg6n5jUALJKcAG++zBPJXmv6hy0nWFg==,
+      }
+    dependencies:
+      "@noble/curves": 1.4.0
+      "@noble/hashes": 1.4.0
+    dev: false
 
   /which@2.0.2:
     resolution:

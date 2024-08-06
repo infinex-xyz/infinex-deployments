@@ -19,12 +19,12 @@
     "node": "^20"
   },
   "dependencies": {
-    "@infinex/infinex-sdk": "1.0.21-viem",
+    "@infinex/infinex-sdk": "1.2.2",
     "dotenv": "^16.4.5",
-    "ethers": "^6.13.1",
     "prettier": "^3.3.2",
     "smol-toml": "^1.2.2",
     "typescript": "^5.5.3",
+    "viem": "^2.18.6",
     "vite": "^5.3.3",
     "vitest": "^2.0.3",
     "vitest-markdown-reporter": "^0.1.2"
