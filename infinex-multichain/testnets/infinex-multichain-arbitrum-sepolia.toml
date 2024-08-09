@@ -3,7 +3,7 @@ version = "3.0.0"
 preset = "core"
 description = "Infinex Core Deployments"
 #  pnpm cannon build infinex-multichain/testnets/infinex-multichain-arbitrum-sepolia.toml --chain-id 421614
-#  CANNON_ETHERSCAN_API_URL=https://sepolia.arbiscan.io/api pnpm cannon verify infinex-multichain:0.1.7@O2 --chain-id 84532 --api-key 
+#  CANNON_ETHERSCAN_API_URL=https://sepolia.arbiscan.io/api pnpm cannon verify infinex-core-test:0.1.7@core --chain-id 84532 --api-key 
 
 [var.Deploy]
 DEPLOYER = "0x6298551D56F825B3b6c3350D32129Ffd3cFb198C"
@@ -14,36 +14,37 @@ TRUSTED_RECOVERY_KEEPER = "0x6298551D56F825B3b6c3350D32129Ffd3cFb198C"
 [clone.infinex]
 source = "infinex:3.0.0@core"
 target = "infinex:3.0.0@core"
-options.SALT = "INFINEX_0_1_7"
-options.DEPLOYER = "<%= settings.DEPLOYER %>"
-options.REVENUE_POOL = "<%= settings.REVENUE_POOL %>"
-options.USDC = "0x75faf114eafb1BDbe2F0316DF893fd58CE46AA4d"
-options.CIRCLE_BRIDGE = "0x9f3B8679c73C2Fef8b59B4f3444d4e156fb70AA5"
-options.CIRCLE_MINTER = "0xE997d7d2F6E065a9A93Fa2175E878Fb9081F1f0A"
-options.DEFAULT_DESTINATION_CCTP_DOMAIN = "6"
-options.WORMHOLE_CIRCLE_BRIDGE = "0x2703483B1a5a7c577e8680de9Df8Be03c6f30e3c"
-options.DEFAULT_DESTINATION_WORMHOLE_CHAIN_ID = "10004"                       # set the default domain to base for keeper bridging
+options.INITIAL_PROXY_IMPLEMENTATION_SALT = "INFINEX_0_1_7"
+options.CORE_SALT = "INFINEX_0_1_7"
+options.CORE_DEPLOYER = "<%= settings.DEPLOYER %>"
+options.CORE_REVENUE_POOL = "<%= settings.REVENUE_POOL %>"
+options.CORE_USDC = "0x75faf114eafb1BDbe2F0316DF893fd58CE46AA4d"
+options.CORE_CIRCLE_BRIDGE = "0x9f3B8679c73C2Fef8b59B4f3444d4e156fb70AA5"
+options.CORE_CIRCLE_MINTER = "0xE997d7d2F6E065a9A93Fa2175E878Fb9081F1f0A"
+options.CORE_DEFAULT_DESTINATION_CCTP_DOMAIN = "6"
+options.CORE_WORMHOLE_CIRCLE_BRIDGE = "0x2703483B1a5a7c577e8680de9Df8Be03c6f30e3c"
+options.CORE_DEFAULT_DESTINATION_WORMHOLE_CHAIN_ID = "10004"                       # set the default domain to base for keeper bridging
 # ------- Solana Vars ------- #
-options.SOLANA_CCTP_DESTINATION_DOMAIN = "5"
-options.SOLANA_WALLET_SEED = "<%= hexlify('wallet_authority') %>"
-options.SOLANA_FIXED_PDA_SEED = "<%= hexlify('ProgramDerivedAddress') %>"
-options.SOLANA_WALLET_PROGRAM_ADDRESS = "0x0dd613b80b79792f2b77dbc1bc2a88a69da961324d890ed3aa9df8d517a500b3"           #gitleaks:allow
-options.SOLANA_TOKEN_MINT_ADDRESS = "0x3b442cb3912157f13a933d0134282d032b5ffecd01a2dbf1b7790608df002ea7"               #gitleaks:allow
-options.SOLANA_TOKEN_PROGRAM_ADDRESS = "0x06ddf6e1d765a193d9cbe146ceeb79ac1cb485ed5f5b37913a8cf5857eff00a9"            #gitleaks:allow
-options.SOLANA_ASSOCIATED_TOKEN_PROGRAM_ADDRESS = "0x8c97258f4e2489f1bb3d1029148e0d830b5a1399daff1084048e7bd8dbe9f859" #gitleaks:allow
+options.CORE_SOLANA_CCTP_DESTINATION_DOMAIN = "5"
+options.CORE_SOLANA_WALLET_SEED = "<%= hexlify('wallet_authority') %>"
+options.CORE_SOLANA_FIXED_PDA_SEED = "<%= hexlify('ProgramDerivedAddress') %>"
+options.CORE_SOLANA_WALLET_PROGRAM_ADDRESS = "0x0dd613b80b79792f2b77dbc1bc2a88a69da961324d890ed3aa9df8d517a500b3"           #gitleaks:allow
+options.CORE_SOLANA_TOKEN_MINT_ADDRESS = "0x3b442cb3912157f13a933d0134282d032b5ffecd01a2dbf1b7790608df002ea7"               #gitleaks:allow
+options.CORE_SOLANA_TOKEN_PROGRAM_ADDRESS = "0x06ddf6e1d765a193d9cbe146ceeb79ac1cb485ed5f5b37913a8cf5857eff00a9"            #gitleaks:allow
+options.CORE_SOLANA_ASSOCIATED_TOKEN_PROGRAM_ADDRESS = "0x8c97258f4e2489f1bb3d1029148e0d830b5a1399daff1084048e7bd8dbe9f859" #gitleaks:allow
 # ---------- Wormhole Chain Ids ---------- #
-options.WORMHOLE_CHAIN_ID_ARBITRUM = "10003"
-options.WORMHOLE_CHAIN_ID_BASE = "10004"
-options.WORMHOLE_CHAIN_ID_ETHEREUM = "10002"
-options.WORMHOLE_CHAIN_ID_OPTIMISM = "10005"
-options.WORMHOLE_CHAIN_ID_POLYGON = "10007"
-options.WORMHOLE_CORE = "0xC7A204bDBFe983FCD8d8E61D02b475D4073fF97e"
+options.CORE_WORMHOLE_CHAIN_ID_ARBITRUM = "10003"
+options.CORE_WORMHOLE_CHAIN_ID_BASE = "10004"
+options.CORE_WORMHOLE_CHAIN_ID_ETHEREUM = "10002"
+options.CORE_WORMHOLE_CHAIN_ID_OPTIMISM = "10005"
+options.CORE_WORMHOLE_CHAIN_ID_POLYGON = "10007"
+options.CORE_WORMHOLE_CORE = "0xC7A204bDBFe983FCD8d8E61D02b475D4073fF97e"
 # ---------- Circle Constants ---------- #
-options.CCTP_DOMAIN_ARBITRUM = "3"
-options.CCTP_DOMAIN_BASE = "6"
-options.CCTP_DOMAIN_ETHEREUM = "0"
-options.CCTP_DOMAIN_OPTIMISM = "2"
-options.CCTP_DOMAIN_POLYGON = "7"
+options.CORE_CCTP_DOMAIN_ARBITRUM = "3"
+options.CORE_CCTP_DOMAIN_BASE = "6"
+options.CORE_CCTP_DOMAIN_ETHEREUM = "0"
+options.CORE_CCTP_DOMAIN_OPTIMISM = "2"
+options.CORE_CCTP_DOMAIN_POLYGON = "7"
 
 # ---------- Setting Post deployment parameters  ---------- #
 # [invoke.setInfinexProtocolConfigBeaconFee]
