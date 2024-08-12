@@ -88,4 +88,7 @@ It is possible for Cannon to verify freshly deployed contracts, using the follow
 
 also, when publishing, adding ` --tags 1.0.0` ensures that a package only gets published with the specified space separated tags, and not default which includes latest
 
+## Debugging Tips
 
+You can run javascript in the cannonfile string arguments, which allows you to log the variables to the console. By including the OR symbol, it'll both log it and use the value.
+`args = ["<%= console.log(JSON.stringify(imports, null, 2)) || imports.latestVersion.imports.infinex.contracts.InfinexProtocolConfigBeacon.address %>"]`

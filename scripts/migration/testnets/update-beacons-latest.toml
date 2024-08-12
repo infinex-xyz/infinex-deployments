@@ -1,7 +1,11 @@
 # Migrate the testnet account factory and beacon to use the new versions
+# pnpm cannon build scripts/migration/testnets/update-beacons-latest.toml --dry-run --chain-id  
+
+name = "infinex-core-test-migration"
+version = "3.0.0"
 
 [pull.latestVersion]
-source = "infinex-multichain:3.0.0@core"
+source = "infinex-core-test:3.0.0@core"
 
 [pull.v2]
 source = "infinex-multichain:1.1.0@O2"
@@ -15,7 +19,7 @@ source = "infinex-multichain:0.1.7@O2"
 target = ["v1.infinex.InfinexProtocolConfigBeacon"]
 func = "setLatestInfinexProtocolConfigBeacon"
 args = [
-    "<%= latestVersion.infinex.contracts.InfinexProtocolConfigBeacon.address %>",
+    "<%= imports.latestVersion.imports.infinex.contracts.InfinexProtocolConfigBeacon.address %>",
 ]
 fromCall.func = "owner"
 
@@ -23,7 +27,7 @@ fromCall.func = "owner"
 target = ["v2.infinex.InfinexProtocolConfigBeacon"]
 func = "setLatestInfinexProtocolConfigBeacon"
 args = [
-    "<%= latestVersion.infinex.contracts.InfinexProtocolConfigBeacon.address %>",
+    "<%= imports.latestVersion.imports.infinex.contracts.InfinexProtocolConfigBeacon.address %>",
 ]
 fromCall.func = "owner"
 
@@ -33,7 +37,9 @@ fromCall.func = "owner"
 target = ["v1.infinex.AccountFactory"]
 func = "updateInfinexProtocolConfigBeacon"
 args = [
-    "<%= latestVersion.infinex.contracts.InfinexProtocolConfigBeacon.address %>",
+    "<%= imports.latestVersion.imports.infinex.contracts.InfinexProtocolConfigBeacon.address %>",
 ]
 fromCall.func = "owner"
-depends = ["invoke.OldBeaconSetLatestInfinexProtocolConfigBeacon"]
+depends = [
+    "invoke.v2BeaconSetLatestInfinexProtocolConfigBeacon",
+] # change this to the current beacon the factory is pointing to
