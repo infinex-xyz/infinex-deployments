@@ -1,0 +1,59 @@
+name = "infinex-patron-test"
+preset = "patron-purchase"
+version = "1.0.0"
+description = "Smart Contracts used for Infinex Patron Purchase App"
+
+# pnpm cannon build infinex-patron/patron-purchase-app/testnets/infinex-patron-test.arbitrum-sepolia.toml --chain-id 421614 --dry-run
+
+[var.PATRON]
+depends = []
+PATRON_DEPLOYER = "0x6298551D56F825B3b6c3350D32129Ffd3cFb198C"
+FUNDS_DESTINATION = "0x6298551D56F825B3b6c3350D32129Ffd3cFb198C"
+AUTHORIZED_SIGNER = "0x1848034ca4d95560b9154dc93084d2bc3aa2caa5"
+ERC20_TOKEN = "0x75faf114eafb1BDbe2F0316DF893fd58CE46AA4d"
+ETHER = "0x0000000000000000000000000000000000000000"
+
+[clone.infinexPatronPurchase]
+depends = ['var.PATRON']
+options.PATRON_DEPLOYER = "<%= settings.PATRON_DEPLOYER %>"
+options.FUNDS_DESTINATION = "<%= settings.FUNDS_DESTINATION %>"
+options.PATRON_PURCHASE_SALT = "PATRON_PURCHASE_SALT_1_0_4"
+source = "infinex:1.0.0@patron-purchase"
+target = "infinex:1.0.0@patron-purchase"
+
+[invoke.PatronPointOfPurchaseInitialize]
+target = ["infinexPatronPurchase.PatronPointOfPurchase"]
+func = "initialize"
+args = [
+    "<%= settings.PATRON_DEPLOYER %>",
+    "<%= settings.FUNDS_DESTINATION %>",
+    [
+        "<%= settings.AUTHORIZED_SIGNER %>",
+    ],
+    [
+        "<%= settings.ERC20_TOKEN %>","<%= settings.ETHER %>"
+    ],
+    [
+        "<%= imports.infinexPatronPurchase.contracts.PatronPurchaseVaultProxy.address %>",
+        "<%= imports.infinexPatronPurchase.contracts.PatronPurchaseVaultProxy2.address %>"
+    ],
+]
+depends = [
+    "clone.infinexPatronPurchase",
+]
+
+[invoke.PatronPurchaseVaultInitialize]
+target = ["infinexPatronPurchase.PatronPurchaseVault"]
+func = "initialize"
+args = ["<%= settings.PATRON_DEPLOYER %>", "<%= settings.FUNDS_DESTINATION %>"]
+depends = [
+    "clone.infinexPatronPurchase",
+]
+
+[invoke.PatronPurchaseVaultInitialize2]
+target = ["infinexPatronPurchase.PatronPurchaseVault2"]
+func = "initialize"
+args = ["<%= settings.PATRON_DEPLOYER %>", "<%= settings.FUNDS_DESTINATION %>"]
+depends = [
+    "clone.infinexPatronPurchase",
+]

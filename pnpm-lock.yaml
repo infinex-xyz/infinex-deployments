@@ -969,7 +969,7 @@ packages:
       pako: 2.1.0
       promise-events: 0.2.4
       typestub-ipfs-only-hash: 4.0.0
-      viem: 2.19.8(zod@3.23.8)
+      viem: 2.20.0(zod@3.23.8)
       zod: 3.23.8
     transitivePeerDependencies:
       - bufferutil
@@ -1000,7 +1000,7 @@ packages:
       table: 6.8.2
       tildify: 3.0.0
       untildify: 4.0.0
-      viem: 2.19.8(zod@3.23.8)
+      viem: 2.20.0(zod@3.23.8)
       znv: 0.4.0(zod@3.23.8)
       zod: 3.23.8
     transitivePeerDependencies:
@@ -3385,8 +3385,8 @@ packages:
       - zod
     dev: true
 
-  /viem@2.19.8(zod@3.23.8):
-    resolution: {integrity: sha512-2SkT6kHgp1MZnPl+fJ8kT2Eozv2tOuri30DI5dSnOecJpvachZY5PdgCdvXw7AUZCwNUkLX9ZEpKqyhqjQoUPg==}
+  /viem@2.20.0(zod@3.23.8):
+    resolution: {integrity: sha512-cM4vs81HnSNbfceI1MLkx4pCVzbVjl9xiNSv5SCutYjUyFFOVSPDlEyhpg2iHinxx1NM4Qne3END5eLT8rvUdg==}
     peerDependencies:
       typescript: '>=5.0.4'
     peerDependenciesMeta:
