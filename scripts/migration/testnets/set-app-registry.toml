@@ -1,0 +1,22 @@
+# Add the apps to the app registry
+# pnpm cannon build scripts/migration/testnets/set-app-registry.toml --dry-run --chain-id  
+
+name = "infinex-test-set-app-registry"
+version = "3.0.0"
+
+[pull.InfinexCoreTest]
+source = "infinex-core-test:latest@core"
+
+[pull.Curve]
+source = "infinex-curve-app-test:latest@curve-stableswap"
+
+# ---------- Add Apps ---------- #
+
+[invoke.AddCurve]
+target = ["InfinexCoreTest.infinex.AppRegistry"]
+func = "setAppBeaconStatus"
+args = [
+    "<%= imports.Curve.imports.CurveStableSwap.contracts.CurveStableSwapAppBeacon.address %>",
+    true,
+]
+fromCall.func = "owner"
