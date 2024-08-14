@@ -17,7 +17,6 @@ source = "infinex-multichain:0.1.7@O2"
 [clone.infinex]
 source = "infinex:3.0.0@core"
 target = "infinex:3.0.0@core"
-options.INITIAL_PROXY_IMPLEMENTATION_SALT = "INFINEX_0_1_7"
 options.CORE_SALT = "INFINEX_0_1_7"
 options.CORE_DEPLOYER = "<%= settings.DEPLOYER %>"
 options.CORE_INITIAL_PROXY_IMPLEMENTATION = "<%= imports.v1.imports.infinex.contracts.InitialProxyImplementation.address %>"
