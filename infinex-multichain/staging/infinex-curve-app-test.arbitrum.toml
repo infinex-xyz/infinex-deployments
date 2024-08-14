@@ -1,0 +1,20 @@
+#  pnpm cannon build infinex-multichain/testnets/infinex-curve-app-test.sepolia.toml --chain-id 11155111 --dry-run --upgrade-from
+#  pnpm cannon publish infinex-curve-app-test:1.1.0@curve-stableswap --chain-id 11155111 --exclude-cloned
+#  CANNON_ETHERSCAN_API_URL=https://api-sepolia.etherscan.io/api pnpm cannon verify infinex-curve-app-test:latest@curve-stableswap --chain-id 11155111 --api-key
+
+name = "infinex-curve-app-test"
+version = "1.1.0"
+preset = "curve-stableswap"
+description = "Infinex App integration for Curve StableSwap"
+
+[var.Deploy]
+DEPLOYER = "0x6298551D56F825B3b6c3350D32129Ffd3cFb198C"
+
+[clone.CurveStableSwap]
+options.CURVE_STABLESWAP_SALT = "CURVE_STABLESWAP_1_1_0"
+options.CURVE_STABLESWAP_OWNER = "<%= settings.DEPLOYER %>"
+options.CURVE_STABLESWAP_USDC = "0xaf88d065e77c8cC2239327C5EDb3A432268e5831"
+options.CURVE_STABLESWAP_FACTORY = "0x9AF14D26075f142eb3F292D5065EB3faa646167b" 
+source = "infinex:1.1.0@curve-stableswap"
+target = "infinex:1.1.0@curve-stableswap"
+
