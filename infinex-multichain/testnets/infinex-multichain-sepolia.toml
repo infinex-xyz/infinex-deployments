@@ -1,5 +1,5 @@
 name = "infinex-core-test"
-version = "3.0.1"
+version = "3.0.2"
 preset = "core"
 description = "Infinex Core Deployments"
 #  pnpm cannon build infinex-multichain/testnets/infinex-multichain-sepolia.toml --chain-id 11155111 --dry-run --upgrade-from
@@ -41,7 +41,7 @@ options.CORE_WORMHOLE_CHAIN_ID_BASE = "10004"
 options.CORE_WORMHOLE_CHAIN_ID_ETHEREUM = "10002"
 options.CORE_WORMHOLE_CHAIN_ID_OPTIMISM = "10005"
 options.CORE_WORMHOLE_CHAIN_ID_POLYGON = "10007"
-options.CORE_WORMHOLE_CORE = "0x706abc4E45D419950511e474C7B9Ed348A4a716c"
+options.CORE_WORMHOLE_CORE = "0x4a8bc80Ed5a4067f1CCf107057b8270E0cC11A78"
 # ---------- Circle Constants ---------- #
 options.CORE_CCTP_DOMAIN_ARBITRUM = "3"
 options.CORE_CCTP_DOMAIN_BASE = "6"
