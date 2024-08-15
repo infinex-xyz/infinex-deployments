@@ -76,8 +76,8 @@ describe.concurrent.each(Object.keys(evmChains))(
       `${CHAIN}_ACCOUNTS_ROUTER_V2_ADDRESS`,
     );
 
-    const appsConfig = await loadToml(
-      `${configDir}/infinex-multichain-apps-${networkName}.toml`,
+    const curveAppConfig = await loadToml(
+      `${configDir}/infinex-curve-app-test.${networkName}.toml`,
     );
 
     const config = await loadToml(
@@ -165,7 +165,7 @@ describe.concurrent.each(Object.keys(evmChains))(
 
     test("Protocol config beacon has revenue pool from config", async () => {
       const revenuePoolAddress =
-        appsConfig.var.Deploy.REVENUE_POOL ?? config.var.deploy.REVENUE_POOL;
+        config.var.Deploy.REVENUE_POOL ?? config.var.deploy.REVENUE_POOL;
       expect(await protocolConfigBeacon.read.revenuePool()).toBe(
         revenuePoolAddress,
       );
@@ -209,7 +209,7 @@ describe.concurrent.each(Object.keys(evmChains))(
 
     test("App registry owner matches config", async () => {
       const owner = await appRegistry.read.owner();
-      const deployVars = appsConfig.var.Deploy;
+      const deployVars = config.var.Deploy;
       if (env === "mainnets") {
         expect(deployVars.MULTI_SIG).toBeTypeOf("string");
       }
@@ -237,7 +237,7 @@ describe.concurrent.each(Object.keys(evmChains))(
 
     test("Curve stableswap app beacon owner matches config", async () => {
       const owner = await curveStableswapAppBeacon.read.owner();
-      const deployVars = appsConfig.var.Deploy;
+      const deployVars = curveAppConfig.var.Deploy;
       if (env === "mainnets") {
         expect(deployVars.MULTI_SIG).toBeTypeOf("string");
       }
