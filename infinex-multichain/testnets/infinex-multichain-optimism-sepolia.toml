@@ -3,6 +3,7 @@ version = "3.0.2"
 preset = "core"
 description = "Infinex Core Deployments"
 #  pnpm cannon build infinex-multichain/testnets/infinex-multichain-optimism-sepolia.toml --chain-id 11155420 --dry-run --upgrade-from
+#  pnpm cannon publish infinex-core-test:latest@core --chain-id 11155420 --exclude-cloned
 #  CANNON_ETHERSCAN_API_URL=https://api-sepolia-optimism.etherscan.io/api pnpm cannon verify infinex-core-test:latest@core --chain-id 11155420 --api-key
 
 [var.Deploy]
