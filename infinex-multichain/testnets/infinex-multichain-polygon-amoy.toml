@@ -1,97 +1,66 @@
-name = "infinex-multichain"
-version = "1.1.0"
-preset = "O2"
-description = "Infinex MultiChain Deployments"
-#  ./run pnpm cannon build infinex-multichain/testnets/infinex-multichain-polygon-amoy.toml --chain-id 80002 --private-key  
-#   CANNON_ETHERSCAN_API_URL=https://api-amoy.polygonscan.com/api   ./run pnpm cannon verify infinex-multichain:0.1.7@O2 --chain-id 80002 --api-key
+name = "infinex-core-test"
+version = "3.0.2"
+preset = "core"
+description = "Infinex Core Deployments"
+#  pnpm cannon build infinex-multichain/testnets/infinex-multichain-polygon-amoy.toml --chain-id 80002 --dry-run --upgrade-from
+#  pnpm cannon publish infinex-core-test:latest@core --chain-id 80002 --exclude-cloned
+#  CANNON_ETHERSCAN_API_URL=https://api-amoy.polygonscan.com/api pnpm cannon verify infinex-core-test:latest@core --chain-id 80002 --api-key
+
 [var.Deploy]
-DEPLOYER = "0xBF32844C0edF6Ab3f6565a5dfF1D7B30CE4ec01F"
-REVENUE_POOL = "0xBF32844C0edF6Ab3f6565a5dfF1D7B30CE4ec01F"
-MULTI_SIG = "0xBF32844C0edF6Ab3f6565a5dfF1D7B30CE4ec01F"
+DEPLOYER = "0x6298551D56F825B3b6c3350D32129Ffd3cFb198C"
+REVENUE_POOL = "0x6298551D56F825B3b6c3350D32129Ffd3cFb198C"
 WITHDRAWAL_FEE_USDC = "<%= parseUnits(String(0), 6) %>"
-TRUSTED_RECOVERY_KEEPER =  "0x3F768E3aC5eE75A2F39CFD7d72Eb3a40Bddb5ecB"
-INITIAL_BEACON = "0x2873678A76494B19F1cE01e73810496491AC326E"
+TRUSTED_RECOVERY_KEEPER = "0x6298551D56F825B3b6c3350D32129Ffd3cFb198C"
 
-[clone.infinex]
-options.SALT = "INFINEX_0_1_7"
-options.DEPLOYER = "<%= settings.DEPLOYER %>"
-options.REVENUE_POOL = "<%= settings.REVENUE_POOL %>"
-options.MINIMUM_BRIDGE_AMOUNT =  "<%= parseUnits(String(1), 6) %>"
-options.USDC = "0x41e94eb019c0762f9bfcf9fb1e58725bfb0e7582"
-options.CIRCLE_BRIDGE = "0x9f3B8679c73C2Fef8b59B4f3444d4e156fb70AA5"
-options.CIRCLE_MINTER = "0xE997d7d2F6E065a9A93Fa2175E878Fb9081F1f0A"
-options.DEFAULT_DESTINATION_CCTP_DOMAIN = "6"
-options.WORMHOLE_CIRCLE_BRIDGE = "0x2703483B1a5a7c577e8680de9Df8Be03c6f30e3c"
-options.DEFAULT_DESTINATION_WORMHOLE_CHAIN_ID = "10004" # set the default domain to base for keeper bridging
-# ------- Solana Vars ------- #
-options.SOLANA_CCTP_DESTINATION_DOMAIN = "5"
-options.SOLANA_WALLET_SEED =  "<%= hexlify('wallet_authority') %>"
-options.SOLANA_FIXED_PDA_SEED = "<%= hexlify('ProgramDerivedAddress') %>"
-options.SOLANA_WALLET_PROGRAM_ADDRESS = "0x0dd613b80b79792f2b77dbc1bc2a88a69da961324d890ed3aa9df8d517a500b3" #gitleaks:allow
-options.SOLANA_TOKEN_MINT_ADDRESS = "0x3b442cb3912157f13a933d0134282d032b5ffecd01a2dbf1b7790608df002ea7" #gitleaks:allow
-options.SOLANA_TOKEN_PROGRAM_ADDRESS = "0x06ddf6e1d765a193d9cbe146ceeb79ac1cb485ed5f5b37913a8cf5857eff00a9" #gitleaks:allow
-options.SOLANA_ASSOCIATED_TOKEN_PROGRAM_ADDRESS = "0x8c97258f4e2489f1bb3d1029148e0d830b5a1399daff1084048e7bd8dbe9f859" #gitleaks:allow
-# ---------- Wormhole Chain Ids ---------- #
-options.WORMHOLE_CHAIN_ID_ARBITRUM = "10003"
-options.WORMHOLE_CHAIN_ID_BASE = "10004"
-options.WORMHOLE_CHAIN_ID_ETHEREUM = "10002"
-options.WORMHOLE_CHAIN_ID_OPTIMISM = "10005"
-options.WORMHOLE_CHAIN_ID_POLYGON = "10007"
-source = "infinex:1.1.0@O2"
-target = "infinex:1.1.0@O2"
-
-[pull.infinexOld]
+[pull.v1]
 source = "infinex-multichain:0.1.7@O2"
 
+[clone.infinex]
+source = "infinex:3.0.0@core"
+target = "infinex:3.0.0@core"
+options.CORE_SALT = "INFINEX_0_1_7"
+options.CORE_DEPLOYER = "<%= settings.DEPLOYER %>"
+options.CORE_INITIAL_PROXY_IMPLEMENTATION = "<%= imports.v1.imports.infinex.contracts.InitialProxyImplementation.address %>"
+options.CORE_REVENUE_POOL = "<%= settings.REVENUE_POOL %>"
+options.CORE_USDC = "0x41e94eb019c0762f9bfcf9fb1e58725bfb0e7582"
+options.CORE_CIRCLE_BRIDGE = "0x9f3B8679c73C2Fef8b59B4f3444d4e156fb70AA5"
+options.CORE_CIRCLE_MINTER = "0xE997d7d2F6E065a9A93Fa2175E878Fb9081F1f0A"
+options.CORE_DEFAULT_DESTINATION_CCTP_DOMAIN = "6"
+options.CORE_WORMHOLE_CIRCLE_BRIDGE = "0x2703483B1a5a7c577e8680de9Df8Be03c6f30e3c"
+options.CORE_DEFAULT_DESTINATION_WORMHOLE_CHAIN_ID = "10004"                       # set the default domain to base for keeper bridging
+# ------- Solana Vars ------- #
+options.CORE_SOLANA_CCTP_DESTINATION_DOMAIN = "5"
+options.CORE_SOLANA_WALLET_SEED = "<%= hexlify('wallet_authority') %>"
+options.CORE_SOLANA_FIXED_PDA_SEED = "<%= hexlify('ProgramDerivedAddress') %>"
+options.CORE_SOLANA_WALLET_PROGRAM_ADDRESS = "0x0dd613b80b79792f2b77dbc1bc2a88a69da961324d890ed3aa9df8d517a500b3"           #gitleaks:allow
+options.CORE_SOLANA_TOKEN_MINT_ADDRESS = "0x3b442cb3912157f13a933d0134282d032b5ffecd01a2dbf1b7790608df002ea7"               #gitleaks:allow
+options.CORE_SOLANA_TOKEN_PROGRAM_ADDRESS = "0x06ddf6e1d765a193d9cbe146ceeb79ac1cb485ed5f5b37913a8cf5857eff00a9"            #gitleaks:allow
+options.CORE_SOLANA_ASSOCIATED_TOKEN_PROGRAM_ADDRESS = "0x8c97258f4e2489f1bb3d1029148e0d830b5a1399daff1084048e7bd8dbe9f859" #gitleaks:allow
+# ---------- Wormhole Chain Ids ---------- #
+options.CORE_WORMHOLE_CHAIN_ID_ARBITRUM = "10003"
+options.CORE_WORMHOLE_CHAIN_ID_BASE = "10004"
+options.CORE_WORMHOLE_CHAIN_ID_ETHEREUM = "10002"
+options.CORE_WORMHOLE_CHAIN_ID_OPTIMISM = "10005"
+options.CORE_WORMHOLE_CHAIN_ID_POLYGON = "10007"
+options.CORE_WORMHOLE_CORE = "0x6b9C8671cdDC8dEab9c719bB87cBd3e782bA6a35"
+# ---------- Circle Constants ---------- #
+options.CORE_CCTP_DOMAIN_ARBITRUM = "3"
+options.CORE_CCTP_DOMAIN_BASE = "6"
+options.CORE_CCTP_DOMAIN_ETHEREUM = "0"
+options.CORE_CCTP_DOMAIN_OPTIMISM = "2"
+options.CORE_CCTP_DOMAIN_POLYGON = "7"
+
 # ---------- Setting Post deployment parameters  ---------- #
-[invoke.setInfinexProtocolConfigBeaconFee]
-target = ["infinex.InfinexProtocolConfigBeacon"]
-func = "setWithdrawalFeeUSDC"
-args = [
-    "<%= settings.WITHDRAWAL_FEE_USDC %>",
-    ]
-from = "<%= settings.DEPLOYER %>"
-depends = ["clone.infinex"]
+# [invoke.setInfinexProtocolConfigBeaconFee]
+# target = ["infinex.InfinexProtocolConfigBeacon"]
+# func = "setWithdrawalFeeUSDC"
+# args = ["<%= settings.WITHDRAWAL_FEE_USDC %>"]
+# from = "<%= settings.DEPLOYER %>"
+# depends = ["clone.infinex"]
 
 [invoke.setTrustedRecoveryKeeper]
 target = ["infinex.InfinexProtocolConfigBeacon"]
 func = "setTrustedRecoveryKeeper"
-args = [
-    "<%= settings.TRUSTED_RECOVERY_KEEPER %>", 
-    true
-    ]
+args = ["<%= settings.TRUSTED_RECOVERY_KEEPER %>", true]
 from = "<%= settings.DEPLOYER %>"
 depends = ["clone.infinex"]
-
-[invoke.setFundsRecoveryActive]
-target = ["infinex.InfinexProtocolConfigBeacon"]
-func = "setFundsRecoveryActive"
-args = []
-from = "<%= settings.DEPLOYER %>"
-depends = ["clone.infinex"]
-
-# # ---------- Update Factory and old beacons  ---------- #
-# [invoke.AccountFactoryUpdateInfinexProtocolConfigBeacon]
-# target = ["infinex.AccountFactory"]
-# func = "updateInfinexProtocolConfigBeacon"
-# args = ["<%= imports.infinex.contracts.InfinexProtocolConfigBeacon.address %>"]
-# fromCall.func = "owner"
-# depends = ["clone.infinex","invoke.OldBeaconSetLatestInfinexProtocolConfigBeacon"]
-
-# [pull.infinexOld]
-# source = "infinex-multichain:1.0.0staging@O2"
-
-# [invoke.OldBeaconSetLatestInfinexProtocolConfigBeacon]
-# target = ["infinexOld.infinex.InfinexProtocolConfigBeacon"]
-# func = "setLatestInfinexProtocolConfigBeacon"
-# args = ["<%= imports.infinex.contracts.InfinexProtocolConfigBeacon.address %>"]
-# fromCall.func = "owner"
-
-# [invoke.AccountFactoryInitialize]
-# target = ["infinex.AccountFactory"]
-# func = "initialize"
-# args = [
-#     "<%= imports.infinex.contracts.InfinexProtocolConfigBeacon.address %>"
-# ]
-# from = "<%= settings.DEPLOYER %>"
-# depends = ["clone.infinex"]
