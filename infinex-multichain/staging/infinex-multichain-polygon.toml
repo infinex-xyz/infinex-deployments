@@ -1,5 +1,5 @@
 name = "infinex-core-test"
-version = "3.0.1"
+version = "3.0.0"
 preset = "core"
 description = "Infinex Core Deployments"
 #  pnpm cannon build infinex-multichain/staging/infinex-multichain-polygon.toml --chain-id 137 --dry-run --upgrade-from
@@ -23,7 +23,7 @@ options.CORE_CIRCLE_BRIDGE = "0x9daF8c91AEFAE50b9c0E69629D3F6Ca40cA3B3FE"
 options.CORE_CIRCLE_MINTER = "0x10f7835F827D6Cf035115E10c50A853d7FB2D2EC"
 options.CORE_DEFAULT_DESTINATION_CCTP_DOMAIN = "6"
 options.CORE_WORMHOLE_CIRCLE_BRIDGE = "0x2703483B1a5a7c577e8680de9Df8Be03c6f30e3c"
-options.CORE_DEFAULT_DESTINATION_WORMHOLE_CHAIN_ID = "30"                          # set the default domain to base for keeper bridging
+options.CORE_DEFAULT_DESTINATION_WORMHOLE_CHAIN_ID = "30"                                                                    # set the default domain to base for keeper bridging
 # ------- Solana Vars ------- #
 options.CORE_SOLANA_CCTP_DESTINATION_DOMAIN = "5"
 options.CORE_SOLANA_WALLET_SEED = "<%= hexlify('wallet_authority') %>"
