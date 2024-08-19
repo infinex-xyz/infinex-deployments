@@ -1,0 +1,24 @@
+
+name = "infinex-test-transfer-ownership"
+version = "3.0.0"
+
+Arbitrum.multisig = "0x85aCda8bA2b2eB1a311426C6CE60942FC6E8a7BE"
+Base.multisig = "0x715453251C2FA71cbA3F9159e4862D01D016b579"
+Ethereum.multisig = "0xe48A07CAD5F814A56c942643e92095a1Bb92a00e"
+Optimism.multisig = "0x73Dfc536Fd5d5ad8A1024F6429e111C70cA065A4"
+Polygon.multisig = "0x85aCda8bA2b2eB1a311426C6CE60942FC6E8a7BE"
+
+[pull.InfinexCoreTest]
+source = "infinex-core-test:latest@core"
+
+[invoke.transferOwnershipNewBeacon]
+target = ["infinex.InfinexProtocolConfigBeacon"]
+func = "transferOwnership"
+args = ["<%= settings.MULTI_SIG %>"]
+from = "<%= settings.DEPLOYER %>"
+
+# [invoke.acceptOwnershipNewBeacon]
+# target = ["infinex.InfinexProtocolConfigBeacon"]
+# func = "acceptOwnership"
+# from = "<%= settings.MULTI_SIG %>"
+# depends = ["invoke.transferOwnershipNewBeacon"]
