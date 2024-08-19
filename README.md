@@ -24,17 +24,17 @@ This is a GitOps repo for deployment of the [Infinex](https://www.github.com/inf
 
 `./run pnpm cannon build TOML_FILE --chain-id CHAIN_ID --provider-url PROVIDER_URL --dry-run`
 
-- When everything is building correctly and the contracts are ready to be deployed the build command can be run using `--private-key` in order to specify the private key of the deployer wallet. Please note that the wallet should have ETH on the targeted chain.
+- A valid signer wallet in Frame is required to deploy the contracts. The wallet should have the base currency on the targeted chain.
 
 - If the deployment is an upgrade from a previous version, the `--upgrade-from infinex-multichain:PREVIOUS_VERSION` command will be required. This command will most likely be required for every new deployment of a package.
 
-`./run pnpm cannon build TOML_FILE --chain-id CHAIN_ID --provider-url PROVIDER_URL --private-key PRIVATE_KEY --upgrade-from infinex-multichain:PREVIOUS_VERSION`
+`./run pnpm cannon build TOML_FILE --chain-id CHAIN_ID --provider-url PROVIDER_URL --upgrade-from infinex-multichain:PREVIOUS_VERSION`
 
 ## Publish a new deployment on Cannon
 
 When a deployment is successful the last step is to publish it to Cannon. It can be done using the `cannon publish` command:
 
-`./run pnpm cannon publish infinex-multichain:VERSION --chain-id CHAIN_ID --private-key PRIVATE_KEY`
+`./run pnpm cannon publish infinex-multichain:VERSION --chain-id CHAIN_ID`
 
 with:
 - VERSION: the version of the package. Eg: `infinex-multichain:0.0.1`.
@@ -84,7 +84,7 @@ This process involves multiple steps, not just a simple `--upgrade-from` due to 
 3. When building the new deployment, cannon will think that it needs to retry some of the steps which it has already completed in the previous deployment. To solve this, we use `cannon alter` to tell the new deployment that it doesn't need to do those steps. This is the command you'll need to run:
 
 ```
-pnpm cannon alter --subpkg [CLONE_STEP_FROM_DEPLOYMENT_FILE] [PACKAGE_TO_UPGRADE_FROM] mark-complete [CANNON_STEP_TO_SKIP] --chain-id [CHAIN_ID_OF_DEPLOYMENT]
+pnpm cannon alter --subpkg [CLONE_STEP_FROM_DEPLOYMENT_FILE] [PACKAGE_TO_UPGRADE_FROM] mark-complete [SPACE_SEPARATED_CANNON_STEPS_TO_SKIP] --chain-id [CHAIN_ID_OF_DEPLOYMENT]
 ```
 
 Let's break down what this command is doing. We are running `cannon alter` on the `PACKAGE_TO_UPGRADE_FROM`. What this does is marks the steps from the `PACKAGE_TO_UPGRADE_FROM` that don't need to be repeated when upgrading from it. You need to specify the `CLONE_STEP_FROM_DEPLOYMENT_FILE` to tell cannon where to find the `CANNON_STEP_TO_SKIP`, since this is where the step is being imported from.
@@ -101,15 +101,15 @@ At no point should you be referencing the locally built cannonfile. This should 
 4. The output of the alter command should be an ipfs url. If it comes up with `Cannot read properties of null`, that means you've got an invalid reference somewhere. Now you are ready to run the `build` command using the output from the `alter` command.
 
 ```
-pnpm cannon build [FILE_PATH_OF_DEPLOYMENT_FILE] --chain-id [CHAIN_ID_OF_DEPLOYMENT] --registry-priority local --upgrade-from @ipfs:[IPFS_CONTENT_HASH] --private-key [PRIVATE_KEY] 
+pnpm cannon build [FILE_PATH_OF_DEPLOYMENT_FILE] --chain-id [CHAIN_ID_OF_DEPLOYMENT] --registry-priority local --upgrade-from ipfs://[IPFS_CONTENT_HASH] 
 ```
 
-Let's break down what this command is doing. `cannon build` is deploying the `FILE_PATH_OF_DEPLOYMENT_FILE` cannonfile to the `CHAIN_ID_OF_DEPLOYMENT` specified. When it does so, we want the steps it's importing from the `clone` source/target to be sourced from our local `registry-priority` so it finds our newly built local package, rather than try to look for it on the cannon registry, because it hasn't been published yet. We specify `upgrade-from` to tell cannon that we will be upgrading this from an existing deployment and that it doesn't need to run all the steps. It looks at `IPFS_CONTENT_HASH`, the output of `alter`, to know which steps it doesn't need to repeat. `PRIVATE_KEY` is the key used to deploy these contracts.
+Let's break down what this command is doing. `cannon build` is deploying the `FILE_PATH_OF_DEPLOYMENT_FILE` cannonfile to the `CHAIN_ID_OF_DEPLOYMENT` specified. When it does so, we want the steps it's importing from the `clone` source/target to be sourced from our local `registry-priority` so it finds our newly built local package and ipfs content hash. We specify `upgrade-from` to tell cannon that we will be upgrading this from an existing deployment and that it doesn't need to run all the steps. It looks at `IPFS_CONTENT_HASH`, the output of `alter`, to know which steps it doesn't need to repeat. `PRIVATE_KEY` is the key used to deploy these contracts.
 
 e.g. To deploy the new version of governance points on base sepolia, here's what it would look like.
 
 ```
-pnpm cannon build infinex-governance-points/testnets/infinex-governance-points-base-sepolia.toml --chain-id 84532 --registry-priority local --upgrade-from @ipfs:QmWkKsLAAew35yVUbjkCBUtWWHGvyXHALZkZG8iTTBj4r3 --private-key [PRIVATE_KEY] 
+pnpm cannon build infinex-governance-points/testnets/infinex-governance-points-base-sepolia.toml --chain-id 84532 --registry-priority local --upgrade-from ipfs://QmWkKsLAAew35yVUbjkCBUtWWHGvyXHALZkZG8iTTBj4r3 
 ```
 
 ## useful commands
@@ -121,7 +121,7 @@ pnpm cannon build infinex-governance-points/testnets/infinex-governance-points-b
    e.g. upgrade to function would reference the generated ipfs url 
 
 ```
- pnpm cannon build infinex-multichain/testnet/infinex-multichain-arbitrum-sepolia.toml --chain-id 421614 --private-key  XXXX --upgrade-from @ipfs:QmcU78qLgucSaPerrJqYEaanMCNVZhZbBgSiyGgcyvcpy3 --registry-priority local
+ pnpm cannon build infinex-multichain/testnet/infinex-multichain-arbitrum-sepolia.toml --chain-id 421614 --upgrade-from @ipfs:QmcU78qLgucSaPerrJqYEaanMCNVZhZbBgSiyGgcyvcpy3 --registry-priority local
 ```
 
 also, when publishing, adding ` --tags 1.0.0` ensures that a package only gets published with the specified space separated tags, and not default which includes latest
