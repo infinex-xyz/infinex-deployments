@@ -1,0 +1,36 @@
+name = "infinex-multichain"
+preset = "cardrun"
+version = "1.0.0"
+description = "Smart Contracts used for the Infinex CardRun Campaign"
+
+# --chain-id 84532
+
+[var.Deploy]
+DEPLOYER = "0x6298551D56F825B3b6c3350D32129Ffd3cFb198C"
+KEEPER= "0x6298551D56F825B3b6c3350D32129Ffd3cFb198C"
+
+[pull.InfinexMultichain]
+source = "infinex-multichain:1.1.0@O2"
+
+[clone.InfinexCardRun]
+options.CARDRUN_OWNER = "<%= settings.DEPLOYER %>"
+options.CARDRUN_ENTROPY_ = "0x41c9e39574F40Ad34c79f1C99B66A45eFB830d4c" # Pyth Entropy contract address
+options.CARDRUN_ENTROPY_PROVIDER = "0x6CC14824Ea2918f5De5C2f75A9Da968ad4BD6344" # Pyth Entropy provider address
+options.CARDRUN_FORWARDER= "<%= imports.InfinexMultichain.imports.infinex.contracts.Forwarder.address %>" # Forwarder contract address
+source = "infinex:1.0.0@cardrun"
+target = "infinex:1.0.0@cardrun"
+tags=["1.0.0"]
+
+# ---------- Settings post deployment parameters  ---------- #
+
+# ---------- Keepers ---------- #
+
+[invoke.CardRunSetKeeper]
+target=["InfinexCardRun.CardRun"]
+func="setAuthorizedKeeper"
+args=["<%= settings.KEEPER %>", true]
+fromCall.func = "owner"
+
+
+
+

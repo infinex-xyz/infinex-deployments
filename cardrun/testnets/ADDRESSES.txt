@@ -1,0 +1,7 @@
+# Scope: cardrun
+
+## Version: 1.0.0 
+
+### Chain: base-sepolia
+
+BASE_SEPOLIA_CARDRUN=0x018e61fA03cd3D66CC21c15C2Eacefb63Ea1Ec22
