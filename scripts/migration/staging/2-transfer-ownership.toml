@@ -1,24 +1,28 @@
+# Transfer ownership of the contracts to the multisig from the deployer
+# pnpm cannon build scripts/migration/testnets/2-transfer-ownership.toml --dry-run --chain-id
 
 name = "infinex-test-transfer-ownership"
 version = "3.0.0"
 
-Arbitrum.multisig = "0x85aCda8bA2b2eB1a311426C6CE60942FC6E8a7BE"
-Base.multisig = "0x715453251C2FA71cbA3F9159e4862D01D016b579"
-Ethereum.multisig = "0xe48A07CAD5F814A56c942643e92095a1Bb92a00e"
-Optimism.multisig = "0x73Dfc536Fd5d5ad8A1024F6429e111C70cA065A4"
-Polygon.multisig = "0x85aCda8bA2b2eB1a311426C6CE60942FC6E8a7BE"
+[var.Settings]
+ARBITRUM_MULTISIG = "0x85aCda8bA2b2eB1a311426C6CE60942FC6E8a7BE"
+BASE_MULTISIG = "0x715453251C2FA71cbA3F9159e4862D01D016b579"
+ETHEREUM_MULTISIG = "0xe48A07CAD5F814A56c942643e92095a1Bb92a00e"
+OPTIMISM_MULTISIG = "0x73Dfc536Fd5d5ad8A1024F6429e111C70cA065A4"
+POLYGON_MULTISIG = "0x85aCda8bA2b2eB1a311426C6CE60942FC6E8a7BE"
+MULTI_SIG = "<%= settings.ARBITRUM_MULTISIG %>"
 
 [pull.InfinexCoreTest]
 source = "infinex-core-test:latest@core"
 
-[invoke.transferOwnershipNewBeacon]
+[invoke.TransferOwnershipNewBeacon]
 target = ["infinex.InfinexProtocolConfigBeacon"]
 func = "transferOwnership"
 args = ["<%= settings.MULTI_SIG %>"]
-from = "<%= settings.DEPLOYER %>"
+fromCall.func = "owner"
 
-# [invoke.acceptOwnershipNewBeacon]
-# target = ["infinex.InfinexProtocolConfigBeacon"]
-# func = "acceptOwnership"
-# from = "<%= settings.MULTI_SIG %>"
-# depends = ["invoke.transferOwnershipNewBeacon"]
+[invoke.AcceptOwnershipNewBeacon]
+target = ["infinex.InfinexProtocolConfigBeacon"]
+func = "acceptOwnership"
+from = "<%= settings.MULTI_SIG %>"
+depends = ["invoke.TransferOwnershipNewBeacon"]
