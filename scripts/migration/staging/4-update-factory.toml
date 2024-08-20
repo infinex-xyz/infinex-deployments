@@ -1,5 +1,5 @@
 # Migrate the testnet account factory and beacon to use the new versions
-# pnpm cannon build scripts/migration/testnets/update-to-latest-beacons.toml --dry-run --chain-id 
+# pnpm cannon build scripts/migration/testnets/4-update-to-latest-beacons.toml --dry-run --chain-id 
 
 name = "infinex-core-test-factory-migration"
 version = "3.0.0"
