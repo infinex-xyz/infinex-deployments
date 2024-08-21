@@ -11,19 +11,22 @@ REVENUE_POOL = "0x6298551D56F825B3b6c3350D32129Ffd3cFb198C"
 WITHDRAWAL_FEE_USDC = "<%= parseUnits(String(0), 6) %>"
 TRUSTED_RECOVERY_KEEPER = "0xf662e118BABcE7d627F7f569B415B474F2189c35"
 
+[pull.AccountFactory]
+source = "infinex-account-factory:1.0.0@main"
+
 [clone.infinex]
 source = "infinex:3.0.0@core"
 target = "infinex:3.0.0@core"
 options.CORE_SALT = "INFINEX_1_0_0staging"
 options.CORE_DEPLOYER = "<%= settings.DEPLOYER %>"
-options.CORE_INITIAL_PROXY_IMPLEMENTATION = "<%= imports.v1.imports.infinex.contracts.InitialProxyImplementation.address %>"
+options.CORE_INITIAL_PROXY_IMPLEMENTATION = "<%= imports.AccountFactory.imports.AccountFactory.contracts.InitialProxyImplementation.address %>"
 options.CORE_REVENUE_POOL = "<%= settings.REVENUE_POOL %>"
 options.CORE_USDC = "0xaf88d065e77c8cC2239327C5EDb3A432268e5831"
 options.CORE_CIRCLE_BRIDGE = "0x19330d10D9Cc8751218eaf51E8885D058642E08A"
 options.CORE_CIRCLE_MINTER = "0xE7Ed1fa7f45D05C508232aa32649D89b73b8bA48"
 options.CORE_DEFAULT_DESTINATION_CCTP_DOMAIN = "6"
 options.CORE_WORMHOLE_CIRCLE_BRIDGE = "0x2703483B1a5a7c577e8680de9Df8Be03c6f30e3c"
-options.CORE_DEFAULT_DESTINATION_WORMHOLE_CHAIN_ID = "30"                                                                    # set the default domain to base for keeper bridging
+options.CORE_DEFAULT_DESTINATION_WORMHOLE_CHAIN_ID = "30"                                                                                       # set the default domain to base for keeper bridging
 # ------- Solana Vars ------- #
 options.CORE_SOLANA_CCTP_DESTINATION_DOMAIN = "5"
 options.CORE_SOLANA_WALLET_SEED = "<%= hexlify('wallet_authority') %>"

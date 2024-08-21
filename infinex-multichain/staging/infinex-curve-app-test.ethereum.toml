@@ -11,9 +11,23 @@ description = "Infinex App integration for Curve StableSwap"
 DEPLOYER = "0x6298551D56F825B3b6c3350D32129Ffd3cFb198C"
 
 [clone.CurveStableSwap]
-options.CURVE_STABLESWAP_SALT = "CURVE_STABLESWAP_1_1_0"
+options.CURVE_STABLESWAP_SALT = "CURVE_STABLESWAP_1_1_0staging"
 options.CURVE_STABLESWAP_OWNER = "<%= settings.DEPLOYER %>"
 options.CURVE_STABLESWAP_USDC = "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48"
 options.CURVE_STABLESWAP_FACTORY = "0x6A8cbed756804B16E05E741eDaBd5cB544AE21bf"
 source = "infinex:1.1.0@curve-stableswap"
 target = "infinex:1.1.0@curve-stableswap"
+
+# ---------- Add To Registry ---------- #
+
+[pull.InfinexCoreTest]
+source = "infinex-core-test:latest@core"
+
+[invoke.AddCurve]
+target = ["InfinexCoreTest.infinex.AppRegistry"]
+func = "setAppBeaconStatus"
+args = [
+    "<%= contracts.CurveStableSwapAppBeacon.address %>",
+    true,
+]
+fromCall.func = "owner"
