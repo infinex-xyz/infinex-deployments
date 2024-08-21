@@ -3,7 +3,8 @@ version = "3.0.0"
 preset = "core"
 description = "Infinex Core Deployments"
 #  pnpm cannon build infinex-multichain/staging/infinex-multichain-base.toml --chain-id 8453 --dry-run --upgrade-from
-#  CANNON_ETHERSCAN_API_URL=https://api.basescan.org/api pnpm cannon verify infinex-core-test:latest@core --chain-id 8453 --api-key 
+#  pnpm cannon publish infinex-core-test:latest@core --chain-id 8453 --exclude-cloned
+#  pnpm cannon verify infinex-core-test:latest@core --chain-id 8453 --api-key 
 
 [var.Deploy]
 DEPLOYER = "0x6298551D56F825B3b6c3350D32129Ffd3cFb198C"
@@ -71,11 +72,11 @@ func = "transferOwnership"
 args = ["<%= settings.MULTISIG %>"]
 fromCall.func = "owner"
 
-[invoke.AcceptOwnershipNewBeacon]
-target = ["infinex.InfinexProtocolConfigBeacon"]
-func = "acceptOwnership"
-from = "<%= settings.MULTISIG %>"
-depends = ["invoke.TransferOwnershipNewBeacon"]
+# [invoke.AcceptOwnershipNewBeacon]
+# target = ["infinex.InfinexProtocolConfigBeacon"]
+# func = "acceptOwnership"
+# from = "<%= settings.MULTISIG %>"
+# depends = ["invoke.TransferOwnershipNewBeacon"]
 
 [invoke.TransferOwnershipAppRegistry]
 target = ["infinex.AppRegistry"]
@@ -83,8 +84,8 @@ func = "transferOwnership"
 args = ["<%= settings.MULTISIG %>"]
 fromCall.func = "owner"
 
-[invoke.AcceptOwnershipAppRegistry]
-target = ["infinex.AppRegistry"]
-func = "acceptOwnership"
-from = "<%= settings.MULTISIG %>"
-depends = ["invoke.TransferOwnershipAppRegistry"]
+# [invoke.AcceptOwnershipAppRegistry]
+# target = ["infinex.AppRegistry"]
+# func = "acceptOwnership"
+# from = "<%= settings.MULTISIG %>"
+# depends = ["invoke.TransferOwnershipAppRegistry"]
