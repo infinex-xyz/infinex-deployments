@@ -14,7 +14,7 @@ WITHDRAWAL_FEE_USDC = "<%= parseUnits(String(0), 6) %>"
 TRUSTED_RECOVERY_KEEPER = "0xf662e118BABcE7d627F7f569B415B474F2189c35"
 
 [pull.AccountFactory]
-source = "infinex-account-factory:1.0.0@main"
+source = "infinex-account-factory-test:1.0.0@main"
 
 [clone.infinex]
 source = "infinex:3.0.0@core"
@@ -72,11 +72,11 @@ func = "transferOwnership"
 args = ["<%= settings.MULTISIG %>"]
 fromCall.func = "owner"
 
-# [invoke.AcceptOwnershipNewBeacon]
-# target = ["infinex.InfinexProtocolConfigBeacon"]
-# func = "acceptOwnership"
-# from = "<%= settings.MULTISIG %>"
-# depends = ["invoke.TransferOwnershipNewBeacon"]
+[invoke.AcceptOwnershipNewBeacon]
+target = ["infinex.InfinexProtocolConfigBeacon"]
+func = "acceptOwnership"
+from = "<%= settings.MULTISIG %>"
+depends = ["invoke.TransferOwnershipNewBeacon"]
 
 [invoke.TransferOwnershipAppRegistry]
 target = ["infinex.AppRegistry"]
@@ -84,8 +84,8 @@ func = "transferOwnership"
 args = ["<%= settings.MULTISIG %>"]
 fromCall.func = "owner"
 
-# [invoke.AcceptOwnershipAppRegistry]
-# target = ["infinex.AppRegistry"]
-# func = "acceptOwnership"
-# from = "<%= settings.MULTISIG %>"
-# depends = ["invoke.TransferOwnershipAppRegistry"]
+[invoke.AcceptOwnershipAppRegistry]
+target = ["infinex.AppRegistry"]
+func = "acceptOwnership"
+from = "<%= settings.MULTISIG %>"
+depends = ["invoke.TransferOwnershipAppRegistry"]

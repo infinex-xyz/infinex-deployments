@@ -1,0 +1,31 @@
+# Migrate the testnet account factory and beacon to use the new versions
+# pnpm cannon build scripts/migration/testnets/set-trusted-recovery-keeper.toml --dry-run --chain-id  
+
+name = "infinex-core-test-migration"
+version = "3.0.2"
+
+[var.Deploy]
+TRUSTED_RECOVERY_KEEPER = "0x6298551D56F825B3b6c3350D32129Ffd3cFb198C"
+
+[pull.latestVersion]
+source = "infinex-core-test:latest@core"
+
+[pull.v2]
+source = "infinex-multichain:1.1.0@O2"
+
+[pull.v1]
+source = "infinex-multichain:0.1.7@O2"
+
+# ---------- Update Old Beacons ---------- #
+
+[invoke.v1setTrustedRecoveryKeeper]
+target = ["v1.infinex.InfinexProtocolConfigBeacon"]
+func = "setTrustedRecoveryKeeper"
+args = ["<%= settings.TRUSTED_RECOVERY_KEEPER %>", true]
+fromCall.func = "owner"
+
+[invoke.v2setTrustedRecoveryKeeper]
+target = ["v2.infinex.InfinexProtocolConfigBeacon"]
+func = "setTrustedRecoveryKeeper"
+args = ["<%= settings.TRUSTED_RECOVERY_KEEPER %>", true]
+fromCall.func = "owner"
