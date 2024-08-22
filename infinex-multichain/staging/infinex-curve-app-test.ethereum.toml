@@ -31,3 +31,16 @@ args = [
     true,
 ]
 fromCall.func = "owner"
+
+# ---------- Add Supported Pools To App Beacon ---------- #
+[var.SupportedPools]
+USDCUSDE_POOL = "0x02950460E2b9529D0E00284A5fA2d7bDF3fA4d72"
+
+[invoke.AddUSDCUSDEPool]
+target = ["CurveStableSwap.CurveStableSwapAppBeacon"]
+func = "setIsSupportedPool"
+args = [
+    "<%= settings.USDCUSDE_POOL %>",
+    true,
+]
+fromCall.func = "owner"
