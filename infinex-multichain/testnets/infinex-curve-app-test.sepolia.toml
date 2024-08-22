@@ -18,3 +18,25 @@ options.CURVE_STABLESWAP_FACTORY = "0xfb37b8D939FFa77114005e61CFc2e543d6F49A81"
 source = "infinex:1.1.0@curve-stableswap"
 target = "infinex:1.1.0@curve-stableswap"
 
+# ---------- Add Supported Pools To App Beacon ---------- #
+[var.SupportedPools]
+FAKE_USDCUSDE_POOL = "0xeef7894341be733c8d8805c54c369e1297e3c86e"
+FAKE_USDCUSDE_POOL_2 = "0xf937a1e8f0d6b1b5133351a28ca42bba3d56bfa4"
+
+[invoke.AddUSDCUSDEPool]
+target = ["CurveStableSwap.CurveStableSwapAppBeacon"]
+func = "setIsSupportedPool"
+args = [
+    "<%= settings.FAKE_USDCUSDE_POOL %>",
+    true,
+]
+fromCall.func = "owner"
+
+[invoke.AddUSDCUSDEPool2]
+target = ["CurveStableSwap.CurveStableSwapAppBeacon"]
+func = "setIsSupportedPool"
+args = [
+    "<%= settings.FAKE_USDCUSDE_POOL_2 %>",
+    true,
+]
+fromCall.func = "owner"
