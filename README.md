@@ -24,17 +24,17 @@ This is a GitOps repo for deployment of the [Infinex](https://www.github.com/inf
 
 `./run pnpm cannon build TOML_FILE --chain-id CHAIN_ID --provider-url PROVIDER_URL --dry-run`
 
-- When everything is building correctly and the contracts are ready to be deployed the build command can be run using `--private-key` in order to specify the private key of the deployer wallet. Please note that the wallet should have ETH on the targeted chain.
+- A valid signer wallet in Frame is required to deploy the contracts. The wallet should have the base currency on the targeted chain.
 
 - If the deployment is an upgrade from a previous version, the `--upgrade-from infinex-multichain:PREVIOUS_VERSION` command will be required. This command will most likely be required for every new deployment of a package.
 
-`./run pnpm cannon build TOML_FILE --chain-id CHAIN_ID --provider-url PROVIDER_URL --private-key PRIVATE_KEY --upgrade-from infinex-multichain:PREVIOUS_VERSION`
+`./run pnpm cannon build TOML_FILE --chain-id CHAIN_ID --provider-url PROVIDER_URL --upgrade-from infinex-multichain:PREVIOUS_VERSION`
 
 ## Publish a new deployment on Cannon
 
 When a deployment is successful the last step is to publish it to Cannon. It can be done using the `cannon publish` command:
 
-`./run pnpm cannon publish infinex-multichain:VERSION --chain-id CHAIN_ID --private-key PRIVATE_KEY`
+`./run pnpm cannon publish infinex-multichain:VERSION --chain-id CHAIN_ID`
 
 with:
 - VERSION: the version of the package. Eg: `infinex-multichain:0.0.1`.
@@ -74,16 +74,54 @@ It is possible for Cannon to verify freshly deployed contracts, using the follow
 `./run pnpm cannon verify infinex-multichain:VERSION -c CHAIN_ID --api-key ETHERSCAN_KEY`
 
 
+## How to upgrade a package where the implementation being used for a proxy has changed
+This process involves multiple steps, not just a simple `--upgrade-from` due to the proxy bytecode differing with a new implementation. This makes cannon think that the proxy needs to be deployed again, since the bytecode has changed.
+
+1. Build the cannonfile in the contracts repo as normal.
+
+2. In the deployments repo (this repo), update the deployment cannonfile to use the new version of the locally built cannonfile. This means setting the `source` and `target` of the clone step to use the package name of the cannonfile from the contracts repo. e.g. `source = "infinex-governance-points:2.0.0@stw"`
+
+3. When building the new deployment, cannon will think that it needs to retry some of the steps which it has already completed in the previous deployment. To solve this, we use `cannon alter` to tell the new deployment that it doesn't need to do those steps. This is the command you'll need to run:
+
+```
+pnpm cannon alter --subpkg [CLONE_STEP_FROM_DEPLOYMENT_FILE] [PACKAGE_TO_UPGRADE_FROM] mark-complete [SPACE_SEPARATED_CANNON_STEPS_TO_SKIP] --chain-id [CHAIN_ID_OF_DEPLOYMENT]
+```
+
+Let's break down what this command is doing. We are running `cannon alter` on the `PACKAGE_TO_UPGRADE_FROM`. What this does is marks the steps from the `PACKAGE_TO_UPGRADE_FROM` that don't need to be repeated when upgrading from it. You need to specify the `CLONE_STEP_FROM_DEPLOYMENT_FILE` to tell cannon where to find the `CANNON_STEP_TO_SKIP`, since this is where the step is being imported from.
+
+
+e.g. To mark the `GovernancePointsProxy` deploy step in the previous deployment so that it doesn't attempt it again in the new deployment, run this command:
+
+```
+pnpm cannon alter --subpkg clone.InfinexGovernancePoints infinex-gp:0.1.7@StW mark-complete deploy.GovernancePointsProxy --chain-id 84532
+```
+
+At no point should you be referencing the locally built cannonfile. This should only be referenced in the deployment file in the source/target of the clone.
+
+4. The output of the alter command should be an ipfs url. If it comes up with `Cannot read properties of null`, that means you've got an invalid reference somewhere. Now you are ready to run the `build` command using the output from the `alter` command.
+
+```
+pnpm cannon build [FILE_PATH_OF_DEPLOYMENT_FILE] --chain-id [CHAIN_ID_OF_DEPLOYMENT] --registry-priority local --upgrade-from ipfs://[IPFS_CONTENT_HASH] 
+```
+
+Let's break down what this command is doing. `cannon build` is deploying the `FILE_PATH_OF_DEPLOYMENT_FILE` cannonfile to the `CHAIN_ID_OF_DEPLOYMENT` specified. When it does so, we want the steps it's importing from the `clone` source/target to be sourced from our local `registry-priority` so it finds our newly built local package and ipfs content hash. We specify `upgrade-from` to tell cannon that we will be upgrading this from an existing deployment and that it doesn't need to run all the steps. It looks at `IPFS_CONTENT_HASH`, the output of `alter`, to know which steps it doesn't need to repeat. `PRIVATE_KEY` is the key used to deploy these contracts.
+
+e.g. To deploy the new version of governance points on base sepolia, here's what it would look like.
+
+```
+pnpm cannon build infinex-governance-points/testnets/infinex-governance-points-base-sepolia.toml --chain-id 84532 --registry-priority local --upgrade-from ipfs://QmWkKsLAAew35yVUbjkCBUtWWHGvyXHALZkZG8iTTBj4r3 
+```
+
 ## useful commands
  ```
-  CANNON_REGISTRY_PRIORITY=local pnpm cannon alter --chain-id 421614  --subpkg clone.infinex infinex-multichain:0.1.7@O2 mark-complete deploy.Forwarder deploy.AccountFactory invoke.AccountFactoryInitialize deploy.InitialProxyImplementation
+  pnpm cannon alter --chain-id 421614 --subpkg clone.infinex infinex-multichain:0.1.7@O2 mark-complete deploy.Forwarder deploy.AccountFactory invoke.AccountFactoryInitialize deploy.InitialProxyImplementation
   ```
    generates an IPFS url that can be upgraded from if steps are executing that shouldn't. Cannon checks and redeploys a contract if the bytecode has changed, which can be for many reasons, including a different compiler version.
 
    e.g. upgrade to function would reference the generated ipfs url 
 
 ```
- CANNON_REGISTRY_PRIORITY=local pnpm cannon build infinex-multichain/testnet/infinex-multichain-arbitrum-sepolia.toml --chain-id 421614 --private-key  XXXX --upgrade-from @ipfs:QmcU78qLgucSaPerrJqYEaanMCNVZhZbBgSiyGgcyvcpy3
+ pnpm cannon build infinex-multichain/testnet/infinex-multichain-arbitrum-sepolia.toml --chain-id 421614 --upgrade-from @ipfs:QmcU78qLgucSaPerrJqYEaanMCNVZhZbBgSiyGgcyvcpy3 --registry-priority local
 ```
 
 also, when publishing, adding ` --tags 1.0.0` ensures that a package only gets published with the specified space separated tags, and not default which includes latest
