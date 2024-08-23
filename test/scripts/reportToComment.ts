@@ -2,7 +2,7 @@
 // Generates GitHub comment Markdown and outputs to console
 // Configurable with various environment variables
 
-import config from "./vitest.config";
+import config from "../vitest.config";
 import * as fs from "node:fs/promises";
 import * as path from "node:path";
 

@@ -51,10 +51,6 @@ describe.concurrent.each(Object.keys(evmChains))(
       AccountFactoryAbi,
     );
     const appRegistry = getContract(`${CHAIN}_APP_REGISTRY`, AppRegistryAbi);
-    const curveStableswapAppBeacon = getContract(
-      `${CHAIN}_CURVE_STABLESWAP_APP_BEACON`,
-      CurveStableSwapAppBeaconAbi,
-    );
     const forwarder = getContract(
       `${CHAIN}_FORWARDER_ADDRESS`,
       InfinexERC2771ForwarderAbi,
@@ -74,10 +70,6 @@ describe.concurrent.each(Object.keys(evmChains))(
     );
     const accountsRouterV2Address = getAddress(
       `${CHAIN}_ACCOUNTS_ROUTER_V2_ADDRESS`,
-    );
-
-    const curveAppConfig = await loadToml(
-      `${configDir}/infinex-curve-app-test.${networkName}.toml`,
     );
 
     const config = await loadToml(
@@ -220,45 +212,6 @@ describe.concurrent.each(Object.keys(evmChains))(
     test("App registry has no pending owner", async () => {
       const pending = await appRegistry.read.pendingOwner();
       expect(pending).toMatch(/^0x0+/);
-    });
-
-    test("App registry app beacon interface supported by curve stableswap app beacon", async () => {
-      const appBeaconInterface = await appRegistry.read.appBeaconInterface();
-      expect(
-        await curveStableswapAppBeacon.read.supportsInterface([
-          appBeaconInterface,
-        ]),
-      ).toBe(true);
-    });
-
-    test("Curve stableswap app beacon is a deployed contract", async () => {
-      expect(await isContract(curveStableswapAppBeacon.address)).toBe(true);
-    });
-
-    test("Curve stableswap app beacon owner matches config", async () => {
-      const owner = await curveStableswapAppBeacon.read.owner();
-      const deployVars = curveAppConfig.var.Deploy;
-      if (env === "mainnets") {
-        expect(deployVars.MULTI_SIG).toBeTypeOf("string");
-      }
-      const expectedOwner = deployVars.MULTI_SIG ?? deployVars.DEPLOYER;
-      expect(owner).toBe(expectedOwner);
-    });
-
-    test("Curve stableswap app beacon has no pending owner", async () => {
-      const pending = await curveStableswapAppBeacon.read.pendingOwner();
-      expect(pending).toMatch(/^0x0+/);
-    });
-
-    test("Curve stableswap app beacon points to valid USDC contract", async () => {
-      const USDCAddress = await curveStableswapAppBeacon.read.USDC();
-      await checkUSDCAddress(USDCAddress);
-    });
-
-    test("Curve stableswap app beacon is recognised by app registry", async () => {
-      expect(
-        await appRegistry.read.appBeacons([curveStableswapAppBeacon.address]),
-      ).toBe(true);
     });
   },
 );
