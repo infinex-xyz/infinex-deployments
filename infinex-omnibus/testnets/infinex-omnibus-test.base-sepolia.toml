@@ -1,0 +1,28 @@
+#  pnpm cannon build infinex-omnibus/testnets/infinex-omnibus-test.base-sepolia.toml --chain-id 84532 --dry-run
+#  pnpm cannon publish infinex-omnibus-test:latest@omnibus --chain-id 84532 --exclude-cloned
+
+name = "infinex-omnibus-test"
+version = "3.0.0"
+preset = "omnibus"
+description = "All Infinex Deployments"
+
+[pull.AccountFactoryV1]
+source = "infinex-account-factory-test:1.0.0@main"
+
+[pull.CoreV1]
+source = "infinex-multichain:0.1.7@O2"
+
+[pull.CoreV2]
+source = "infinex-multichain:1.1.0@O2"
+
+[pull.CoreV3]
+source = "infinex-core-test:3.0.2@core"
+
+[pull.GovernancePointsV1]
+source = "infinex-gp:0.1.7@StW"
+
+[pull.GovernancePointsV2]
+source = "infinex-gp:1.0.0@StW"
+
+[pull.PatronPurchaseAppV1]
+source = "infinex-patron-test:1.0.0@patron-purchase"
