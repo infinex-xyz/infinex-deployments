@@ -1,4 +1,4 @@
-#!/usr/bin/env npx tsx
+#!/usr/bin/env -S npx tsx
 // Generates GitHub comment Markdown and outputs to console
 // Configurable with various environment variables
 
