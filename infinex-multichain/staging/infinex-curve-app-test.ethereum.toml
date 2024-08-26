@@ -1,0 +1,46 @@
+#  pnpm cannon build infinex-multichain/staging/infinex-curve-app-test.ethereum.toml --chain-id 1 --dry-run
+#  pnpm cannon publish infinex-curve-app-test:1.1.0@curve-stableswap --chain-id 1 --exclude-cloned
+#  pnpm cannon verify infinex-curve-app-test:latest@curve-stableswap --chain-id 1 --api-key
+
+name = "infinex-curve-app-test"
+version = "1.1.0"
+preset = "curve-stableswap"
+description = "Infinex App integration for Curve StableSwap"
+
+[var.Deploy]
+DEPLOYER = "0x6298551D56F825B3b6c3350D32129Ffd3cFb198C"
+
+[clone.CurveStableSwap]
+source = "infinex:1.1.0@curve-stableswap"
+target = "infinex:1.1.0@curve-stableswap"
+options.CURVE_STABLESWAP_SALT = "CURVE_STABLESWAP_1_1_0staging"
+options.CURVE_STABLESWAP_OWNER = "<%= settings.DEPLOYER %>"
+options.CURVE_STABLESWAP_USDC = "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48"
+options.CURVE_STABLESWAP_FACTORY = "0x6A8cbed756804B16E05E741eDaBd5cB544AE21bf"
+
+# ---------- Add To Registry ---------- #
+
+[pull.InfinexCoreTest]
+source = "infinex-core-test:latest@core"
+
+[invoke.AddCurve]
+target = ["InfinexCoreTest.infinex.AppRegistry"]
+func = "setAppBeaconStatus"
+args = [
+    "<%= CurveStableSwap.CurveStableSwapAppBeacon.address %>",
+    true,
+]
+fromCall.func = "owner"
+
+# ---------- Add Supported Pools To App Beacon ---------- #
+[var.SupportedPools]
+USDCUSDE_POOL = "0x02950460E2b9529D0E00284A5fA2d7bDF3fA4d72"
+
+[invoke.AddUSDCUSDEPool]
+target = ["CurveStableSwap.CurveStableSwapAppBeacon"]
+func = "setIsSupportedPool"
+args = [
+    "<%= settings.USDCUSDE_POOL %>",
+    true,
+]
+fromCall.func = "owner"
