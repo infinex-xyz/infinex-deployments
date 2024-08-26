@@ -1,11 +1,11 @@
-import { evmChains, type EvmChains } from "@infinex/infinex-sdk/src/types";
 import * as toml from "smol-toml";
 import fs from "node:fs/promises";
 import dotenv from "dotenv";
 import * as viem from "viem";
 import * as chains from "viem/chains";
+import { ChainKey } from "@infinex/evm-sdk/src";
 
-export { evmChains, type EvmChains } from "@infinex/infinex-sdk/src/types";
+export { evmChainKeys } from "@infinex/evm-sdk/";
 
 export const envs = ["testnets", "staging", "mainnets"] as const;
 export type Env = (typeof envs)[number];
@@ -103,7 +103,7 @@ export async function loadLocalConfig({
 }
 
 export type Client = viem.PublicClient<viem.HttpTransport>;
-export function getClient(chain: EvmChains): Client {
+export function getClient(chain: ChainKey): Client {
   return localConfig.clients[chain];
 }
 

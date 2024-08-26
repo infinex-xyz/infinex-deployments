@@ -48,16 +48,16 @@ describe.concurrent.each(Object.keys(evmChains))(
     }
     const accountFactory = getContract(
       `${CHAIN}_ACCOUNT_FACTORY_ADDRESS`,
-      AccountFactoryAbi,
+      AccountFactoryAbi
     );
     const appRegistry = getContract(`${CHAIN}_APP_REGISTRY`, AppRegistryAbi);
     const forwarder = getContract(
       `${CHAIN}_FORWARDER_ADDRESS`,
-      InfinexERC2771ForwarderAbi,
+      InfinexERC2771ForwarderAbi
     );
     const protocolConfigBeacon = getContract(
       `${CHAIN}_INFINEX_PROTOCOL_CONFIG_BEACON_ADDRESS`,
-      InfinexProtocolConfigBeaconAbi,
+      InfinexProtocolConfigBeaconAbi
     );
 
     function getAddress(varName: string): `0x${string}` | undefined {
@@ -66,14 +66,14 @@ describe.concurrent.each(Object.keys(evmChains))(
       return viem.getAddress(value);
     }
     const accountsRouterV1Address = getAddress(
-      `${CHAIN}_ACCOUNTS_ROUTER_V1_ADDRESS`,
+      `${CHAIN}_ACCOUNTS_ROUTER_V1_ADDRESS`
     );
     const accountsRouterV2Address = getAddress(
-      `${CHAIN}_ACCOUNTS_ROUTER_V2_ADDRESS`,
+      `${CHAIN}_ACCOUNTS_ROUTER_V2_ADDRESS`
     );
 
     const config = await loadToml(
-      `${configDir}/infinex-multichain-${networkName}.toml`,
+      `${configDir}/infinex-multichain-${networkName}.toml`
     );
 
     async function isContract(address: `0x${string}`): Promise<boolean> {
@@ -159,7 +159,7 @@ describe.concurrent.each(Object.keys(evmChains))(
       const revenuePoolAddress =
         config.var.Deploy.REVENUE_POOL ?? config.var.deploy.REVENUE_POOL;
       expect(await protocolConfigBeacon.read.revenuePool()).toBe(
-        revenuePoolAddress,
+        revenuePoolAddress
       );
     });
 
@@ -183,9 +183,7 @@ describe.concurrent.each(Object.keys(evmChains))(
     test("Protocol config beacon recognises recovery keeper address from Platform app", async () => {
       const keeperAddress = platformConfig.recoveryKeeperAddress;
       expect(
-        await protocolConfigBeacon.read.isTrustedRecoveryKeeper([
-          keeperAddress,
-        ]),
+        await protocolConfigBeacon.read.isTrustedRecoveryKeeper([keeperAddress])
       ).toBe(true);
     });
 
@@ -213,5 +211,5 @@ describe.concurrent.each(Object.keys(evmChains))(
       const pending = await appRegistry.read.pendingOwner();
       expect(pending).toMatch(/^0x0+/);
     });
-  },
+  }
 );

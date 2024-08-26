@@ -1,5 +1,5 @@
 import { Abi, parseAbi } from "viem";
-export * from "@infinex/infinex-sdk/src/abis";
+export * from "@infinex/manifest/abis";
 
 // Contract ABIs
 // (Generally only support views for smoke testing.)
@@ -22,10 +22,3 @@ export const PythEntropyAbi = parseAbi([
 ]);
 
 // Infinex Multichain
-
-export const AppRegistryAbi = parseAbi([
-  ...ownable2StepSigs,
-  "function appAccountInterface() view returns (bytes4)",
-  "function appBeaconInterface() view returns (bytes4)",
-  "function appBeacons(address) view returns (bool)",
-]);
