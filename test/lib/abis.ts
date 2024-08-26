@@ -1,5 +1,6 @@
 import { Abi, parseAbi } from "viem";
 export * from "@infinex/manifest/abis";
+export * from "@infinex/infinex-sdk/src/abis";
 
 // Contract ABIs
 // (Generally only support views for smoke testing.)

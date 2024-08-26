@@ -66,7 +66,7 @@ describe.concurrent(`Craterun (${env})`, async () => {
   test("Opener owner matches config", async () => {
     const owner = await opener.read.owner();
     const deployVars = config.var.Deploy;
-    if (env === "prod") {
+    if (env === "mainnets") {
       expect(deployVars.CRATERUN_MULTI_SIG).toBeTypeOf("string");
     }
     const expectedOwner =
