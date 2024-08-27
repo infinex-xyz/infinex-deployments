@@ -102,6 +102,19 @@ export async function loadLocalConfig({
   };
 }
 
+export async function getNetworkName(client: Client): Promise<string> {
+  const chainId = await client.getChainId();
+  const chain = getChainById(chainId);
+  const name = chain.name.toLowerCase().replace(/ /g, "-");
+  if (name === "op-mainnet") return "optimism";
+  if (name === "arbitrum-one") return "arbitrum";
+  if (name.startsWith("op-")) return name.replace("op-", "optimism-");
+  if (name.startsWith("matic")) return name.replace("matic", "polygon");
+  if (name.endsWith("-mainnet")) return name.replace("-mainnet", "");
+  if (name === "mainnet") return "ethereum";
+  return name;
+}
+
 export type Client = viem.PublicClient<viem.HttpTransport>;
 export function getClient(chain: ChainKey): Client {
   return localConfig.clients[chain];

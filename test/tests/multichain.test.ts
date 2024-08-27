@@ -20,19 +20,6 @@ import {
 import { describe, expect, test } from "vitest";
 import * as viem from "viem";
 
-async function getNetworkName(client: Client): Promise<string> {
-  const chainId = await client.getChainId();
-  const chain = getChainById(chainId);
-  const name = chain.name.toLowerCase().replace(/ /g, "-");
-  if (name === "op-mainnet") return "optimism";
-  if (name === "arbitrum-one") return "arbitrum";
-  if (name.startsWith("op-")) return name.replace("op-", "optimism-");
-  if (name.startsWith("matic")) return name.replace("matic", "polygon");
-  if (name.endsWith("-mainnet")) return name.replace("-mainnet", "");
-  if (name === "mainnet") return "ethereum";
-  return name;
-}
-
 describe.concurrent.each(Object.keys(evmChains))(
   `Multichain (%s ${env})`,
   async (chain) => {

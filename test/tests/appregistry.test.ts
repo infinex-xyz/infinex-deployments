@@ -42,7 +42,6 @@ describe.concurrent.each(appRegistryChains)(
     const chainId = await client.getChainId();
     const chain = getChainById(chainId);
     const networkName = chain.name.toLowerCase().replace(" ", "-");
-    const configDir = `../infinex-multichain/${env}`;
 
     // Load the environment-specific configuration
     const envConfig = getEnvConfig(env);
