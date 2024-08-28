@@ -2,13 +2,13 @@
 # pnpm cannon build scripts/migration/staging/3-update-to-latest-beacons.toml --dry-run --chain-id 
 
 name = "infinex-core-test-beacon-update"
-version = "3.0.0"
+version = "3.1.0"
 
 [pull.latestVersion]
 source = "infinex-core-test:latest@core"
 
-[pull.v2]
-source = "infinex-multichain:1.1.0staging@O2"
+# [pull.v2]
+# source = "infinex-multichain:1.1.0staging@O2"
 
 [pull.v1]
 source = "infinex-multichain:1.0.0staging@O2"
@@ -23,10 +23,10 @@ args = [
 ]
 fromCall.func = "owner"
 
-[invoke.v2BeaconSetLatestInfinexProtocolConfigBeacon]
-target = ["v2.infinex.InfinexProtocolConfigBeacon"]
-func = "setLatestInfinexProtocolConfigBeacon"
-args = [
-    "<%= imports.latestVersion.imports.infinex.contracts.InfinexProtocolConfigBeacon.address %>",
-]
-fromCall.func = "owner"
+# [invoke.v2BeaconSetLatestInfinexProtocolConfigBeacon]
+# target = ["v2.infinex.InfinexProtocolConfigBeacon"]
+# func = "setLatestInfinexProtocolConfigBeacon"
+# args = [
+#     "<%= imports.latestVersion.imports.infinex.contracts.InfinexProtocolConfigBeacon.address %>",
+# ]
+# fromCall.func = "owner"
