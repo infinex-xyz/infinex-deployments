@@ -11,8 +11,6 @@ import {
 } from "../lib/utils";
 import {
   AccountFactoryAbi,
-  AppRegistryAbi,
-  CurveStableSwapAppBeaconAbi,
   Erc20Abi,
   InfinexERC2771ForwarderAbi,
   InfinexProtocolConfigBeaconAbi,

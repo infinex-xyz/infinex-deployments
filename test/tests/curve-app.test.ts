@@ -8,7 +8,7 @@ import {
 import testEnv from "@infinex/evm-sdk/env/test";
 import stagingEnv from "@infinex/evm-sdk/env/staging";
 import prodEnv from "@infinex/evm-sdk/env/prod";
-import { AppRegistry, CurveStableSwapAppBeaconAbi } from "../lib/abis";
+import { CurveStableSwapAppBeaconAbi } from "../lib/abis";
 import { describe, expect, test } from "vitest";
 import * as viem from "viem";
 import { ChainKey } from "@infinex/evm-sdk/src";
