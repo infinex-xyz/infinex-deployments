@@ -7,7 +7,7 @@ description = "Infinex Core Deployments"
 #  pnpm cannon verify infinex-core-test:3.0.0@core --chain-id 8453 --api-key 
 
 [var.Deploy]
-DEPLOYER = "0x7Bb5DfC8622D296bF259c951490dC9E1Cc0951d3"
+DEPLOYER = "0x6298551D56F825B3b6c3350D32129Ffd3cFb198C"
 REVENUE_POOL = "0x7299aF061A210157f7AcaEaDa22534ae3b72C956"
 MULTISIG = "0x7299aF061A210157f7AcaEaDa22534ae3b72C956"
 WITHDRAWAL_FEE_USDC = "<%= parseUnits(String(0), 6) %>"
