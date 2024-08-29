@@ -1,0 +1,31 @@
+# Migrate the testnet account factory and beacon to use the new versions
+# pnpm cannon build scripts/migration/prod/2-update-to-latest-beacons.toml --dry-run --chain-id 
+# ./cannon_chains.sh "pnpm cannon build scripts/migration/prod/2-beacon-update/2-update-to-latest-beacons.CHAIN_NAME.toml --dry-run --chain-id CHAIN_ID" -e mainnet   
+
+name = "infinex-core-beacon-update"
+version = "3.0.0"
+
+[pull.latestVersion]
+source = "infinex-core:latest@core"
+
+[pull.v1]
+source = "infinex-multichain:1.0.0@O2"
+
+# ---------- Update Old Beacons ---------- #
+
+[invoke.v1BeaconSetLatestInfinexProtocolConfigBeacon]
+target = ["v1.infinex.InfinexProtocolConfigBeacon"]
+func = "setLatestInfinexProtocolConfigBeacon"
+args = [
+    "<%= imports.latestVersion.imports.infinex.contracts.InfinexProtocolConfigBeacon.address %>",
+]
+fromCall.func = "owner"
+
+[invoke.v2BeaconSetLatestInfinexProtocolConfigBeacon]
+target = ["0xB09a1a16a9306a0A882A518C9F0d8B4bf42291D1"]
+abi = '[{"name": "setLatestInfinexProtocolConfigBeacon","type": "function","inputs": [{"name": "_latestInfinexProtocolConfigBeacon","type": "address"}],"outputs": []},{"name": "owner","type": "function","inputs": [],"outputs": [{"name": "","type": "address","internalType": "address"}],"stateMutability": "view"}]'
+func = "setLatestInfinexProtocolConfigBeacon"
+args = [
+    "<%= imports.latestVersion.imports.infinex.contracts.InfinexProtocolConfigBeacon.address %>",
+]
+fromCall.func = "owner"

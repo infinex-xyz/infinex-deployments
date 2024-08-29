@@ -1,6 +1,6 @@
 # Migrate the testnet account factory and beacon to use the new versions
-# pnpm cannon build scripts/migration/prod/2-update-factory.toml --dry-run --chain-id 
-# ./cannon_chains.sh "pnpm cannon build scripts/migration/prod/2-update-factory.toml --chain-id CHAIN_ID --dry-run" -e mainnets
+# pnpm cannon build scripts/migration/prod/3-update-factory.toml --dry-run --chain-id 
+# ./cannon_chains.sh "pnpm cannon build scripts/migration/prod/3-update-factory.toml --chain-id CHAIN_ID --dry-run" -e mainnet
 
 name = "infinex-core-factory-script"
 version = "3.0.0"

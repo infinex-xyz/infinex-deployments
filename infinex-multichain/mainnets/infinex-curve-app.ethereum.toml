@@ -36,9 +36,3 @@ target = ["CurveStableSwap.CurveStableSwapAppBeacon"]
 func = "transferOwnership"
 args = ["<%= settings.MULTISIG %>"]
 fromCall.func = "owner"
-
-[invoke.AcceptOwnershipNewBeacon]
-target = ["CurveStableSwap.CurveStableSwapAppBeacon"]
-func = "acceptOwnership"
-from = "<%= settings.MULTISIG %>"
-depends = ["invoke.TransferOwnershipNewBeacon"]

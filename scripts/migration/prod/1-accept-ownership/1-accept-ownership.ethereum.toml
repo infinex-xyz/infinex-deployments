@@ -1,0 +1,36 @@
+# Transfer ownership of the contracts to the multisig from the deployer
+# pnpm cannon build scripts/migration/staging/2-transfer-ownership.toml --dry-run --chain-id
+
+name = "infinex-test-transfer-ownership"
+version = "3.0.0"
+
+[var.Multisigs]
+ARBITRUM_MULTISIG = "0x87213Fa8BA3b8170E940aAF47096A4322a344De3"
+BASE_MULTISIG = "0x7299aF061A210157f7AcaEaDa22534ae3b72C956"
+ETHEREUM_MULTISIG = "0x1548c73d55e3D3000B5351852790B05fC67d2B28"
+OPTIMISM_MULTISIG = "0x7299aF061A210157f7AcaEaDa22534ae3b72C956"
+POLYGON_MULTISIG = "0x87213Fa8BA3b8170E940aAF47096A4322a344De3"
+
+[var.Settings]
+MULTISIG = "<%= settings.ETHEREUM_MULTISIG %>"
+
+[pull.InfinexCore]
+source = "infinex-core:latest@core"
+
+[invoke.AcceptOwnershipNewBeacon]
+target = ["InfinexCore.infinex.InfinexProtocolConfigBeacon"]
+func = "acceptOwnership"
+from = "<%= settings.MULTISIG %>"
+
+[invoke.AcceptOwnershipAppRegistry]
+target = ["InfinexCore.infinex.AppRegistry"]
+func = "acceptOwnership"
+from = "<%= settings.MULTISIG %>"
+
+[pull.InfinexCurveApp]
+source = "infinex-curve-app:latest@curve-stableswap"
+
+[invoke.AcceptOwnershipCurveBeacon]
+target = ["InfinexCurveApp.CurveStableSwap.CurveStableSwapAppBeacon"]
+func = "acceptOwnership"
+from = "<%= settings.MULTISIG %>"

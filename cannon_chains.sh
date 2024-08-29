@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/opt/local/bin/bash
 
 # This script is used for running cannon commands on multiple chains.
 
@@ -19,7 +19,7 @@ declare -A CHAIN_NAME_TO_ID=(
 
 # Function to display usage instructions
 usage() {
-    echo "Usage: $0 [-e | --env <environment>] [--chain-ids <chain_id1,chain_id2,...>] [--chain-names <chain_name1,chain_name2,...>] [--verify] <command>"
+    echo "Usage: $0 [-e | --env <environment>] [--chain-ids <chain_id1,chain_id2,...>] [--chain-names <chain_name1,chain_name2,...>] <command>"
     echo
     echo "This script allows you to run cannon commands across multiple blockchain environments."
     echo
@@ -43,13 +43,13 @@ usage() {
     echo "     ./cannon_chains.sh \"pnpm cannon build deployments/account-factory/infinex-account-factory.toml --dry-run --chain-id CHAIN_ID\" --chain-ids 1 8453"
     echo "   - This will run the command for the specified chain IDs directly."
     echo
-    echo "4. Verification Mode with --verify:"
-    echo "   Use the --verify flag to automatically construct a cannon verify command for each chain."
-    echo "   - The script will look up the appropriate API key based on the chain name."
+    echo "4. Automatic API Key and Private Key Substitution:"
+    echo "   The script automatically substitutes API_KEY and PRIVATE_KEY placeholders in the command with values from .env.secrets."
     echo "   - API keys are expected to be stored in the .env.secrets file as VERIFY_API_KEY_<CHAIN_NAME>."
+    echo "   - PRIVATE_KEY should be stored as PRIVATE_KEY in the .env.secrets file."
     echo "   - Example:"
-    echo "     ./cannon_chains.sh \"pnpm cannon verify infinex-core-test:1.0.0@core --chain-id CHAIN_ID --api-key API_KEY\" --verify --env testnet"
-    echo "   - This will run the verification command for all testnet chains, automatically inserting the chain ID and API key."
+    echo "     ./cannon_chains.sh \"pnpm cannon verify infinex-core:latest@core --chain-id CHAIN_ID --api-key API_KEY --private-key PRIVATE_KEY\" --env testnet"
+    echo "   - This will automatically insert the chain ID, API key, and private key into the command."
     echo
     echo "5. Full Command Customization:"
     echo "   If you want full control over the command, you can provide a custom command string, with placeholders for CHAIN_ID and CHAIN_NAME."
@@ -59,9 +59,9 @@ usage() {
     echo "   - This will build the specified TOML file for each chain in the testnet environment."
     echo
     echo "6. Combining Options:"
-    echo "   You can combine the options to target specific chains, environments, or use verification mode."
+    echo "   You can combine the options to target specific chains or environments."
     echo "   - Example:"
-    echo "     ./cannon_chains.sh \"pnpm cannon verify infinex-core-test:1.0.0@core --chain-id CHAIN_ID --api-key API_KEY\" --verify --chain-names ethereum-sepolia base-sepolia"
+    echo "     ./cannon_chains.sh \"pnpm cannon verify infinex-core-test:1.0.0@core --chain-id CHAIN_ID --api-key API_KEY\" --chain-names ethereum-sepolia base-sepolia"
     echo "   - This will run the verification command for the specified testnet chains only."
     echo
     echo "7. Help:"
@@ -159,14 +159,18 @@ map_testnet_to_mainnet() {
     fi
 }
 
-# Check for secrets file if --verify flag is used
-if [ "$VERIFY_FLAG" = true ]; then
-    if [ -f .env.secrets ]; then
-        export $(grep -v '^#' .env.secrets | xargs)
-    else
-        echo "Error: .env.secrets file not found."
-        exit 1
-    fi
+# Check for secrets file and load it
+if [ -f .env ]; then
+    export $(grep -v '^#' .env | xargs)
+else
+    echo "Error: .env file not found."
+    exit 1
+fi
+
+# Ensure compatibility for associative arrays
+if [[ ${BASH_VERSINFO:-0} -lt 4 ]]; then
+    echo "Error: This script requires Bash 4.0 or later."
+    exit 1
 fi
 
 # Loop through each chain ID and execute the command
@@ -174,28 +178,58 @@ for i in "${!CHAIN_IDS[@]}"; do
     CHAIN_ID=${CHAIN_IDS[$i]}
     CHAIN_NAME=${CHAIN_NAMES[$i]}
 
-    if [ "$VERIFY_FLAG" = true ]; then
+    # Replace the placeholders "CHAIN_ID" and "CHAIN_NAME" in the command with the actual chain ID and name
+    FINAL_COMMAND="${COMMAND//CHAIN_ID/$CHAIN_ID}"
+    FINAL_COMMAND="${FINAL_COMMAND//CHAIN_NAME/$CHAIN_NAME}"
+
+    # Initialize variables for redaction
+    API_KEY_REDACTION=""
+    PRIVATE_KEY_REDACTION=""
+
+    # Check if the API_KEY placeholder exists in the command
+    if [[ "$FINAL_COMMAND" == *"API_KEY"* ]]; then
         # Map testnet chain names to mainnet equivalents
         MAINNET_CHAIN_NAME=$(map_testnet_to_mainnet "$CHAIN_NAME")
 
         # Extract the API key from the environment variables using the mapped mainnet chain name
-        API_KEY_VAR="VERIFY_API_KEY_${MAINNET_CHAIN_NAME^^}"
+        API_KEY_VAR="VERIFY_API_KEY_$(echo "$MAINNET_CHAIN_NAME" | tr '[:lower:]' '[:upper:]')"
         API_KEY="${!API_KEY_VAR}"
         
         if [ -z "$API_KEY" ]; then
             echo "Error: API key for chain $MAINNET_CHAIN_NAME not found."
             exit 1
         fi
-        
-        # Construct the verify command
-        FINAL_COMMAND="pnpm cannon verify infinex-core-test:latest@core --chain-id $CHAIN_ID --api-key $API_KEY"
-    else
-        # Replace the placeholders "CHAIN_ID" and "CHAIN_NAME" in the command with the actual chain ID and name
-        FINAL_COMMAND="${COMMAND//CHAIN_ID/$CHAIN_ID}"
-        FINAL_COMMAND="${FINAL_COMMAND//CHAIN_NAME/$CHAIN_NAME}"
+
+        # Substitute API_KEY in the command
+        FINAL_COMMAND="${FINAL_COMMAND//API_KEY/$API_KEY}"
+        API_KEY_REDACTION="$API_KEY"
     fi
     
-    echo "Executing \"$FINAL_COMMAND\""  # Debug output
+    # Check if the PRIVATE_KEY placeholder exists in the command
+    if [[ "$FINAL_COMMAND" == *"PRIVATE_KEY"* ]]; then
+        # Extract the private key from the environment variables
+        PRIVATE_KEY="${PRIVATE_KEY:-}"
+        
+        if [ -z "$PRIVATE_KEY" ]; then
+            echo "Error: PRIVATE_KEY not found in .env.secrets."
+            exit 1
+        fi
+
+        # Substitute PRIVATE_KEY in the command
+        FINAL_COMMAND="${FINAL_COMMAND//PRIVATE_KEY/$PRIVATE_KEY}"
+        PRIVATE_KEY_REDACTION="$PRIVATE_KEY"
+    fi
+    
+    # Redact API key and private key in the output, only if they were substituted
+    REDACTED_COMMAND="$FINAL_COMMAND"
+    if [[ -n "$API_KEY_REDACTION" ]]; then
+        REDACTED_COMMAND=$(echo "$REDACTED_COMMAND" | sed "s/$API_KEY_REDACTION/***************/g")
+    fi
+    if [[ -n "$PRIVATE_KEY_REDACTION" ]]; then
+        REDACTED_COMMAND=$(echo "$REDACTED_COMMAND" | sed -E 's/--private-key [^ ]+/--private-key ***************/g')
+    fi
+    
+    echo "Executing \"$REDACTED_COMMAND\""  # Debug output
     # Execute the command
     eval "$FINAL_COMMAND"
 done

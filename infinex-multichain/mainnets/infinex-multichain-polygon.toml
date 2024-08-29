@@ -72,20 +72,8 @@ func = "transferOwnership"
 args = ["<%= settings.MULTISIG %>"]
 fromCall.func = "owner"
 
-[invoke.AcceptOwnershipNewBeacon]
-target = ["infinex.InfinexProtocolConfigBeacon"]
-func = "acceptOwnership"
-from = "<%= settings.MULTISIG %>"
-depends = ["invoke.TransferOwnershipNewBeacon"]
-
 [invoke.TransferOwnershipAppRegistry]
 target = ["infinex.AppRegistry"]
 func = "transferOwnership"
 args = ["<%= settings.MULTISIG %>"]
 fromCall.func = "owner"
-
-[invoke.AcceptOwnershipAppRegistry]
-target = ["infinex.AppRegistry"]
-func = "acceptOwnership"
-from = "<%= settings.MULTISIG %>"
-depends = ["invoke.TransferOwnershipAppRegistry"]
