@@ -4,6 +4,7 @@ import {
   getClient,
   getNetworkName,
   loadToml,
+  officialUSDCAddress,
 } from "../lib/utils";
 import testEnv from "@infinex/evm-sdk/env/test";
 import stagingEnv from "@infinex/evm-sdk/env/staging";
@@ -15,18 +16,6 @@ import { ChainKey } from "@infinex/evm-sdk/src";
 
 // Hardcoded addresses for assertions
 const hardcodedAddresses: Record<string, Record<number, `0x${string}`>> = {
-  USDC: {
-    42161: "0xaf88d065e77c8cC2239327C5EDb3A432268e5831",
-    8453: "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
-    1: "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
-    10: "0x0b2C639c533813f4Aa9D7837CAf62653d097Ff85",
-    137: "0x3c499c542cEF5E3811e1192ce70d8cC03d5c3359",
-    421614: "0x75faf114eafb1BDbe2F0316DF893fd58CE46AA4d",
-    84532: "0x036CbD53842c5426634e7929541eC2318f3dCF7e",
-    11155111: "0x1c7D4B196Cb0C7B01d743Fbc6116a902379C7238",
-    11155420: "0x5fd84259d66Cd46123540766Be93DFE6D43130D7",
-    80002: "0x41E94Eb019C0762f9Bfcf9Fb1E58725BfB0e7582",
-  },
   factory: {
     42161: "0x9AF14D26075f142eb3F292D5065EB3faa646167b",
     8453: "0xd2002373543Ce3527023C75e7518C274A51ce712",
@@ -41,17 +30,17 @@ const hardcodedAddresses: Record<string, Record<number, `0x${string}`>> = {
 const supportedPools: Record<string, Record<number, `0x${string}`[]>> = {
   testnets: {
     11155111: [
-      "0xeEf7894341be733c8D8805c54C369E1297e3c86e",
-      "0xF937A1E8f0D6b1B5133351a28cA42bbA3d56BFa4",
+      "0xeEf7894341be733c8D8805c54C369E1297e3c86e", // USDC-USDEToken
+      "0xF937A1E8f0D6b1B5133351a28cA42bbA3d56BFa4", // USDCToken - USDEToken
     ],
   },
   staging: {
-    1: ["0x02950460E2b9529D0E00284A5fA2d7bDF3fA4d72"],
-    42161: ["0x1c34204FCFE5314Dcf53BE2671C02c35DB58B4e3"],
+    1: ["0x02950460E2b9529D0E00284A5fA2d7bDF3fA4d72"], // USDC-USDe
+    42161: ["0x1c34204FCFE5314Dcf53BE2671C02c35DB58B4e3"], // USDC-USDe
   },
   mainnets: {
-    1: ["0x02950460E2b9529D0E00284A5fA2d7bDF3fA4d72"],
-    42161: ["0x1c34204FCFE5314Dcf53BE2671C02c35DB58B4e3"],
+    1: ["0x02950460E2b9529D0E00284A5fA2d7bDF3fA4d72"], // USDC-USDe
+    42161: ["0x1c34204FCFE5314Dcf53BE2671C02c35DB58B4e3"], // USDC-USDe
   },
 };
 
@@ -122,19 +111,17 @@ describe.concurrent.each(appRegistryChains)(
       client,
     });
 
-    const USDC = hardcodedAddresses.USDC[chainId];
     const factory = hardcodedAddresses.factory[chainId];
     const pools = supportedPools[env][chainId] || [];
 
     test("Curve app beacon has right USDC set", async () => {
       const beaconUSDC = await curveAppBeacon.read.USDC();
-      expect(beaconUSDC).toBe(USDC);
+      expect(beaconUSDC).toBe(officialUSDCAddress(chainId));
     });
 
     test("Curve app beacon has right owner set", async () => {
       const owner = await curveAppBeacon.read.owner();
       const deployVars = config.var.Deploy;
-      console.log(deployVars);
       if (env !== "testnets") {
         expect(deployVars.MULTISIG).toBeTypeOf("string");
       }

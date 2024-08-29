@@ -27,7 +27,7 @@ options.CORE_USDC = "0x3c499c542cef5e3811e1192ce70d8cc03d5c3359"
 options.CORE_CIRCLE_BRIDGE = "0x9daF8c91AEFAE50b9c0E69629D3F6Ca40cA3B3FE"
 options.CORE_CIRCLE_MINTER = "0x10f7835F827D6Cf035115E10c50A853d7FB2D2EC"
 options.CORE_DEFAULT_DESTINATION_CCTP_DOMAIN = "6"
-options.CORE_WORMHOLE_CIRCLE_BRIDGE = "0x2703483B1a5a7c577e8680de9Df8Be03c6f30e3c"
+options.CORE_WORMHOLE_CIRCLE_BRIDGE = "0x0FF28217dCc90372345954563486528aa865cDd6"
 options.CORE_DEFAULT_DESTINATION_WORMHOLE_CHAIN_ID = "30"                                                                                       # set the default domain to base for keeper bridging
 # ------- Solana Vars ------- #
 options.CORE_SOLANA_CCTP_DESTINATION_DOMAIN = "5"
