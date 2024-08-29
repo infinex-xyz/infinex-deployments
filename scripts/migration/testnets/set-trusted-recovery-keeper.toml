@@ -5,7 +5,7 @@ name = "infinex-core-test-migration"
 version = "3.0.2"
 
 [var.Deploy]
-TRUSTED_RECOVERY_KEEPER = "0x6298551D56F825B3b6c3350D32129Ffd3cFb198C"
+TRUSTED_RECOVERY_KEEPER = "0x996c7B455C9A9449A612b5B66Cc1dd24b81DB3fb"
 
 [pull.latestVersion]
 source = "infinex-core-test:latest@core"
@@ -26,6 +26,12 @@ fromCall.func = "owner"
 
 [invoke.v2setTrustedRecoveryKeeper]
 target = ["v2.infinex.InfinexProtocolConfigBeacon"]
+func = "setTrustedRecoveryKeeper"
+args = ["<%= settings.TRUSTED_RECOVERY_KEEPER %>", true]
+fromCall.func = "owner"
+
+[invoke.v3setTrustedRecoveryKeeper]
+target = ["latestVersion.infinex.InfinexProtocolConfigBeacon"]
 func = "setTrustedRecoveryKeeper"
 args = ["<%= settings.TRUSTED_RECOVERY_KEEPER %>", true]
 fromCall.func = "owner"
