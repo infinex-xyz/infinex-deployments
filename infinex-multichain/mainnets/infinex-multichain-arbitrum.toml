@@ -28,14 +28,14 @@ options.CORE_CIRCLE_BRIDGE = "0x19330d10D9Cc8751218eaf51E8885D058642E08A"
 options.CORE_CIRCLE_MINTER = "0xE7Ed1fa7f45D05C508232aa32649D89b73b8bA48"
 options.CORE_DEFAULT_DESTINATION_CCTP_DOMAIN = "6"
 options.CORE_WORMHOLE_CIRCLE_BRIDGE = "0x2703483B1a5a7c577e8680de9Df8Be03c6f30e3c"
-options.CORE_DEFAULT_DESTINATION_WORMHOLE_CHAIN_ID = "30" # set the default domain to base for keeper bridging
+options.CORE_DEFAULT_DESTINATION_WORMHOLE_CHAIN_ID = "30"                                                                                       # set the default domain to base for keeper bridging
 # ------- Solana Vars ------- #
 options.CORE_SOLANA_CCTP_DESTINATION_DOMAIN = "5"
-options.CORE_SOLANA_WALLET_SEED =  "<%= hexlify('wallet_authority') %>"
+options.CORE_SOLANA_WALLET_SEED = "<%= hexlify('wallet_authority') %>"
 options.CORE_SOLANA_FIXED_PDA_SEED = "<%= hexlify('ProgramDerivedAddress') %>"
-options.CORE_SOLANA_WALLET_PROGRAM_ADDRESS = "0x0aacda33cf045c0dd658e67c577bade83951034129e2201bb7dfd6372c6e9e64" #gitleaks:allow
-options.CORE_SOLANA_TOKEN_MINT_ADDRESS = "0xc6fa7af3bedbad3a3d65f36aabc97431b1bbe4c2d2f6e0e47ca60203452f5d61" #gitleaks:allow
-options.CORE_SOLANA_TOKEN_PROGRAM_ADDRESS = "0x06ddf6e1d765a193d9cbe146ceeb79ac1cb485ed5f5b37913a8cf5857eff00a9" #gitleaks:allow
+options.CORE_SOLANA_WALLET_PROGRAM_ADDRESS = "0x0aacda33cf045c0dd658e67c577bade83951034129e2201bb7dfd6372c6e9e64"           #gitleaks:allow
+options.CORE_SOLANA_TOKEN_MINT_ADDRESS = "0xc6fa7af3bedbad3a3d65f36aabc97431b1bbe4c2d2f6e0e47ca60203452f5d61"               #gitleaks:allow
+options.CORE_SOLANA_TOKEN_PROGRAM_ADDRESS = "0x06ddf6e1d765a193d9cbe146ceeb79ac1cb485ed5f5b37913a8cf5857eff00a9"            #gitleaks:allow
 options.CORE_SOLANA_ASSOCIATED_TOKEN_PROGRAM_ADDRESS = "0x8c97258f4e2489f1bb3d1029148e0d830b5a1399daff1084048e7bd8dbe9f859" #gitleaks:allow
 # ---------- Wormhole Chain Ids ---------- #
 options.CORE_WORMHOLE_CHAIN_ID_ARBITRUM = "23"
@@ -55,19 +55,14 @@ options.CORE_CCTP_DOMAIN_POLYGON = "7"
 [invoke.setInfinexProtocolConfigBeaconFee]
 target = ["infinex.InfinexProtocolConfigBeacon"]
 func = "setWithdrawalFeeUSDC"
-args = [
-    "<%= settings.WITHDRAWAL_FEE_USDC %>",
-    ]
+args = ["<%= settings.WITHDRAWAL_FEE_USDC %>"]
 from = "<%= settings.DEPLOYER %>"
 depends = ["clone.infinex"]
 
 [invoke.setTrustedRecoveryKeeper]
 target = ["infinex.InfinexProtocolConfigBeacon"]
 func = "setTrustedRecoveryKeeper"
-args = [
-    "<%= settings.TRUSTED_RECOVERY_KEEPER %>", 
-    true
-    ]
+args = ["<%= settings.TRUSTED_RECOVERY_KEEPER %>", true]
 from = "<%= settings.DEPLOYER %>"
 depends = ["clone.infinex"]
 
