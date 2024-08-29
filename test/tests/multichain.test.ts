@@ -1,217 +1,359 @@
 import {
-  Client,
+  accountInitialProxyImplementationAddress,
   env,
-  evmChains,
-  EvmChains,
+  getAddressSDK,
   getChainById,
   getClient,
-  loadAddresses,
+  getContractSDK,
+  getEnvConfig,
+  getNetworkName,
   loadToml,
+  officialCircleBridgeAddress,
+  officialCircleMinterAddress,
+  officialUSDCAddress,
+  officialWormholeCircleBridgeAddress,
+  officialWormholeCoreAddress,
   platformConfig,
+  renderEjsExpression,
 } from "../lib/utils";
 import {
   AccountFactoryAbi,
-  AppRegistryAbi,
-  CurveStableSwapAppBeaconAbi,
   Erc20Abi,
   InfinexERC2771ForwarderAbi,
   InfinexProtocolConfigBeaconAbi,
+  AppRegistry,
+  InfinexProtocolConfigBeacon,
+  AccountsRouter,
 } from "../lib/abis";
 import { describe, expect, test } from "vitest";
 import * as viem from "viem";
+import { ChainKey, chainKeys } from "@infinex/evm-sdk/src";
 
-async function getNetworkName(client: Client): Promise<string> {
-  const chainId = await client.getChainId();
-  const chain = getChainById(chainId);
-  const name = chain.name.toLowerCase().replace(/ /g, "-");
-  if (name === "op-mainnet") return "optimism";
-  if (name === "arbitrum-one") return "arbitrum";
-  if (name.startsWith("op-")) return name.replace("op-", "optimism-");
-  if (name.startsWith("matic")) return name.replace("matic", "polygon");
-  if (name.endsWith("-mainnet")) return name.replace("-mainnet", "");
-  if (name === "mainnet") return "ethereum";
-  return name;
-}
-
-describe.concurrent.each(Object.keys(evmChains))(
+describe.concurrent.each(Object.values(chainKeys))(
   `Multichain (%s ${env})`,
-  async (chain) => {
-    const CHAIN = chain.toUpperCase();
-    const client = getClient(chain as EvmChains);
+  async (chainName) => {
+    const CHAIN = chainName.toUpperCase();
+    const client = getClient(chainName as ChainKey);
+    const chainId = await client.getChainId();
+    const chain = getChainById(chainId);
     const networkName = await getNetworkName(client);
     const configDir = `../infinex-multichain/${env}`;
+    const envConfig = getEnvConfig(env);
 
-    const addresses = await loadAddresses(`${configDir}/ADDRESSES.txt`);
-    function getContract<Abi extends viem.Abi>(varName: string, abi: Abi) {
-      const address = viem.getAddress(addresses[varName]);
-      return viem.getContract({ address, abi, client });
-    }
-    const accountFactory = getContract(
+    const accountFactory = getContractSDK(
+      envConfig,
+      client,
       `${CHAIN}_ACCOUNT_FACTORY_ADDRESS`,
-      AccountFactoryAbi,
+      AccountFactoryAbi
     );
-    const appRegistry = getContract(`${CHAIN}_APP_REGISTRY`, AppRegistryAbi);
-    const forwarder = getContract(
+    const appRegistry = getContractSDK(
+      envConfig,
+      client,
+      `${CHAIN}_APP_REGISTRY_ADDRESS`,
+      AppRegistry
+    );
+    const forwarder = getContractSDK(
+      envConfig,
+      client,
       `${CHAIN}_FORWARDER_ADDRESS`,
-      InfinexERC2771ForwarderAbi,
+      InfinexERC2771ForwarderAbi
     );
-    const protocolConfigBeacon = getContract(
-      `${CHAIN}_INFINEX_PROTOCOL_CONFIG_BEACON_ADDRESS`,
-      InfinexProtocolConfigBeaconAbi,
-    );
+    const protocolConfigBeaconV1 = viem.getContract({
+      // @ts-ignore
+      address: envConfig[`${chainName}InfinexProtocolConfigBeacons`][0],
+      abi: InfinexProtocolConfigBeaconAbi,
+      client,
+    });
+    const protocolConfigBeaconV2 = viem.getContract({
+      // @ts-ignore
+      address: envConfig[`${chainName}InfinexProtocolConfigBeacons`][1],
+      abi: InfinexProtocolConfigBeaconAbi,
+      client,
+    });
+    const latestProtocolConfigBeacon = viem.getContract({
+      // @ts-ignore
+      address: envConfig[`${chainName}InfinexProtocolConfigBeacons`][2],
+      abi: InfinexProtocolConfigBeacon,
+      client,
+    });
 
-    function getAddress(varName: string): `0x${string}` | undefined {
-      const value = addresses[varName];
-      if (!value) return undefined;
-      return viem.getAddress(value);
-    }
-    const accountsRouterV1Address = getAddress(
-      `${CHAIN}_ACCOUNTS_ROUTER_V1_ADDRESS`,
-    );
-    const accountsRouterV2Address = getAddress(
-      `${CHAIN}_ACCOUNTS_ROUTER_V2_ADDRESS`,
-    );
+    const latestAccountRouter = viem.getContract({
+      // @ts-ignore
+      address: envConfig[`${chainName}AccountsRouters`][2],
+      abi: AccountsRouter,
+      client,
+    }).address;
 
     const config = await loadToml(
-      `${configDir}/infinex-multichain-${networkName}.toml`,
+      `${configDir}/infinex-multichain-${networkName}.toml`
     );
 
     async function isContract(address: `0x${string}`): Promise<boolean> {
       return (await client.getCode({ address })) !== "0x";
     }
 
-    async function checkUSDCAddress(address: `0x${string}`) {
-      const USDC = viem.getContract({ address, abi: Erc20Abi, client });
-      expect(await USDC.read.symbol()).toBe("USDC");
-    }
+    describe("Initial Deployment", () => {
+      describe("Account Factory", () => {
+        test("is a deployed contract", async () => {
+          expect(await isContract(accountFactory.address)).toBe(true);
+        });
 
-    test("Account factory is a deployed contract", async () => {
-      expect(await isContract(accountFactory.address)).toBe(true);
-    });
+        test("can predict address", async () => {
+          expect(await accountFactory.read.canPredictAddress()).toBe(true);
+        });
 
-    test("Account factory can predict address", async () => {
-      expect(await accountFactory.read.canPredictAddress()).toBe(true);
-    });
-
-    test("Account factory can create account", async () => {
-      expect(await accountFactory.read.canCreateAccount()).toBe(true);
-    });
-
-    test("Account factory has been promoted to latest", async () => {
-      const latestAddress =
-        await protocolConfigBeacon.read.getLatestAccountImplementation();
-      expect(accountFactory.address).toBe(latestAddress);
-    });
-
-    test("Account factory uses latest beacon", async () => {
-      const beaconAddress =
-        await accountFactory.read.infinexProtocolConfigBeacon();
-      expect(await isContract(beaconAddress)).toBe(true);
-      const beacon = viem.getContract({
-        address: beaconAddress,
-        abi: InfinexProtocolConfigBeaconAbi,
-        client,
+        test("can create account", async () => {
+          expect(await accountFactory.read.canCreateAccount()).toBe(true);
+        });
       });
-      const latestAddress =
-        await beacon.read.getLatestInfinexProtocolConfigBeacon();
-      expect(latestAddress).toBe(beaconAddress);
-    });
 
-    test("Forwarder is a deployed contract", async () => {
-      expect(await isContract(forwarder.address)).toBe(true);
-    });
-
-    test("Forwarder is valid", async () => {
-      const { domain } = await client.getEip712Domain({
-        address: forwarder.address,
+      describe("Forwarder", () => {
+        test("is a deployed contract", async () => {
+          expect(await isContract(forwarder.address)).toBe(true);
+        });
       });
-      const chainId = await client.getChainId();
-      expect(domain.name).toBe("InfinexERC2771Forwarder");
-      expect(domain.chainId).toBe(chainId);
-      expect(await isContract(domain.verifyingContract));
-    });
 
-    test("Accounts router v1 is a deployed contract", async ({ skip }) => {
-      // FIXME: we're missing some of these addresses from config
-      if (!accountsRouterV1Address) {
-        skip();
-        // skip() doesn't return, but this makes TypeScript happy
-        return;
-      }
-      expect(await isContract(accountsRouterV1Address)).toBe(true);
-    });
-
-    test("Accounts router v2 is a deployed contract", async ({ skip }) => {
-      // FIXME: we're missing some of these addresses from config
-      if (!accountsRouterV2Address) {
-        skip();
-        // skip() doesn't return, but this makes TypeScript happy
-        return;
-      }
-      expect(await isContract(accountsRouterV2Address)).toBe(true);
-    });
-
-    test("Protocol config beacon is a deployed contract", async () => {
-      expect(await isContract(protocolConfigBeacon.address)).toBe(true);
-    });
-
-    test("Protocol config beacon has revenue pool from config", async () => {
-      const revenuePoolAddress =
-        config.var.Deploy.REVENUE_POOL ?? config.var.deploy.REVENUE_POOL;
-      expect(await protocolConfigBeacon.read.revenuePool()).toBe(
-        revenuePoolAddress,
-      );
-    });
-
-    test("Protocol config beacon points to valid USDC contract", async () => {
-      const USDCAddress = await protocolConfigBeacon.read.USDC();
-      await checkUSDCAddress(USDCAddress);
-    });
-
-    test("Protocol config beacon points to valid app registry contract", async () => {
-      const address = await protocolConfigBeacon.read.appRegistry();
-      expect(await isContract(address)).toBe(true);
-      const contract = viem.getContract({
-        address,
-        abi: AppRegistryAbi,
-        client,
+      describe("App Registry", () => {
+        test("is a deployed contract", async () => {
+          expect(await isContract(appRegistry.address)).toBe(true);
+        });
       });
-      const owner = await contract.read.owner();
-      expect(viem.isAddress(owner)).toBe(true);
+
+      describe("Infinex Protocol Config Beacon", () => {
+        test("points to expected forwarder contract", async () => {
+          const address =
+            await latestProtocolConfigBeacon.read.TRUSTED_FORWARDER();
+          expect(address).toBe(forwarder.address);
+        });
+
+        test("points to expected app registry contract", async () => {
+          const address = await latestProtocolConfigBeacon.read.appRegistry();
+          expect(address).toBe(appRegistry.address);
+        });
+
+        test("recognises recovery keeper address from Platform app", async () => {
+          const keeperAddress = platformConfig.recoveryKeeperAddress;
+          expect(
+            await latestProtocolConfigBeacon.read.isTrustedRecoveryKeeper([
+              keeperAddress,
+            ])
+          ).toBe(true);
+        });
+
+        test("funds recovery is active", async () => {
+          expect(
+            await latestProtocolConfigBeacon.read.fundsRecoveryActive()
+          ).toBe(true);
+        });
+
+        test("has revenue pool from config", async () => {
+          const revenuePoolAddress =
+            config.var.Deploy.REVENUE_POOL ?? config.var.deploy.REVENUE_POOL;
+          expect(await latestProtocolConfigBeacon.read.revenuePool()).toBe(
+            revenuePoolAddress
+          );
+        });
+
+        test("has expected withdrawal fee", async () => {
+          const withdrawalFee = renderEjsExpression(
+            config.var.Deploy.WITHDRAWAL_FEE_USDC
+          );
+          expect(
+            await latestProtocolConfigBeacon.read.withdrawalFeeUSDC()
+          ).toBe(BigInt(withdrawalFee));
+        });
+
+        test("points to valid USDC contract", async () => {
+          const USDCAddress = await latestProtocolConfigBeacon.read.USDC();
+          expect(USDCAddress).toBe(officialUSDCAddress(chainId));
+        });
+
+        test("circle bridge configuration set correctly", async () => {
+          const circleBridge =
+            await latestProtocolConfigBeacon.read.getCircleBridge();
+          const circleMinter =
+            await latestProtocolConfigBeacon.read.getCircleMinter();
+          const defaultCCTPDomain =
+            await latestProtocolConfigBeacon.read.getDefaultDestinationCCTPDomain();
+          expect(circleBridge).toBe(officialCircleBridgeAddress(chainId));
+          expect(circleMinter).toBe(officialCircleMinterAddress(chainId));
+          expect(defaultCCTPDomain).toBe(6);
+        });
+
+        test("wormhole circle bridge configuration set correctly", async () => {
+          const wormholeCircleBridge =
+            await latestProtocolConfigBeacon.read.getWormholeCircleBridge();
+          const defaultWormholeDomain =
+            await latestProtocolConfigBeacon.read.getDefaultDestinationWormholeChainId();
+          expect(wormholeCircleBridge).toBe(
+            officialWormholeCircleBridgeAddress(chainId)
+          );
+          if (env === "testnets") {
+            expect(defaultWormholeDomain).toBe(10004);
+          } else {
+            expect(defaultWormholeDomain).toBe(30);
+          }
+        });
+
+        test("points to expected initial proxy implementation", async () => {
+          const initialProxyImplementation =
+            await latestProtocolConfigBeacon.read.getInitialProxyImplementation();
+          expect(initialProxyImplementation).toBe(
+            accountInitialProxyImplementationAddress(env)
+          );
+        });
+
+        test("points to expected account implementation contract", async () => {
+          const address =
+            await latestProtocolConfigBeacon.read.getLatestAccountImplementation();
+          expect(address).toBe(latestAccountRouter);
+        });
+
+        test("is set to itself as latest", async () => {
+          const latestAddress =
+            await latestProtocolConfigBeacon.read.getLatestInfinexProtocolConfigBeacon();
+          expect(latestProtocolConfigBeacon.address).toBe(latestAddress);
+        });
+
+        test("has supported evm cctp domains", async () => {
+          const supportedEVMCCTPDomains = [0, 2, 3, 6, 7];
+          for (const domain of supportedEVMCCTPDomains) {
+            expect(
+              await latestProtocolConfigBeacon.read.isSupportedEVMCCTPDomain([
+                domain,
+              ])
+            ).toBe(true);
+          }
+        });
+
+        test("has supported evm wormhole chain ids", async () => {
+          const supportedEVMWormholeChainIds: Record<
+            string,
+            Record<number, number>
+          > = {
+            testnets: {
+              421614: 10003,
+              84532: 10004,
+              11155111: 10002,
+              11155420: 10005,
+              80002: 10007,
+            },
+            staging: {
+              42161: 23,
+              84531: 30,
+              1: 2,
+              10: 24,
+              137: 5,
+            },
+            mainnets: {
+              42161: 23,
+              84531: 30,
+              1: 2,
+              10: 24,
+              137: 5,
+            },
+          };
+          for (const chainId of Object.keys(
+            supportedEVMWormholeChainIds[env]
+          ) as unknown as number[]) {
+            const domain = supportedEVMWormholeChainIds[env][chainId];
+            expect(
+              await latestProtocolConfigBeacon.read.isSupportedEVMWormholeChainId(
+                [domain]
+              )
+            ).toBe(true);
+          }
+        });
+
+        test("has correct solana configuration", async () => {
+          const solanaCCTPDomain =
+            await latestProtocolConfigBeacon.read.solanaCCTPDestinationDomain();
+          expect(solanaCCTPDomain).toBe(5);
+        });
+
+        test("has correct wormhole core contract", async () => {
+          expect(await latestProtocolConfigBeacon.read.WORMHOLE_CORE()).toBe(
+            officialWormholeCoreAddress(chainId)
+          );
+        });
+      });
     });
 
-    test("Protocol config beacon recognises recovery keeper address from Platform app", async () => {
-      const keeperAddress = platformConfig.recoveryKeeperAddress;
-      expect(
-        await protocolConfigBeacon.read.isTrustedRecoveryKeeper([
-          keeperAddress,
-        ]),
-      ).toBe(true);
-    });
+    describe("Council executed steps completed", () => {
+      test("account factory uses latest beacon", async () => {
+        const beaconAddress =
+          await accountFactory.read.infinexProtocolConfigBeacon();
+        expect(latestProtocolConfigBeacon.address).toBe(beaconAddress);
+      });
 
-    test("Protocol config beacon has been promoted to latest", async () => {
-      const latestAddress =
-        await protocolConfigBeacon.read.getLatestInfinexProtocolConfigBeacon();
-      expect(protocolConfigBeacon.address).toBe(latestAddress);
-    });
+      test("v2 beacon pointing to latest beacon", async () => {
+        const beaconAddress =
+          await protocolConfigBeaconV2.read.getLatestInfinexProtocolConfigBeacon();
+        expect(latestProtocolConfigBeacon.address).toBe(beaconAddress);
+      });
 
-    test("App registry is a deployed contract", async () => {
-      expect(await isContract(appRegistry.address)).toBe(true);
-    });
+      test("v1 beacon pointing to latest beacon", async () => {
+        const beaconAddress =
+          await protocolConfigBeaconV1.read.getLatestInfinexProtocolConfigBeacon();
+        expect(latestProtocolConfigBeacon.address).toBe(beaconAddress);
+      });
 
-    test("App registry owner matches config", async () => {
-      const owner = await appRegistry.read.owner();
-      const deployVars = config.var.Deploy;
-      if (env === "mainnets") {
-        expect(deployVars.MULTI_SIG).toBeTypeOf("string");
-      }
-      const expectedOwner = deployVars.MULTI_SIG ?? deployVars.DEPLOYER;
-      expect(owner).toBe(expectedOwner);
-    });
+      describe("Ownership", () => {
+        test("owner matches config", async () => {
+          const owner = await accountFactory.read.owner();
+          const deployVars = config.var.Deploy;
+          if (env === "mainnets") {
+            expect(deployVars.MULTISIG).toBeTypeOf("string");
+          }
+          const expectedOwner = deployVars.MULTISIG ?? deployVars.DEPLOYER;
+          expect(owner).toBe(expectedOwner);
+        });
 
-    test("App registry has no pending owner", async () => {
-      const pending = await appRegistry.read.pendingOwner();
-      expect(pending).toMatch(/^0x0+/);
+        test("app registry owner matches config", async () => {
+          const owner = await appRegistry.read.owner();
+          const deployVars = config.var.Deploy;
+          if (env === "mainnets") {
+            expect(deployVars.MULTISIG).toBeTypeOf("string");
+          }
+          const expectedOwner = deployVars.MULTISIG ?? deployVars.DEPLOYER;
+          expect(owner).toBe(expectedOwner);
+        });
+
+        test("Infinex Protocol Config Beacon owner matches config", async () => {
+          const owner = await latestProtocolConfigBeacon.read.owner();
+          const deployVars = config.var.Deploy;
+          if (env === "mainnets") {
+            expect(deployVars.MULTISIG).toBeTypeOf("string");
+          }
+          const expectedOwner = deployVars.MULTISIG ?? deployVars.DEPLOYER;
+          expect(owner).toBe(expectedOwner);
+        });
+
+        test("Account Factory has no pending owner", async () => {
+          const pending = await accountFactory.read.pendingOwner();
+          expect(pending).toMatch(/^0x0+/);
+        });
+
+        test("App registry has no pending owner", async () => {
+          const pending = await appRegistry.read.pendingOwner();
+          expect(pending).toMatch(/^0x0+/);
+        });
+
+        test("v1 beacon has no pending owner", async () => {
+          const pending = await protocolConfigBeaconV1.read.pendingOwner();
+          expect(pending).toMatch(/^0x0+/);
+        });
+
+        test("v2 beacon has no pending owner", async () => {
+          const pending = await protocolConfigBeaconV2.read.pendingOwner();
+          expect(pending).toMatch(/^0x0+/);
+        });
+
+        test("latest beacon has no pending owner", async () => {
+          const pending = await latestProtocolConfigBeacon.read.pendingOwner();
+          expect(pending).toMatch(/^0x0+/);
+        });
+      });
     });
-  },
+  }
 );
