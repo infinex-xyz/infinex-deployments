@@ -1,0 +1,21 @@
+#  pnpm cannon build infinex-app-registry-test/staging/infinex-app-registry-test.optimism.toml --chain-id 10 --dry-run --upgrade-from
+#  pnpm cannon publish infinex-app-registry-test:3.0.0@app-registry --chain-id 10 --exclude-cloned
+
+name = "infinex-app-registry-test"
+version = "3.0.0"
+preset = "app-registry"
+description = "Approved apps for the Infinex App Registry"
+
+[pull.InfinexCoreTest]
+source = "infinex-core-test:latest@core"
+
+[pull.InfinexPatronPurchase]
+source = "infinex-patron-test:1.0.0@patron-purchase"
+
+# ---------- Add Apps ---------- #
+
+[invoke.AddPatronPurchaseApp]
+target = ['InfinexCoreTest.infinex.AppRegistry']
+func = "setAppBeaconStatus"
+args = ["<%= imports.InfinexPatronPurchase.imports.infinexPatronPurchase.contracts.PatronPurchaseAppBeacon.address %>", true]
+fromCall.func = "owner"

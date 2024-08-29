@@ -1,0 +1,126 @@
+name = "infinex-patron-test"
+preset = "patron-purchase"
+version = "1.0.0"
+description = "Smart Contracts used for Infinex Patron Purchase App"
+
+# pnpm cannon build infinex-patron/patron-purchase-app/staging/infinex-patron-test.ethereum.toml --chain-id 1 --dry-run
+
+[var.PATRON]
+depends = []
+PATRON_DEPLOYER = "0x6298551D56F825B3b6c3350D32129Ffd3cFb198C"
+FUNDS_DESTINATION = "0xe48A07CAD5F814A56c942643e92095a1Bb92a00e"
+AUTHORIZED_SIGNER = "0xf56DE57c251257C05F83CCE338A46bd5D3a3E506"
+PATRON_FINAL_OWNER = "0xe48A07CAD5F814A56c942643e92095a1Bb92a00e" 
+# AUTHORIZED VAULTS
+VAULT_1 = "0xe48A07CAD5F814A56c942643e92095a1Bb92a00e"
+VAULT_2 = "0x6298551D56F825B3b6c3350D32129Ffd3cFb198C"
+# AUTHORIZED TOKENS
+USDC_TOKEN = "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48"
+USDT_TOKEN = "0xdac17f958d2ee523a2206206994597c13d831ec7"  
+USDE_TOKEN = "0x4c9EDD5852cd905f086C759E8383e09bff1E68B3"
+DAI_TOKEN = "0x6b175474e89094c44da98b954eedeac495271d0f"
+ARB_TOKEN = "0xb50721bcf8d664c30412cfbc6cf7a15145234ad1"
+ETHER = "0x0000000000000000000000000000000000000000"
+
+[clone.infinexPatronPurchase]
+depends = ['var.PATRON']
+options.PATRON_DEPLOYER = "<%= settings.PATRON_DEPLOYER %>"
+options.FUNDS_DESTINATION = "<%= settings.FUNDS_DESTINATION %>"
+options.PATRON_PURCHASE_SALT = "PATRON_PURCHASE_SALT_1_0_10"
+source = "infinex:1.0.0@patron-purchase"
+target = "infinex:1.0.0@patron-purchase"
+
+[invoke.PatronPointOfPurchaseInitialize]
+target = ["infinexPatronPurchase.PatronPointOfPurchase"]
+func = "initialize"
+args = [
+    "<%= settings.PATRON_DEPLOYER %>",
+    "<%= settings.FUNDS_DESTINATION %>",
+    [
+        "<%= settings.AUTHORIZED_SIGNER %>",
+    ],
+    [
+        "<%= settings.USDC_TOKEN %>",
+        "<%= settings.USDT_TOKEN %>",
+        "<%= settings.USDE_TOKEN %>",
+        "<%= settings.DAI_TOKEN %>",
+        "<%= settings.ARB_TOKEN %>",
+        "<%= settings.ETHER %>"
+    ],
+    [
+        "<%= settings.VAULT_1 %>",
+        "<%= settings.VAULT_2 %>"
+    ],
+]
+depends = [
+    "clone.infinexPatronPurchase",
+]
+
+[invoke.PatronPurchaseVaultInitialize]
+target = ["infinexPatronPurchase.PatronPurchaseVault"]
+func = "initialize"
+args = ["<%= settings.PATRON_DEPLOYER %>", "<%= settings.FUNDS_DESTINATION %>"]
+depends = [
+    "clone.infinexPatronPurchase",
+]
+
+[invoke.PatronPurchaseVaultInitialize2]
+target = ["infinexPatronPurchase.PatronPurchaseVault2"]
+func = "initialize"
+args = ["<%= settings.PATRON_DEPLOYER %>", "<%= settings.FUNDS_DESTINATION %>"]
+depends = [
+    "clone.infinexPatronPurchase",
+]
+
+# Transfer Ownership
+
+[invoke.transferOwnershipPatronPurchaseAppBeacon]
+target = ["infinexPatronPurchase.PatronPurchaseAppBeacon"]
+func = "transferOwnership"
+args = ["<%= settings.PATRON_FINAL_OWNER %>"]
+from = "<%= settings.PATRON_DEPLOYER %>"
+
+[invoke.transferOwnershipPatronPointOfPurchase]
+target = ["infinexPatronPurchase.PatronPointOfPurchase"]
+func = "transferOwnership"
+args = ["<%= settings.PATRON_FINAL_OWNER %>"]
+from = "<%= settings.PATRON_DEPLOYER %>"
+
+[invoke.transferOwnershipPatronPurchaseVault]
+target = ["infinexPatronPurchase.PatronPurchaseVault"]
+func = "transferOwnership"
+args = ["<%= settings.PATRON_FINAL_OWNER %>"]
+from = "<%= settings.PATRON_DEPLOYER %>"
+
+[invoke.transferOwnershipPatronPurchaseVault2]
+target = ["infinexPatronPurchase.PatronPurchaseVault2"]
+func = "transferOwnership"
+args = ["<%= settings.PATRON_FINAL_OWNER %>"]
+from = "<%= settings.PATRON_DEPLOYER %>"
+
+# Accept Ownership
+
+[invoke.acceptOwnershipPatronPurchaseAppBeacon]
+target = ["infinexPatronPurchase.PatronPurchaseAppBeacon"]
+func = "acceptOwnership"
+from = "<%= settings.PATRON_FINAL_OWNER %>"
+depends = ["invoke.transferOwnershipPatronPurchaseAppBeacon"]
+
+[invoke.acceptOwnershipPatronPointOfPurchase]
+target = ["infinexPatronPurchase.PatronPointOfPurchase"]
+func = "acceptOwnership"
+from = "<%= settings.PATRON_FINAL_OWNER %>"
+depends = ["invoke.transferOwnershipPatronPointOfPurchase"]
+
+[invoke.acceptOwnershipPatronPurchaseVault]
+target = ["infinexPatronPurchase.PatronPurchaseVault"]
+func = "acceptOwnership"
+from = "<%= settings.PATRON_FINAL_OWNER %>"
+depends = ["invoke.transferOwnershipPatronPurchaseVault"]
+
+[invoke.acceptOwnershipPatronPurchaseVault2]
+target = ["infinexPatronPurchase.PatronPurchaseVault2"]
+func = "acceptOwnership"
+from = "<%= settings.PATRON_FINAL_OWNER %>"
+depends = ["invoke.transferOwnershipPatronPurchaseVault2"]
+
