@@ -3,8 +3,8 @@ version = "3.0.0"
 preset = "core"
 description = "Infinex Core Deployments"
 #  pnpm cannon build infinex-multichain/mainnets/infinex-multichain-optimism.toml --chain-id 10 --dry-run --upgrade-from
-#  pnpm cannon publish infinex-core-test:latest@core --chain-id 10 --exclude-cloned
-#  pnpm cannon verify infinex-core-test:latest@core --chain-id 10 --api-key
+#  pnpm cannon publish infinex-core-test:3.0.0@core --chain-id 10 --exclude-cloned
+#  pnpm cannon verify infinex-core-test:3.0.0@core --chain-id 10 --api-key
 
 [var.Deploy]
 DEPLOYER = "0x7Bb5DfC8622D296bF259c951490dC9E1Cc0951d3"
@@ -14,14 +14,14 @@ WITHDRAWAL_FEE_USDC = "<%= parseUnits(String(0), 6) %>"
 TRUSTED_RECOVERY_KEEPER = "0x07D19647E3273cfa905E762D7cE45D0f5c661cC1"
 
 [pull.AccountFactory]
-source = "infinex-account-factory-test:1.0.0@main"
+source = "infinex-account-factory:1.0.0@main"
 
 [clone.infinex]
 source = "infinex:3.0.0@core"
 target = "infinex:3.0.0@core"
 options.CORE_SALT = "INFINEX_1_0_0"
 options.CORE_DEPLOYER = "<%= settings.DEPLOYER %>"
-options.CORE_CORE_INITIAL_PROXY_IMPLEMENTATION = "<%= imports.AccountFactory.imports.AccountFactory.contracts.InitialProxyImplementation.address %>"
+options.CORE_INITIAL_PROXY_IMPLEMENTATION = "<%= imports.AccountFactory.imports.AccountFactory.contracts.InitialProxyImplementation.address %>"
 options.CORE_REVENUE_POOL = "<%= settings.REVENUE_POOL %>"
 options.CORE_USDC = "0x0b2c639c533813f4aa9d7837caf62653d097ff85"
 options.CORE_CIRCLE_BRIDGE = "0x2B4069517957735bE00ceE0fadAE88a26365528f"

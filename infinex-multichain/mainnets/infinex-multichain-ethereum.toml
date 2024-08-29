@@ -3,8 +3,8 @@ version = "3.0.0"
 preset = "core"
 description = "Infinex Core Deployments"
 #  pnpm cannon build infinex-multichain/mainnets/infinex-multichain-ethereum.toml --chain-id 1 --dry-run --upgrade-from
-#  pnpm cannon publish infinex-core-test:latest@core --chain-id 1 --exclude-cloned
-#  pnpm cannon verify infinex-core-test:latest@core --chain-id 1 --api-key
+#  pnpm cannon publish infinex-core-test:3.0.0@core --chain-id 1 --exclude-cloned
+#  pnpm cannon verify infinex-core-test:3.0.0@core --chain-id 1 --api-key
 
 [var.Deploy]
 DEPLOYER = "0x7Bb5DfC8622D296bF259c951490dC9E1Cc0951d3"
