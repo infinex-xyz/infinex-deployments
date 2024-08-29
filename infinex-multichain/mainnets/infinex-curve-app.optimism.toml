@@ -16,7 +16,7 @@ source = "infinex:1.1.0@curve-stableswap"
 target = "infinex:1.1.0@curve-stableswap"
 options.CURVE_STABLESWAP_SALT = "CURVE_STABLESWAP_1_1_0"
 options.CURVE_STABLESWAP_OWNER = "<%= settings.DEPLOYER %>"
-options.CURVE_STABLESWAP_USDC = "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913"
+options.CURVE_STABLESWAP_USDC = "0x0b2c639c533813f4aa9d7837caf62653d097ff85"
 options.CURVE_STABLESWAP_FACTORY = "0x5eeE3091f747E60a045a2E715a4c71e600e31F6E"
 
 # ---------- Transfer Ownership ---------- #
