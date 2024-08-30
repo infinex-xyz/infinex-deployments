@@ -6,14 +6,14 @@ settings:
 
 dependencies:
   '@infinex/evm-sdk':
-    specifier: 0.0.19
-    version: 0.0.19(typescript@5.5.3)
+    specifier: 0.0.21
+    version: 0.0.21(typescript@5.5.3)
   '@infinex/infinex-sdk':
     specifier: 1.2.2
     version: 1.2.2(typescript@5.5.3)
   '@infinex/manifest':
-    specifier: 0.0.12
-    version: 0.0.12(@vitest/ui@2.0.3)(typescript@5.5.3)
+    specifier: 0.0.14
+    version: 0.0.14(@vitest/ui@2.0.3)(typescript@5.5.3)
   dotenv:
     specifier: ^16.4.5
     version: 16.4.5
@@ -266,8 +266,8 @@ packages:
     engines: {node: '>=14'}
     dev: false
 
-  /@infinex/evm-sdk@0.0.19(typescript@5.5.3):
-    resolution: {integrity: sha512-Z8QRfsMBPdzStXQPR2CKh2azmwiBrpME9Aiz3op2WwCZAqUYcBVeS4J8o/S+hrs+rKtDKna/H/EJXfMjksXZCQ==}
+  /@infinex/evm-sdk@0.0.21(typescript@5.5.3):
+    resolution: {integrity: sha512-27lEhzGwPo4clz0n30YUGS4a8/1kP54AzKwBRxXQPyFxCxAYo8vjeXPcoySRIiJ3JqHkZNCh7sxLEeX6FCUU4Q==}
     dependencies:
       viem: 2.20.0(typescript@5.5.3)(zod@3.23.8)
     transitivePeerDependencies:
@@ -289,8 +289,8 @@ packages:
       - utf-8-validate
     dev: false
 
-  /@infinex/manifest@0.0.12(@vitest/ui@2.0.3)(typescript@5.5.3):
-    resolution: {integrity: sha512-I7JKa+Ub6TMaA+4+YEzGgEktP4P1q3LdUqB1Gms90Vo2LbsQLCkE8ZGFRk7n7UKrLtVx1yjeKlP2S8NKvAHnjA==}
+  /@infinex/manifest@0.0.14(@vitest/ui@2.0.3)(typescript@5.5.3):
+    resolution: {integrity: sha512-aG70kxAXbIb3yaU8sHKJq8NwjNtHzHzxTSqfBBHJx9+PGT4BOTV3ei4oFzB4uCspysYcHNWTk1hKoYPNDmH2HQ==}
     dependencies:
       commander: 12.1.0
       microdiff: 1.4.0

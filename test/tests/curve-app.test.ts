@@ -77,10 +77,17 @@ describe.concurrent.each(appRegistryChains)(
     // const networkName = chain.name.toLowerCase().replace(" ", "-");
     const networkName = await getNetworkName(client);
     const configDir = `../infinex-multichain/${env}`;
+    var config: any;
 
-    const config = await loadToml(
-      `${configDir}/infinex-curve-app-test.${networkName}.toml`
-    );
+    if (env === "mainnets") {
+      config = await loadToml(
+        `${configDir}/infinex-curve-app.${networkName}.toml`
+      );
+    } else {
+      config = await loadToml(      
+        `${configDir}/infinex-curve-app-test.${networkName}.toml`
+      );
+    }
 
     // Load the environment-specific configuration
     const envConfig = getEnvConfig(env);
