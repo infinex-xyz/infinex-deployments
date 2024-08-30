@@ -138,6 +138,15 @@ describe.concurrent.each(Object.values(chainKeys))(
               keeperAddress,
             ])
           ).toBe(true);
+          if (env !== "mainnets") {
+            // dev wallet is also a recovery keeper until we're able to run recovery tests solely in platform
+            const devWallet = "0x6298551D56F825B3b6c3350D32129Ffd3cFb198C";
+            expect(
+              await latestProtocolConfigBeacon.read.isTrustedRecoveryKeeper([
+                devWallet,
+              ])
+            ).toBe(true);
+          }
         });
 
         test("funds recovery is active", async () => {
