@@ -1,0 +1,22 @@
+# Migrate the testnet account factory and beacon to use the new versions
+# pnpm cannon build scripts/migration/prod/3-update-factory.toml --dry-run --chain-id 
+# ./cannon_chains.sh "pnpm cannon build scripts/migration/prod/3-update-factory.toml --chain-id CHAIN_ID --dry-run" -e mainnet
+
+name = "infinex-core-factory-script"
+version = "3.0.0"
+
+[pull.latestVersion]
+source = "infinex-core:latest@core"
+
+[pull.AccountFactory]
+source = "infinex-account-factory:1.0.0@main"
+
+# ---------- Update Factory ---------- #
+
+[invoke.AccountFactoryUpdateInfinexProtocolConfigBeacon]
+target = ["AccountFactory.AccountFactory.AccountFactory"]
+func = "updateInfinexProtocolConfigBeacon"
+args = [
+    "<%= imports.latestVersion.imports.infinex.contracts.InfinexProtocolConfigBeacon.address %>",
+]
+fromCall.func = "owner"

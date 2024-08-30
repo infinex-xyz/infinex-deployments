@@ -1,0 +1,28 @@
+#  pnpm cannon build infinex-multichain/mainnets/infinex-curve-app.polygon.toml --chain-id 137 --dry-run
+#  pnpm cannon publish infinex-curve-app:1.1.0@curve-stableswap --chain-id 137 --exclude-cloned
+#  pnpm cannon verify infinex-curve-app:latest@curve-stableswap --chain-id 137 --api-key
+
+name = "infinex-curve-app"
+version = "1.1.0"
+preset = "curve-stableswap"
+description = "Infinex App integration for Curve StableSwap"
+
+[var.Deploy]
+DEPLOYER = "0x6298551D56F825B3b6c3350D32129Ffd3cFb198C"
+MULTISIG = "0x87213Fa8BA3b8170E940aAF47096A4322a344De3"
+
+[clone.CurveStableSwap]
+source = "infinex:1.1.0@curve-stableswap"
+target = "infinex:1.1.0@curve-stableswap"
+options.CURVE_STABLESWAP_SALT = "CURVE_STABLESWAP_1_1_0"
+options.CURVE_STABLESWAP_OWNER = "<%= settings.DEPLOYER %>"
+options.CURVE_STABLESWAP_USDC = "0x3c499c542cef5e3811e1192ce70d8cc03d5c3359"
+options.CURVE_STABLESWAP_FACTORY = "0x1764ee18e8B3ccA4787249Ceb249356192594585"
+
+# ---------- Transfer Ownership ---------- #
+
+[invoke.TransferOwnershipNewBeacon]
+target = ["CurveStableSwap.CurveStableSwapAppBeacon"]
+func = "transferOwnership"
+args = ["<%= settings.MULTISIG %>"]
+fromCall.func = "owner"

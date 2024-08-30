@@ -1,0 +1,24 @@
+#  ./cannon_chains.sh "pnpm cannon build infinex-app-registry/infinex-app-registry.toml --chain-id CHAIN_ID --dry-run --upgrade-from" -e mainnet
+#  ./cannon_chains.sh "pnpm cannon publish infinex-app-registry:3.0.0@app-registry --chain-id CHAIN_ID --exclude-cloned" -e mainnet
+
+name = "infinex-app-registry"
+version = "3.0.0"
+preset = "app-registry"
+description = "Approved apps for the Infinex App Registry"
+
+[pull.InfinexCore]
+source = "infinex-core:latest@core"
+
+[pull.Curve]
+source = "infinex-curve-app:latest@curve-stableswap"
+
+# ---------- Add Apps ---------- #
+
+[invoke.AddCurve]
+target = ["InfinexCore.infinex.AppRegistry"]
+func = "setAppBeaconStatus"
+args = [
+    "<%= imports.Curve.imports.CurveStableSwap.contracts.CurveStableSwapAppBeacon.address %>",
+    true,
+]
+fromCall.func = "owner"
