@@ -98,10 +98,6 @@ while [[ $# -gt 0 ]]; do
                 shift
             done
             ;;
-        --verify)
-            VERIFY_FLAG=true
-            shift
-            ;;
         *)
             COMMAND+="$1 "
             shift
@@ -130,6 +126,9 @@ for CHAIN_NAME in "${CUSTOM_CHAIN_NAMES[@]}"; do
         exit 1
     fi
 done
+
+# Combine with custom chain IDs
+CHAIN_IDS+=("${CUSTOM_CHAIN_IDS[@]}")
 
 # Select the appropriate list of chain IDs based on the environment
 if [ ${#CHAIN_IDS[@]} -eq 0 ] && [ -n "$ENVIRONMENT" ]; then
