@@ -1,0 +1,28 @@
+#  pnpm cannon build infinex-omnibus/mainnets/infinex-omnibus.arbitrum.toml --chain-id 42161 --dry-run
+#  pnpm cannon publish infinex-omnibus:3.0.0@omnibus --chain-id 42161 --exclude-cloned
+
+name = "infinex-omnibus"
+version = "3.0.0"
+preset = "omnibus"
+description = "All Infinex Deployments"
+
+[pull.AccountFactoryV1]
+source = "infinex-account-factory:1.0.0@main"
+
+[pull.CoreV1]
+source = "infinex-multichain:1.0.0@O2"
+
+[pull.CoreV2]
+source = "infinex-multichain:1.1.0@O2"
+
+[pull.CoreV3]
+source = "infinex-core:3.0.0@core"
+
+[pull.CurveStableSwapV1]
+source = "infinex-multichain:1.0.0@apps"
+
+[pull.CurveStableSwapV2]
+source = "infinex-curve-app:1.1.0@curve-stableswap"
+
+[pull.PatronPurchaseAppV1]
+source = "infinex-patron:1.0.0@patron-purchase"
