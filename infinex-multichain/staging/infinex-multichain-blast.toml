@@ -57,43 +57,24 @@ options.CORE_CCTP_DOMAIN_POLYGON = "7"
 target = ["infinex.InfinexProtocolConfigBeacon"]
 func = "setWithdrawalFeeUSDC"
 args = ["<%= settings.WITHDRAWAL_FEE_USDC %>"]
-from = "<%= settings.DEPLOYER %>"
+fromCall.func = "owner"
 depends = ["clone.infinex"]
 
 [invoke.setTrustedRecoveryKeeper]
 target = ["infinex.InfinexProtocolConfigBeacon"]
 func = "setTrustedRecoveryKeeper"
 args = ["<%= settings.TRUSTED_RECOVERY_KEEPER %>", true]
-from = "<%= settings.DEPLOYER %>"
+fromCall.func = "owner"
 depends = ["clone.infinex"]
 
-# [invoke.setFundsRecoveryActive]
-# target = ["infinex.InfinexProtocolConfigBeacon"]
-# func = "setFundsRecoveryActive"
-# args = []
-# from = "<%= settings.DEPLOYER %>"
-# depends = ["clone.infinex"]
+[invoke.TransferOwnershipNewBeacon]
+target = ["infinex.InfinexProtocolConfigBeacon"]
+func = "transferOwnership"
+args = ["<%= settings.MULTISIG %>"]
+fromCall.func = "owner"
 
-# [invoke.TransferOwnershipNewBeacon]
-# target = ["infinex.InfinexProtocolConfigBeacon"]
-# func = "transferOwnership"
-# args = ["<%= settings.MULTISIG %>"]
-# fromCall.func = "owner"
-
-# [invoke.AcceptOwnershipNewBeacon]
-# target = ["infinex.InfinexProtocolConfigBeacon"]
-# func = "acceptOwnership"
-# from = "<%= settings.MULTISIG %>"
-# depends = ["invoke.TransferOwnershipNewBeacon"]
-
-# [invoke.TransferOwnershipAppRegistry]
-# target = ["infinex.AppRegistry"]
-# func = "transferOwnership"
-# args = ["<%= settings.MULTISIG %>"]
-# fromCall.func = "owner"
-
-# [invoke.AcceptOwnershipAppRegistry]
-# target = ["infinex.AppRegistry"]
-# func = "acceptOwnership"
-# from = "<%= settings.MULTISIG %>"
-# depends = ["invoke.TransferOwnershipAppRegistry"]
+[invoke.TransferOwnershipAppRegistry]
+target = ["infinex.AppRegistry"]
+func = "transferOwnership"
+args = ["<%= settings.MULTISIG %>"]
+fromCall.func = "owner"
