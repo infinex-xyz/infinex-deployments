@@ -24,7 +24,7 @@ options.CORE_SALT = "INFINEX_1_0_0staging"
 options.CORE_DEPLOYER = "<%= settings.DEPLOYER %>"
 options.CORE_INITIAL_PROXY_IMPLEMENTATION = "<%= imports.AccountFactory.imports.AccountFactory.contracts.InitialProxyImplementation.address %>"
 options.CORE_REVENUE_POOL = "<%= settings.REVENUE_POOL %>"
-options.CORE_USDC = "0x4300000000000000000000000000000000000003"
+options.CORE_USDC = "0x4300000000000000000000000000000000000003"  # BLAST USD (USDB)
 options.CORE_CIRCLE_BRIDGE = "<%= settings.PLACEHOLDER_ADDRESS %>" # No CCTP on blast
 options.CORE_CIRCLE_MINTER = "<%= settings.PLACEHOLDER_ADDRESS %>" # No CCTP on blast
 options.CORE_DEFAULT_DESTINATION_CCTP_DOMAIN = "6"
