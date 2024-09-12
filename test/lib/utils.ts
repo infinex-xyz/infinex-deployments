@@ -3,13 +3,10 @@ import fs from "node:fs/promises";
 import dotenv from "dotenv";
 import * as viem from "viem";
 import * as chains from "viem/chains";
-import { ChainKey } from "@infinex/evm-sdk/src";
-import testEnv from "@infinex/evm-sdk/env/test";
-import stagingEnv from "@infinex/evm-sdk/env/staging";
-import prodEnv from "@infinex/evm-sdk/env/prod";
+import { EvmChainKey, evmChainKeys, env as sdkEnv } from "@infinex/evm-sdk";
 import ejs from "ejs";
 
-export { evmChainKeys } from "@infinex/evm-sdk/";
+const {dev: testEnv, staging: stagingEnv, prod: prodEnv} = sdkEnv;
 
 export const envs = ["testnets", "staging", "mainnets"] as const;
 export type Env = (typeof envs)[number];
@@ -110,6 +107,11 @@ export async function loadLocalConfig({
           `${envVars.RPC_POLYGON_URL}${envVars.RPC_POLYGON_API_KEY}`
         ),
       }),
+      blast: viem.createPublicClient({
+        transport: viem.http(
+          `${envVars.RPC_BLAST_URL}${envVars.RPC_BLAST_API_KEY}`
+        ),
+      }),
     },
   };
 }
@@ -133,6 +135,7 @@ export function getContractSDK<Abi extends viem.Abi>(
   varName: string,
   abi: Abi
 ) {
+  console.log('ffffff',varName);
   // @ts-ignore
   const address = viem.getAddress(env[varName]);
   return viem.getContract({ address, abi, client });
@@ -162,7 +165,7 @@ export async function getNetworkName(client: Client): Promise<string> {
 }
 
 export type Client = viem.PublicClient<viem.HttpTransport>;
-export function getClient(chain: ChainKey): Client {
+export function getClient(chain: EvmChainKey): Client {
   return localConfig.clients[chain];
 }
 

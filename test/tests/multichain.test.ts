@@ -27,13 +27,14 @@ import {
 } from "../lib/abis";
 import { describe, expect, test } from "vitest";
 import * as viem from "viem";
-import { ChainKey, chainKeys } from "@infinex/evm-sdk/src";
+import { EvmChainKey, evmChainKeys } from "@infinex/evm-sdk";
 
-describe.concurrent.each(Object.values(chainKeys))(
+describe.concurrent.each(Object.values(evmChainKeys))(
   `Multichain (%s ${env})`,
   async (chainName) => {
+    console.log("chainName", chainName);
     const CHAIN = chainName.toUpperCase();
-    const client = getClient(chainName as ChainKey);
+    const client = getClient(chainName as EvmChainKey);
     const chainId = await client.getChainId();
     const chain = getChainById(chainId);
     const networkName = await getNetworkName(client);
