@@ -19,4 +19,4 @@ source = "infinex-multichain:1.1.0staging@O2"
 source = "infinex-core-test:3.0.0@core"
 
 [pull.PatronPurchaseAppV1]
-source = "infinex-patron-test:1.0.0@patron-purchase"
+source = "infinex-patron-test:1.0.1@patron-purchase"

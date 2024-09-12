@@ -25,4 +25,4 @@ source = "infinex-multichain:1.0.0staging@apps"
 source = "infinex-curve-app-test:1.1.0@curve-stableswap"
 
 [pull.PatronPurchaseAppV1]
-source = "infinex-patron-test:1.0.0@patron-purchase"
+source = "infinex-patron-test:1.0.1@patron-purchase"
