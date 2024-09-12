@@ -2,7 +2,7 @@
 #  pnpm cannon publish infinex-omnibus-test:latest@omnibus --chain-id 84532 --exclude-cloned
 
 name = "infinex-omnibus-test"
-version = "3.0.0"
+version = "3.0.1"
 preset = "omnibus"
 description = "All Infinex Deployments"
 
