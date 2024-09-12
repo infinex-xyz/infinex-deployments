@@ -39,10 +39,10 @@ To view the web report, use `pnpm run serve` in a terminal and browse to http://
 
 #### Manual test running
 
-If you want more control (e.g., when writing tests for a new deployment), you can run tests manually. This runs just the `craterun` tests against the `testnets` environment:
+If you want more control (e.g., when writing tests for a new deployment), you can run tests manually. This runs just the `appregistry` tests against the `testnets` environment:
 
 ```
-ENV=testnets npx vitest --run craterun
+ENV=testnets npx vitest --run appregistry
 ```
 
 ## Work-in-progress deployments and known special cases
