@@ -22,7 +22,7 @@ source = "infinex-core-test:3.0.2@core"
 source = "infinex-gp:0.1.7@StW"
 
 [pull.GovernancePointsV2]
-source = "infinex-gp:1.0.0@StW"
+source = "infinex-gp-test:2.0.0@gp"
 
 [pull.PatronPurchaseAppV1]
 source = "infinex-patron-test:1.0.0@patron-purchase"
