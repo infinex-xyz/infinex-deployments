@@ -53,6 +53,7 @@ options.CORE_CCTP_DOMAIN_OPTIMISM = "2"
 options.CORE_CCTP_DOMAIN_POLYGON = "7"
 
 # ---------- Setting Post deployment parameters  ---------- #
+
 [invoke.setInfinexProtocolConfigBeaconFee]
 target = ["infinex.InfinexProtocolConfigBeacon"]
 func = "setWithdrawalFeeUSDC"
