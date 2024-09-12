@@ -26,13 +26,13 @@ import {
   AccountsRouter,
 } from "../lib/abis";
 import { describe, expect, test } from "vitest";
+import { ok } from "node:assert";
 import * as viem from "viem";
-import { EvmChainKey, evmChainKeys } from "@infinex/evm-sdk";
+import { EvmChainKey, createEvmSdkManifest, evmChainKeys } from "@infinex/evm-sdk";
 
 describe.concurrent.each(Object.values(evmChainKeys))(
   `Multichain (%s ${env})`,
   async (chainName) => {
-    console.log("chainName", chainName);
     const CHAIN = chainName.toUpperCase();
     const client = getClient(chainName as EvmChainKey);
     const chainId = await client.getChainId();
@@ -40,6 +40,8 @@ describe.concurrent.each(Object.values(evmChainKeys))(
     const networkName = await getNetworkName(client);
     const configDir = `../infinex-multichain/${env}`;
     const envConfig = getEnvConfig(env);
+    // @ts-expect-error TODO: cast env
+    const manifest = createEvmSdkManifest(envConfig);
 
     const accountFactory = getContractSDK(
       envConfig,
@@ -59,28 +61,33 @@ describe.concurrent.each(Object.values(evmChainKeys))(
       `${CHAIN}_FORWARDER_ADDRESS`,
       InfinexERC2771ForwarderAbi
     );
-    const protocolConfigBeaconV1 = viem.getContract({
-      // @ts-ignore
-      address: envConfig[`${chainName}InfinexProtocolConfigBeacons`][0],
+
+    const infinexProtocolConfigBeaconAddresses = manifest.chains[chainName].infinexProtocolConfigBeacons;
+    const latestProtocolConfigBeaconAddress = infinexProtocolConfigBeaconAddresses.at(-1);
+    if (!latestProtocolConfigBeaconAddress) throw new Error(`No latest infinex protocol config beacon address for ${chainName}`);
+
+    const protocolConfigBeaconV1 = infinexProtocolConfigBeaconAddresses.length >= 3 ? viem.getContract({
+      address: manifest.chains[chainName].infinexProtocolConfigBeacons[0],
       abi: InfinexProtocolConfigBeaconAbi,
       client,
-    });
-    const protocolConfigBeaconV2 = viem.getContract({
-      // @ts-ignore
-      address: envConfig[`${chainName}InfinexProtocolConfigBeacons`][1],
+    }) : null;
+    const protocolConfigBeaconV2 = infinexProtocolConfigBeaconAddresses.length >= 2 ? viem.getContract({
+      address: manifest.chains[chainName].infinexProtocolConfigBeacons[1],
       abi: InfinexProtocolConfigBeaconAbi,
       client,
-    });
+    }) : null;
     const latestProtocolConfigBeacon = viem.getContract({
-      // @ts-ignore
-      address: envConfig[`${chainName}InfinexProtocolConfigBeacons`][2],
+      address: latestProtocolConfigBeaconAddress,
       abi: InfinexProtocolConfigBeacon,
       client,
     });
 
+    const accountRouterAddresses = manifest.chains[chainName].accountsRouters;
+    const latestAccountRouterAddress = accountRouterAddresses.at(-1);
+    if (!latestAccountRouterAddress) throw new Error(`No latest account router address for ${chainName}`);
+
     const latestAccountRouter = viem.getContract({
-      // @ts-ignore
-      address: envConfig[`${chainName}AccountsRouters`][2],
+      address: latestAccountRouterAddress,
       abi: AccountsRouter,
       client,
     }).address;
@@ -296,13 +303,17 @@ describe.concurrent.each(Object.values(evmChainKeys))(
         expect(latestProtocolConfigBeacon.address).toBe(beaconAddress);
       });
 
-      test("v2 beacon pointing to latest beacon", async () => {
+      test.skipIf(!protocolConfigBeaconV2)("v2 beacon pointing to latest beacon", async () => {
+        ok(protocolConfigBeaconV2);
+
         const beaconAddress =
           await protocolConfigBeaconV2.read.getLatestInfinexProtocolConfigBeacon();
         expect(latestProtocolConfigBeacon.address).toBe(beaconAddress);
       });
 
-      test("v1 beacon pointing to latest beacon", async () => {
+      test.skipIf(!protocolConfigBeaconV1)("v1 beacon pointing to latest beacon", async () => {
+        ok(protocolConfigBeaconV1);
+
         const beaconAddress =
           await protocolConfigBeaconV1.read.getLatestInfinexProtocolConfigBeacon();
         expect(latestProtocolConfigBeacon.address).toBe(beaconAddress);
@@ -349,12 +360,16 @@ describe.concurrent.each(Object.values(evmChainKeys))(
           expect(pending).toMatch(/^0x0+/);
         });
 
-        test("v1 beacon has no pending owner", async () => {
+        test.skipIf(!protocolConfigBeaconV1)("v1 beacon has no pending owner", async () => {
+          ok(protocolConfigBeaconV1);
+
           const pending = await protocolConfigBeaconV1.read.pendingOwner();
           expect(pending).toMatch(/^0x0+/);
         });
 
-        test("v2 beacon has no pending owner", async () => {
+        test.skipIf(!protocolConfigBeaconV2)("v2 beacon has no pending owner", async () => {
+          ok(protocolConfigBeaconV2);
+
           const pending = await protocolConfigBeaconV2.read.pendingOwner();
           expect(pending).toMatch(/^0x0+/);
         });

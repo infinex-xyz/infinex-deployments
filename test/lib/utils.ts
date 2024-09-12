@@ -6,7 +6,7 @@ import * as chains from "viem/chains";
 import { EvmChainKey, evmChainKeys, env as sdkEnv } from "@infinex/evm-sdk";
 import ejs from "ejs";
 
-const {dev: testEnv, staging: stagingEnv, prod: prodEnv} = sdkEnv;
+const { dev: testEnv, staging: stagingEnv, prod: prodEnv } = sdkEnv;
 
 export const envs = ["testnets", "staging", "mainnets"] as const;
 export type Env = (typeof envs)[number];
@@ -135,7 +135,6 @@ export function getContractSDK<Abi extends viem.Abi>(
   varName: string,
   abi: Abi
 ) {
-  console.log('ffffff',varName);
   // @ts-ignore
   const address = viem.getAddress(env[varName]);
   return viem.getContract({ address, abi, client });

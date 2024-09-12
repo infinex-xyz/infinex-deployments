@@ -19,7 +19,7 @@
     "node": "^20"
   },
   "dependencies": {
-    "@infinex/evm-sdk": "0.0.28",
+    "@infinex/evm-sdk": "0.0.30",
     "@infinex/infinex-sdk": "1.2.2",
     "@infinex/manifest": "0.0.14",
     "dotenv": "^16.4.5",
