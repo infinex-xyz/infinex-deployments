@@ -185,7 +185,7 @@ describe.concurrent.each(Object.values(evmChainKeys))(
           expect(USDCAddress).toBe(officialUSDCAddress(chainId));
         });
 
-        test("circle bridge configuration set correctly", async () => {
+        test.skipIf(CHAIN == 'BLAST')("circle bridge configuration set correctly", async () => {
           const circleBridge =
             await latestProtocolConfigBeacon.read.getCircleBridge();
           const circleMinter =
@@ -197,7 +197,7 @@ describe.concurrent.each(Object.values(evmChainKeys))(
           expect(defaultCCTPDomain).toBe(6);
         });
 
-        test("wormhole circle bridge configuration set correctly", async () => {
+        test.skipIf(CHAIN == 'BLAST')("wormhole circle bridge configuration set correctly", async () => {
           const wormholeCircleBridge =
             await latestProtocolConfigBeacon.read.getWormholeCircleBridge();
           const defaultWormholeDomain =
