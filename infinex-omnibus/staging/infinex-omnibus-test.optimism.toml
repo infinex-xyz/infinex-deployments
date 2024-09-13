@@ -12,8 +12,9 @@ source = "infinex-account-factory-test:1.0.0@main"
 [pull.CoreV1]
 source = "infinex-multichain:1.0.0staging@O2"
 
-[pull.CoreV2]
-source = "infinex-multichain:1.1.0staging@O2"
+# Contains missing reference so can't include v2 in omnibus
+# [pull.CoreV2]
+# source = "infinex-multichain:1.1.0staging@O2"
 
 [pull.CoreV3]
 source = "infinex-core-test:3.0.0@core"
