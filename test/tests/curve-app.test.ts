@@ -6,13 +6,12 @@ import {
   loadToml,
   officialUSDCAddress,
 } from "../lib/utils";
-import testEnv from "@infinex/evm-sdk/env/test";
-import stagingEnv from "@infinex/evm-sdk/env/staging";
-import prodEnv from "@infinex/evm-sdk/env/prod";
+import {env as sdkEnv, EvmChainKey} from "@infinex/evm-sdk";
 import { CurveStableSwapAppBeaconAbi } from "../lib/abis";
 import { describe, expect, test } from "vitest";
 import * as viem from "viem";
-import { ChainKey } from "@infinex/evm-sdk/src";
+
+const {dev: testEnv, staging: stagingEnv, prod: prodEnv} = sdkEnv;
 
 // Hardcoded addresses for assertions
 const hardcodedAddresses: Record<string, Record<number, `0x${string}`>> = {
@@ -59,7 +58,7 @@ const getEnvConfig = (env: string) => {
 };
 
 // Define the chain sets for different environments
-const chainSets: Record<string, ChainKey[]> = {
+const chainSets: Record<string, EvmChainKey[]> = {
   testnets: ["ethereum"], // Only Ethereum for testnets
   staging: ["ethereum", "arbitrum"], // Ethereum and Arbitrum for staging
   mainnets: ["ethereum", "arbitrum"], // Ethereum and Arbitrum for mainnets

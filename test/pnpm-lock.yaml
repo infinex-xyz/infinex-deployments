@@ -6,8 +6,8 @@ settings:
 
 dependencies:
   '@infinex/evm-sdk':
-    specifier: 0.0.21
-    version: 0.0.21(typescript@5.5.3)
+    specifier: 0.0.30
+    version: 0.0.30(typescript@5.5.3)
   '@infinex/infinex-sdk':
     specifier: 1.2.2
     version: 1.2.2(typescript@5.5.3)
@@ -266,8 +266,8 @@ packages:
     engines: {node: '>=14'}
     dev: false
 
-  /@infinex/evm-sdk@0.0.21(typescript@5.5.3):
-    resolution: {integrity: sha512-27lEhzGwPo4clz0n30YUGS4a8/1kP54AzKwBRxXQPyFxCxAYo8vjeXPcoySRIiJ3JqHkZNCh7sxLEeX6FCUU4Q==}
+  /@infinex/evm-sdk@0.0.30(typescript@5.5.3):
+    resolution: {integrity: sha512-cbs7gsNeIkOtoUZauGKU4HZ+PUeH2LNu31eTyraWSmbppLpVwbk8oays6QaUNQYwHwt2VsGQK8JkhLHE/Gf+Ww==}
     dependencies:
       viem: 2.20.0(typescript@5.5.3)(zod@3.23.8)
     transitivePeerDependencies:

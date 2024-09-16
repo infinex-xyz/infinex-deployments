@@ -2,14 +2,15 @@ name = "infinex-core"
 version = "3.0.0"
 preset = "core"
 description = "Infinex Core Deployments"
-#  pnpm cannon build infinex-multichain/mainnets/infinex-multichain-polygon.toml --chain-id 137 --dry-run --upgrade-from
-#  pnpm cannon publish infinex-core:3.0.0@core --chain-id 137 --exclude-cloned
-#  pnpm cannon verify infinex-core:3.0.0@core --chain-id 137 --api-key
+#  pnpm cannon build infinex-multichain/mainnets/infinex-multichain-blast.toml --chain-id 81457 --dry-run --upgrade-from
+#  pnpm cannon publish infinex-core:3.0.0@core --chain-id 81457 --exclude-cloned
+#  pnpm cannon verify infinex-core:3.0.0@core --chain-id 81457 --api-key
 
 [var.Deploy]
 DEPLOYER = "0x6298551D56F825B3b6c3350D32129Ffd3cFb198C"
-REVENUE_POOL = "0x87213Fa8BA3b8170E940aAF47096A4322a344De3"
-MULTISIG = "0x87213Fa8BA3b8170E940aAF47096A4322a344De3"
+MULTISIG = "0xaA142DEAf0239924dCcce54B796Be06D4D1Be9ca"
+REVENUE_POOL = "0xaA142DEAf0239924dCcce54B796Be06D4D1Be9ca"
+PLACEHOLDER_ADDRESS="0xaA142DEAf0239924dCcce54B796Be06D4D1Be9ca" # Placeholder address used for when an address is required but not used
 WITHDRAWAL_FEE_USDC = "<%= parseUnits(String(0), 6) %>"
 TRUSTED_RECOVERY_KEEPER = "0x07D19647E3273cfa905E762D7cE45D0f5c661cC1"
 
@@ -23,12 +24,12 @@ options.CORE_SALT = "INFINEX_1_0_0"
 options.CORE_DEPLOYER = "<%= settings.DEPLOYER %>"
 options.CORE_INITIAL_PROXY_IMPLEMENTATION = "<%= imports.AccountFactory.imports.AccountFactory.contracts.InitialProxyImplementation.address %>"
 options.CORE_REVENUE_POOL = "<%= settings.REVENUE_POOL %>"
-options.CORE_USDC = "0x3c499c542cef5e3811e1192ce70d8cc03d5c3359"
-options.CORE_CIRCLE_BRIDGE = "0x9daF8c91AEFAE50b9c0E69629D3F6Ca40cA3B3FE"
-options.CORE_CIRCLE_MINTER = "0x10f7835F827D6Cf035115E10c50A853d7FB2D2EC"
+options.CORE_USDC = "0x4300000000000000000000000000000000000003"  # BLAST USD (USDB)
+options.CORE_CIRCLE_BRIDGE = "<%= settings.PLACEHOLDER_ADDRESS %>" # No CCTP on blast
+options.CORE_CIRCLE_MINTER = "<%= settings.PLACEHOLDER_ADDRESS %>" # No CCTP on blast
 options.CORE_DEFAULT_DESTINATION_CCTP_DOMAIN = "6"
-options.CORE_WORMHOLE_CIRCLE_BRIDGE = "0x0FF28217dCc90372345954563486528aa865cDd6"
-options.CORE_DEFAULT_DESTINATION_WORMHOLE_CHAIN_ID = "30"                                                                                            # set the default domain to base for keeper bridging
+options.CORE_WORMHOLE_CIRCLE_BRIDGE = "<%= settings.PLACEHOLDER_ADDRESS %>" # No CCTP on blast
+options.CORE_DEFAULT_DESTINATION_WORMHOLE_CHAIN_ID = "30"                                                                                       # set the default domain to base for keeper bridging
 # ------- Solana Vars ------- #
 options.CORE_SOLANA_CCTP_DESTINATION_DOMAIN = "5"
 options.CORE_SOLANA_WALLET_SEED = "<%= hexlify('wallet_authority') %>"
@@ -43,7 +44,7 @@ options.CORE_WORMHOLE_CHAIN_ID_BASE = "30"
 options.CORE_WORMHOLE_CHAIN_ID_ETHEREUM = "2"
 options.CORE_WORMHOLE_CHAIN_ID_OPTIMISM = "24"
 options.CORE_WORMHOLE_CHAIN_ID_POLYGON = "5"
-options.CORE_WORMHOLE_CORE = "0x7A4B5a56256163F07b2C80A7cA55aBE66c4ec4d7"
+options.CORE_WORMHOLE_CORE = "0xbebdb6C8ddC678FfA9f8748f85C815C556Dd8ac6"
 # ---------- Circle Constants ---------- #
 options.CORE_CCTP_DOMAIN_ARBITRUM = "3"
 options.CORE_CCTP_DOMAIN_BASE = "6"
@@ -52,18 +53,19 @@ options.CORE_CCTP_DOMAIN_OPTIMISM = "2"
 options.CORE_CCTP_DOMAIN_POLYGON = "7"
 
 # ---------- Setting Post deployment parameters  ---------- #
+
 [invoke.setInfinexProtocolConfigBeaconFee]
 target = ["infinex.InfinexProtocolConfigBeacon"]
 func = "setWithdrawalFeeUSDC"
 args = ["<%= settings.WITHDRAWAL_FEE_USDC %>"]
-from = "<%= settings.DEPLOYER %>"
+fromCall.func = "owner"
 depends = ["clone.infinex"]
 
 [invoke.setTrustedRecoveryKeeper]
 target = ["infinex.InfinexProtocolConfigBeacon"]
 func = "setTrustedRecoveryKeeper"
 args = ["<%= settings.TRUSTED_RECOVERY_KEEPER %>", true]
-from = "<%= settings.DEPLOYER %>"
+fromCall.func = "owner"
 depends = ["clone.infinex"]
 
 [invoke.TransferOwnershipNewBeacon]
