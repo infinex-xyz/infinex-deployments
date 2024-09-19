@@ -11,3 +11,6 @@ source = "infinex-account-factory-test:1.0.0@main"
 
 [pull.CoreV3]
 source = "infinex-core-test:3.0.0@core"
+
+[pull.CardRun]
+source = "infinex-cardrun-test:1.0.0@cardrun"
