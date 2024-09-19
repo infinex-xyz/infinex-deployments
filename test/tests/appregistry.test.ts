@@ -8,10 +8,10 @@ import {
 } from "../lib/utils";
 import { AppRegistry } from "../lib/abis";
 import { describe, expect, test } from "vitest";
-import { ChainKey } from "@infinex/evm-sdk/src";
+import { EvmChainKey } from "@infinex/evm-sdk";
 
 // Define the chain sets for different environments
-const chainSets: Record<string, ChainKey[]> = {
+const chainSets: Record<string, EvmChainKey[]> = {
   testnets: ["ethereum"], // Only Ethereum for testnets
   staging: ["ethereum", "arbitrum"], // Ethereum and Arbitrum for staging
   mainnets: ["ethereum", "arbitrum"], // Ethereum and Arbitrum for mainnets

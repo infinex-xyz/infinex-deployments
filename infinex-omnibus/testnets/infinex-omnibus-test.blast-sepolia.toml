@@ -1,0 +1,16 @@
+#  pnpm cannon build infinex-omnibus/testnets/infinex-omnibus-test.blast-sepolia.toml --chain-id 168587773 --dry-run
+#  pnpm cannon publish infinex-omnibus-test:latest@omnibus --chain-id 168587773 --exclude-cloned
+
+name = "infinex-omnibus-test"
+version = "3.0.0"
+preset = "omnibus"
+description = "All Infinex Deployments"
+
+[pull.AccountFactoryV1]
+source = "infinex-account-factory-test:1.0.0@main"
+
+[pull.CoreV3]
+source = "infinex-core-test:3.0.2@core"
+
+[pull.CardRun]
+source = "infinex-cardrun-test:1.0.0@cardrun"
