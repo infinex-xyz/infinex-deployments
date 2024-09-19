@@ -1,15 +1,13 @@
 
 
 import { env,loadToml, getClient, getNetworkName, getContractSDK, getEnvConfig } from "../lib/utils";
-import testEnv from "@infinex/evm-sdk/env/test";
-import stagingEnv from "@infinex/evm-sdk/env/staging";
 import { PatronPurchaseAppBeacon,
          PatronPointOfPurchase, 
          PatronPurchaseVault, 
          } from '../lib/abis';
 import { describe, expect, test } from "vitest";
 import { Address } from "viem";
-import { chainKeys } from "@infinex/evm-sdk/src";
+import { evmChainKeys } from "@infinex/evm-sdk";
 
 // Hardcoded additional assets for assertions
 const hardcodedAssets: Record<string, Record<number, Address[]>> = {
@@ -33,7 +31,7 @@ const hardcodedAssets: Record<string, Record<number, Address[]>> = {
   };
   
 
-describe.concurrent.each(chainKeys.filter((x) => x !== "blast"))(
+describe.concurrent.each(evmChainKeys.filter((x) => x !== "blast"))(
     `Patron Purchase (%s ${env})`,
     async (chainName) => {
         console.log(chainName);
@@ -90,11 +88,11 @@ describe.concurrent.each(chainKeys.filter((x) => x !== "blast"))(
             }
         }
 
-        const extraAssets = hardcodedAssets.assets[chainId];
-
+        let extraAssets:Address[] = hardcodedAssets.assets[chainId] ?? [];
         console.log({extraAssets});
 
-        tokenList = [...tokenList, ...extraAssets];
+        if(!extraAssets.length)
+            tokenList = [...tokenList, ...extraAssets];
 
         console.log({tokenList});
         console.log({signersList});
