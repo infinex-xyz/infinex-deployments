@@ -1,19 +1,18 @@
-name = "infinex-patron-test"
+name = "infinex-patron"
 preset = "patron-purchase"
-version = "1.0.1"
+version = "1.0.0"
 description = "Smart Contracts used for Infinex Patron Purchase App"
 
-# pnpm cannon build infinex-patron/patron-purchase-app/staging/infinex-patron-test.ethereum.toml --chain-id 1 --dry-run
+# pnpm cannon build infinex-patron/patron-purchase-app/mainnets/infinex-patron.ethereum.toml --chain-id 1 --dry-run
 
 [var.PATRON]
 depends = []
-PATRON_DEPLOYER = "0x6298551D56F825B3b6c3350D32129Ffd3cFb198C"
-FUNDS_DESTINATION = "0xe48A07CAD5F814A56c942643e92095a1Bb92a00e"
-AUTHORIZED_SIGNER = "0xf56DE57c251257C05F83CCE338A46bd5D3a3E506"
-PATRON_FINAL_OWNER = "0xe48A07CAD5F814A56c942643e92095a1Bb92a00e" 
-# AUTHORIZED VAULTS
-VAULT_1 = "0xe48A07CAD5F814A56c942643e92095a1Bb92a00e"
-VAULT_2 = "0x6298551D56F825B3b6c3350D32129Ffd3cFb198C"
+PATRON_DEPLOYER = "0xCD8AeD7674B10e1b6c8281B91259CEDE1BFE4a19"
+AUTHORIZED_SIGNER = "0x4f61e5795709C7A7E950Ea48c1cF5035F596d8A0"
+# AUTHORIZED MULTISIGS
+MULTISIG_0 = "0x57EE9a5EF8b5c6B452CC84aa51BfD3165Fb1Cde6"
+MULTISIG_1 = "0x0E1F7c53b06E8e6B62FFc86137099d8668a92B42"
+MULTISIG_2 = "0x4e86854B70c67f63dF70b63DB79D348dC97FA5A2"
 # AUTHORIZED TOKENS
 USDC_TOKEN = "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48"
 USDT_TOKEN = "0xdac17f958d2ee523a2206206994597c13d831ec7"  
@@ -25,7 +24,7 @@ ETHER = "0x0000000000000000000000000000000000000000"
 [clone.infinexPatronPurchase]
 depends = ['var.PATRON']
 options.PATRON_DEPLOYER = "<%= settings.PATRON_DEPLOYER %>"
-options.PATRON_PURCHASE_SALT = "PATRON_PURCHASE_SALT_1_0_11"
+options.PATRON_PURCHASE_SALT = "PATRON_PURCHASE_SALT_1_0_13"
 source = "infinex:1.0.1@patron-purchase"
 target = "infinex:1.0.1@patron-purchase"
 
@@ -34,7 +33,7 @@ target = ["infinexPatronPurchase.PatronPointOfPurchase"]
 func = "initialize"
 args = [
     "<%= settings.PATRON_DEPLOYER %>",
-    "<%= settings.FUNDS_DESTINATION %>",
+    "<%= settings.MULTISIG_0 %>", # if funds get stuck, this is where they go.
     [
         "<%= settings.AUTHORIZED_SIGNER %>",
     ],
@@ -47,8 +46,9 @@ args = [
         "<%= settings.ETHER %>"
     ],
     [
-        "<%= settings.VAULT_1 %>",
-        "<%= settings.VAULT_2 %>"
+        "<%= settings.MULTISIG_0 %>",  # Funds destination for route 0.
+        "<%= settings.MULTISIG_1 %>",  # Funds destination for route 1.
+        "<%= settings.MULTISIG_2 %>"   # Funds destination for route 2.
     ],
 ]
 depends = [
@@ -60,25 +60,11 @@ depends = [
 [invoke.transferOwnershipPatronPurchaseAppBeacon]
 target = ["infinexPatronPurchase.PatronPurchaseAppBeacon"]
 func = "transferOwnership"
-args = ["<%= settings.PATRON_FINAL_OWNER %>"]
+args = ["<%= settings.MULTISIG_0 %>"]
 from = "<%= settings.PATRON_DEPLOYER %>"
 
 [invoke.transferOwnershipPatronPointOfPurchase]
 target = ["infinexPatronPurchase.PatronPointOfPurchase"]
 func = "transferOwnership"
-args = ["<%= settings.PATRON_FINAL_OWNER %>"]
+args = ["<%= settings.MULTISIG_0 %>"]
 from = "<%= settings.PATRON_DEPLOYER %>"
-
-# Accept Ownership
-
-[invoke.acceptOwnershipPatronPurchaseAppBeacon]
-target = ["infinexPatronPurchase.PatronPurchaseAppBeacon"]
-func = "acceptOwnership"
-from = "<%= settings.PATRON_FINAL_OWNER %>"
-depends = ["invoke.transferOwnershipPatronPurchaseAppBeacon"]
-
-[invoke.acceptOwnershipPatronPointOfPurchase]
-target = ["infinexPatronPurchase.PatronPointOfPurchase"]
-func = "acceptOwnership"
-from = "<%= settings.PATRON_FINAL_OWNER %>"
-depends = ["invoke.transferOwnershipPatronPointOfPurchase"]

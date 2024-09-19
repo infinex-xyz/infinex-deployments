@@ -19,9 +19,9 @@
     "node": "^20"
   },
   "dependencies": {
-    "@infinex/evm-sdk": "0.0.34",
+    "@infinex/evm-sdk": "0.0.24",
     "@infinex/infinex-sdk": "1.2.2",
-    "@infinex/manifest": "0.0.17",
+    "@infinex/manifest": "0.0.16",
     "dotenv": "^16.4.5",
     "ejs": "^3.1.10",
     "prettier": "^3.3.2",

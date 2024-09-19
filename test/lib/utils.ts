@@ -3,10 +3,13 @@ import fs from "node:fs/promises";
 import dotenv from "dotenv";
 import * as viem from "viem";
 import * as chains from "viem/chains";
-import { EvmChainKey, evmChainKeys, env as sdkEnv } from "@infinex/evm-sdk";
+import { ChainKey } from "@infinex/evm-sdk/src";
+import testEnv from "@infinex/evm-sdk/env/test";
+import stagingEnv from "@infinex/evm-sdk/env/staging";
+import prodEnv from "@infinex/evm-sdk/env/prod";
 import ejs from "ejs";
 
-const { dev: testEnv, staging: stagingEnv, prod: prodEnv } = sdkEnv;
+export { evmChainKeys } from "@infinex/evm-sdk/";
 
 export const envs = ["testnets", "staging", "mainnets"] as const;
 export type Env = (typeof envs)[number];
@@ -107,11 +110,6 @@ export async function loadLocalConfig({
           `${envVars.RPC_POLYGON_URL}${envVars.RPC_POLYGON_API_KEY}`
         ),
       }),
-      blast: viem.createPublicClient({
-        transport: viem.http(
-          `${envVars.RPC_BLAST_URL}${envVars.RPC_BLAST_API_KEY}`
-        ),
-      }),
     },
   };
 }
@@ -164,7 +162,7 @@ export async function getNetworkName(client: Client): Promise<string> {
 }
 
 export type Client = viem.PublicClient<viem.HttpTransport>;
-export function getClient(chain: EvmChainKey): Client {
+export function getClient(chain: ChainKey): Client {
   return localConfig.clients[chain];
 }
 
@@ -184,8 +182,6 @@ export function officialUSDCAddress(chainId: number) {
     11155111: "0x1c7D4B196Cb0C7B01d743Fbc6116a902379C7238",
     11155420: "0x5fd84259d66Cd46123540766Be93DFE6D43130D7",
     80002: "0x41E94Eb019C0762f9Bfcf9Fb1E58725BfB0e7582",
-    81457: '0x4300000000000000000000000000000000000003', // Blast USDB
-    168587773: '0x4300000000000000000000000000000000000003' // Blast USDB
   };
   return officialUSDC[chainId];
 }
@@ -252,9 +248,6 @@ export function officialWormholeCoreAddress(chainId: number): `0x${string}` {
     11155111: "0x4a8bc80Ed5a4067f1CCf107057b8270E0cC11A78",
     11155420: "0x31377888146f3253211EFEf5c676D41ECe7D58Fe",
     80002: "0x6b9C8671cdDC8dEab9c719bB87cBd3e782bA6a35",
-    81457: '0xbebdb6C8ddC678FfA9f8748f85C815C556Dd8ac6',
-    168587773: '0x473e002D7add6fB67a4964F13bFd61280Ca46886'
-
   };
   return officialWormholeCore[chainId];
 }

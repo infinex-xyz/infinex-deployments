@@ -1,0 +1,25 @@
+# Transfer ownership of the contracts to the multisig from the deployer
+
+# pnpm cannon build scripts/migration/prod/patron/1-accept-ownership/1-accept-ownership.base.toml --dry-run --chain-id 8453
+
+name = "infinex-transfer-ownership"
+version = "1.0.0"
+
+[var.MultiSigs]
+MULTISIG_0 = "0x6021A2F65E2E1655510120F49f2020469d9CFF07"
+
+[pull.InfinexPatronPurchase]
+source = "infinex-patron:1.0.0@patron-purchase"
+
+# Accept Ownership
+
+[invoke.acceptOwnershipPatronPurchaseAppBeacon]
+target = ["InfinexPatronPurchase.infinexPatronPurchase.PatronPurchaseAppBeacon"]
+func = "acceptOwnership"
+from = "<%= settings.MULTISIG_0 %>"
+
+[invoke.acceptOwnershipPatronPointOfPurchase]
+target = ["InfinexPatronPurchase.infinexPatronPurchase.PatronPointOfPurchase"]
+func = "acceptOwnership"
+from = "<%= settings.MULTISIG_0 %>"
+
