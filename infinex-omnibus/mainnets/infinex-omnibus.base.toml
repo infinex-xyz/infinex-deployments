@@ -21,6 +21,9 @@ source = "infinex-core:3.0.0@core"
 [pull.GovernancePointsV1]
 source = "infinex-gp:1.0.0@StW"
 
+[pull.GovernancePointsV2]
+source = "infinex-gp:2.0.0@gp"
+
 [pull.Craterun]
 source = "infinex-multichain:1.0.1@craterun"
 
