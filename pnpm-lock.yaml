@@ -6,14 +6,14 @@ settings:
 
 devDependencies:
   '@infinex/infinex-sdk':
-    specifier: 1.2.4
-    version: 1.2.4
+    specifier: 1.0.12-viem
+    version: 1.0.12-viem
   '@types/node':
     specifier: ^20.14.2
     version: 20.14.4
   '@usecannon/cli':
-    specifier: 2.16.8
-    version: 2.16.8(hardhat@2.22.2)(solc@0.8.25)
+    specifier: 2.17.1
+    version: 2.17.1(hardhat@2.22.2)(solc@0.8.25)
   commander:
     specifier: ^12.1.0
     version: 12.1.0
@@ -429,16 +429,14 @@ packages:
     resolution: {integrity: sha512-td6ZUkz2oS3VeleBcN+m//Q6HlCFCPrnI0FZhrt/h4XqLEdOyYp2u21nd8MdsR+WJy5r9PTDaHTDDfhf4H4l6Q==}
     dev: true
 
-  /@infinex/infinex-sdk@1.2.4:
-    resolution: {integrity: sha512-Ot56r8JL3eXGUl1bG/oxL9h0YSplgZr0MWVESUWDE/CepyqYKBK7f/8UnM3XW0s7s2R97qS0K0BN4DsDRJTR4Q==}
+  /@infinex/infinex-sdk@1.0.12-viem:
+    resolution: {integrity: sha512-k1Ka9ekQW5LMEJSFGOTfVGxDj1Fmm2fqT4qfmXnLvQnSMn9CJcs9CsneIXIPnflNV00LPH6WOtsDAbfFf5usfg==}
     dependencies:
-      abitype: 1.0.6(zod@3.23.8)
-      axios: 1.6.0
-      viem: 2.20.0(zod@3.23.8)
+      abitype: 1.0.2(zod@3.23.8)
+      viem: 2.13.10(zod@3.23.8)
       zod: 3.23.8
     transitivePeerDependencies:
       - bufferutil
-      - debug
       - typescript
       - utf-8-validate
     dev: true
@@ -458,6 +456,12 @@ packages:
     resolution: {integrity: sha512-eMk0b9ReBbV23xXU693TAIrLyeO5iTgBZGSJfpqriG8UkYvr/hC9u9pyMlAakDNHWmbhMZCDs6KQO0jzKD8OTw==}
     dev: true
 
+  /@noble/curves@1.2.0:
+    resolution: {integrity: sha512-oYclrNgRaM9SsBUBVbb8M6DTV7ZHRTKugureoYEncY5c65HOmRzvSiTE3y5CYaPYJA/GVkrhXEoF0M3Ya9PMnw==}
+    dependencies:
+      '@noble/hashes': 1.3.2
+    dev: true
+
   /@noble/curves@1.4.0:
     resolution: {integrity: sha512-p+4cb332SFCrReJkCYe8Xzm0OWi4Jji5jVdIZRL/PmacmDkFNw6MrrV+gGpiPxLHbV+zKFRywUWbaseT+tZRXg==}
     dependencies:
@@ -466,6 +470,11 @@ packages:
 
   /@noble/hashes@1.2.0:
     resolution: {integrity: sha512-FZfhjEDbT5GRswV3C6uvLPHMiVD6lQBmpoX5+eSiPaMTXte/IKqI5dykDxzZB/WBeK/CDuQRBWarPdi3FNY2zQ==}
+    dev: true
+
+  /@noble/hashes@1.3.2:
+    resolution: {integrity: sha512-MVC8EAQp7MvEcm30KWENFjgR+Mkmf+D189XJTkFIlwohU5hcBbn1ZkKq7KVTi2Hme3PMGF390DaL52beVrIihQ==}
+    engines: {node: '>= 16'}
     dev: true
 
   /@noble/hashes@1.4.0:
@@ -776,6 +785,14 @@ packages:
       '@scure/base': 1.1.6
     dev: true
 
+  /@scure/bip32@1.3.2:
+    resolution: {integrity: sha512-N1ZhksgwD3OBlwTv3R6KFEcPojl/W4ElJOeCZdi+vuI5QmTFwLq3OFf2zd2ROpKvxFdgZ6hUpb0dx9bVNEwYCA==}
+    dependencies:
+      '@noble/curves': 1.2.0
+      '@noble/hashes': 1.3.2
+      '@scure/base': 1.1.6
+    dev: true
+
   /@scure/bip32@1.4.0:
     resolution: {integrity: sha512-sVUpc0Vq3tXCkDGYVWGIZTRfnvu8LoTDaev7vbwh0omSvVORONr960MQWdKqJDCReIEmTj3PAr73O3aoxz7OPg==}
     dependencies:
@@ -788,6 +805,13 @@ packages:
     resolution: {integrity: sha512-t+wDck2rVkh65Hmv280fYdVdY25J9YeEUIgn2LG1WM6gxFkGzcksoDiUkWVpVp3Oex9xGC68JU2dSbUfwZ2jPg==}
     dependencies:
       '@noble/hashes': 1.2.0
+      '@scure/base': 1.1.6
+    dev: true
+
+  /@scure/bip39@1.2.1:
+    resolution: {integrity: sha512-Z3/Fsz1yr904dduJD0NpiyRHhRYHdcnyh73FZWiV+/qhWi83wNJ3NWolYqCEN+ZWsUz2TWwajJggcRE9r1zUYg==}
+    dependencies:
+      '@noble/hashes': 1.3.2
       '@scure/base': 1.1.6
     dev: true
 
@@ -929,8 +953,8 @@ packages:
       '@types/node': 20.14.4
     dev: true
 
-  /@usecannon/builder@2.16.8(hardhat@2.22.2)(solc@0.8.25):
-    resolution: {integrity: sha512-5eXp50UTdqVw0GWilqMfbSjVZA7s9z4i56Wd9t/X8kYdhtFxv7VAqLRFeDd2A8SWfE+6Hgr3DYGc+5CnY+Wotg==}
+  /@usecannon/builder@2.17.1(hardhat@2.22.2)(solc@0.8.25):
+    resolution: {integrity: sha512-52P+JYaAFQ5kDMWpA+2Mecin0XOPtQObqU3wSlrVsnGS3XxigJA1H6pGYEWB0xxhXPRci+6m0NEFPJdQvrcpzg==}
     engines: {node: '>=16.0.0'}
     dependencies:
       '@synthetixio/router': 3.4.0(hardhat@2.22.2)(solc@0.8.25)
@@ -957,12 +981,12 @@ packages:
       - utf-8-validate
     dev: true
 
-  /@usecannon/cli@2.16.8(hardhat@2.22.2)(solc@0.8.25):
-    resolution: {integrity: sha512-EFSccHrynF1TCSwVXjWY+aJ0i5Eaj+fpP6Ct+YOYy2qkiFu8iDcZIyNMRTUCxoXGHyFRlg1BGRociYEHMnCcwQ==}
+  /@usecannon/cli@2.17.1(hardhat@2.22.2)(solc@0.8.25):
+    resolution: {integrity: sha512-SSID1UUH84LPMp7PTloC0IijwCJpWfsSQXmvPpyJB8vjbAHOCNLRxsNT3PRgtZvmCWdTrfuYh3FMtsvlpB/UKQ==}
     hasBin: true
     dependencies:
       '@iarna/toml': 3.0.0
-      '@usecannon/builder': 2.16.8(hardhat@2.22.2)(solc@0.8.25)
+      '@usecannon/builder': 2.17.1(hardhat@2.22.2)(solc@0.8.25)
       abitype: 1.0.6(zod@3.23.8)
       chalk: 4.1.2
       commander: 9.5.0
@@ -987,6 +1011,34 @@ packages:
       - supports-color
       - typescript
       - utf-8-validate
+    dev: true
+
+  /abitype@1.0.0(zod@3.23.8):
+    resolution: {integrity: sha512-NMeMah//6bJ56H5XRj8QCV4AwuW6hB6zqz2LnhhLdcWVQOsXki6/Pn3APeqxCma62nXIcmZWdu1DlHWS74umVQ==}
+    peerDependencies:
+      typescript: '>=5.0.4'
+      zod: ^3 >=3.22.0
+    peerDependenciesMeta:
+      typescript:
+        optional: true
+      zod:
+        optional: true
+    dependencies:
+      zod: 3.23.8
+    dev: true
+
+  /abitype@1.0.2(zod@3.23.8):
+    resolution: {integrity: sha512-aFt4k2H+eiAKy/zxtnORa9iIb10BMBeWL18l8v4+QuwYEBXPxxjSB1bFZCzQmKPoj8m7j68K705l3uY+E2gAjg==}
+    peerDependencies:
+      typescript: '>=5.0.4'
+      zod: ^3 >=3.22.0
+    peerDependenciesMeta:
+      typescript:
+        optional: true
+      zod:
+        optional: true
+    dependencies:
+      zod: 3.23.8
     dev: true
 
   /abitype@1.0.5(zod@3.23.8):
@@ -1123,16 +1175,6 @@ packages:
     dependencies:
       axios: 1.7.4(debug@4.3.6)
       is-retry-allowed: 2.2.0
-    dev: true
-
-  /axios@1.6.0:
-    resolution: {integrity: sha512-EZ1DYihju9pwVB+jg67ogm+Tmqc6JmhamRN6I4Zt8DfZu5lbcQGw3ozH9lFejSJgs/ibaef3A9PMXPLeefFGJg==}
-    dependencies:
-      follow-redirects: 1.15.6(debug@4.3.6)
-      form-data: 4.0.0
-      proxy-from-env: 1.1.0
-    transitivePeerDependencies:
-      - debug
     dev: true
 
   /axios@1.7.4(debug@4.3.6):
@@ -2196,6 +2238,14 @@ packages:
   /is-unicode-supported@0.1.0:
     resolution: {integrity: sha512-knxG2q4UC3u8stRGyAVJCOdxFmv5DZiRcdlIaAQXAbSfJya+OhopNotLQrstBhququ4ZpuKbDc/8S6mgXgPFPw==}
     engines: {node: '>=10'}
+    dev: true
+
+  /isows@1.0.4(ws@8.13.0):
+    resolution: {integrity: sha512-hEzjY+x9u9hPmBom9IIAqdJCwNLax+xrPb51vEPpERoFlIxgmZcHzsT5jKG06nvInKOBGvReAVz80Umed5CczQ==}
+    peerDependencies:
+      ws: '*'
+    dependencies:
+      ws: 8.13.0
     dev: true
 
   /isows@1.0.4(ws@8.17.1):
@@ -3313,6 +3363,28 @@ packages:
     resolution: {integrity: sha512-cXEIW6cfr15lFv563k4GuVuW/fiwjknytD37jIOLSdSWuOI6WnO/oKwmP2FQTU2l01LP8/M5TSAJpzUaGe3uWg==}
     dev: true
 
+  /viem@2.13.10(zod@3.23.8):
+    resolution: {integrity: sha512-fPnbjqlLfWniczYCbnK47MKjyp1/O/b5wMe5ZpflpccD3GUz/f47dLxwLjfSYxXkwS+GERWHWd+2OXb6N/BBQA==}
+    peerDependencies:
+      typescript: '>=5.0.4'
+    peerDependenciesMeta:
+      typescript:
+        optional: true
+    dependencies:
+      '@adraffy/ens-normalize': 1.10.0
+      '@noble/curves': 1.2.0
+      '@noble/hashes': 1.3.2
+      '@scure/bip32': 1.3.2
+      '@scure/bip39': 1.2.1
+      abitype: 1.0.0(zod@3.23.8)
+      isows: 1.0.4(ws@8.13.0)
+      ws: 8.13.0
+    transitivePeerDependencies:
+      - bufferutil
+      - utf-8-validate
+      - zod
+    dev: true
+
   /viem@2.20.0(zod@3.23.8):
     resolution: {integrity: sha512-cM4vs81HnSNbfceI1MLkx4pCVzbVjl9xiNSv5SCutYjUyFFOVSPDlEyhpg2iHinxx1NM4Qne3END5eLT8rvUdg==}
     peerDependencies:
@@ -3384,6 +3456,19 @@ packages:
     peerDependencies:
       bufferutil: ^4.0.1
       utf-8-validate: ^5.0.2
+    peerDependenciesMeta:
+      bufferutil:
+        optional: true
+      utf-8-validate:
+        optional: true
+    dev: true
+
+  /ws@8.13.0:
+    resolution: {integrity: sha512-x9vcZYTrFPC7aSIbj7sRCYo7L/Xb8Iy+pW0ng0wt2vCJv7M9HOMy0UoN3rr+IFC7hb7vXoqS+P9ktyLLLhO+LA==}
+    engines: {node: '>=10.0.0'}
+    peerDependencies:
+      bufferutil: ^4.0.1
+      utf-8-validate: '>=5.0.2'
     peerDependenciesMeta:
       bufferutil:
         optional: true
