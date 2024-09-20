@@ -89,14 +89,10 @@ describe.concurrent.each(evmChainKeys.filter((x) => x !== "blast"))(
         }
 
         let extraAssets:Address[] = hardcodedAssets.assets[chainId] ?? [];
-        console.log({extraAssets});
 
         if(!extraAssets.length)
             tokenList = [...tokenList, ...extraAssets];
 
-        console.log({tokenList});
-        console.log({signersList});
-        console.log({vaultList});
 
         // Expect the beacon points to the correct point of purchase
         expect(await patronPurchaseAppBeacon.read.patronPointOfPurchase()).toBe(patronPointOfPurchase.address);
