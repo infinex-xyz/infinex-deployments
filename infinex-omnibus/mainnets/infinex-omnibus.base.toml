@@ -12,8 +12,8 @@ source = "infinex-account-factory:1.0.0@main"
 [pull.CoreV1]
 source = "infinex-multichain:1.0.0@O2"
 
-[pull.CoreV2]
-source = "infinex-multichain:1.1.0@O2"
+# [pull.CoreV2]
+# source = "infinex-multichain:1.1.0@O2"
 
 [pull.CoreV3]
 source = "infinex-core:3.0.0@core"
