@@ -12,6 +12,9 @@ source = "infinex-core:latest@core"
 [pull.Curve]
 source = "infinex-curve-app:latest@curve-stableswap"
 
+[pull.InfinexPatronPurchase]
+source = "infinex-patron:1.0.0@patron-purchase"
+
 # ---------- Add Apps ---------- #
 
 [invoke.AddCurve]
@@ -21,4 +24,10 @@ args = [
     "<%= imports.Curve.imports.CurveStableSwap.contracts.CurveStableSwapAppBeacon.address %>",
     true,
 ]
+fromCall.func = "owner"
+
+[invoke.AddPatronPurchaseApp]
+target = ['InfinexCore.infinex.AppRegistry']
+func = "setAppBeaconStatus"
+args = ["<%= imports.InfinexPatronPurchase.imports.infinexPatronPurchase.contracts.PatronPurchaseAppBeacon.address %>", true]
 fromCall.func = "owner"

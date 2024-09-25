@@ -13,7 +13,7 @@ source = "infinex-core-test:latest@core"
 source = "infinex-curve-app-test:latest@curve-stableswap"
 
 [pull.InfinexPatronPurchase]
-source = "infinex-patron-test:1.0.0@patron-purchase"
+source = "infinex-patron-test:latest@patron-purchase"
 
 # ---------- Add Apps ---------- #
 
