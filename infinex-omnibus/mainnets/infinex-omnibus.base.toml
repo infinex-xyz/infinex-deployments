@@ -2,7 +2,7 @@
 #  pnpm cannon publish infinex-omnibus:3.0.0@omnibus --chain-id 8453 --exclude-cloned
 
 name = "infinex-omnibus"
-version = "3.0.0"
+version = "3.0.1"
 preset = "omnibus"
 description = "All Infinex Deployments"
 
@@ -29,3 +29,9 @@ source = "infinex-multichain:1.0.1@craterun"
 
 [pull.PatronPurchaseAppV1]
 source = "infinex-patron:1.0.0@patron-purchase"
+
+[pull.CurveStableSwapV1]
+source = "infinex-multichain:1.0.0@apps"
+
+[pull.CurveStableSwapV2]
+source = "infinex-curve-app:1.1.0@curve-stableswap"
