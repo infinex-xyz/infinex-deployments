@@ -1,0 +1,22 @@
+name = "infinex-patron-nft"
+preset = "patron-nft"
+version = "1.0.0"
+description = "The Infinex Patron NFT"
+
+
+[pull.InfinexPatronDistributor]
+source = "infinex:1.0.0@patron-distributor"
+
+[clone.InfinexPatronNFT]
+source = "infinex:1.0.0@patron-nft"
+target = "infinex:1.0.0@patron-nft"
+tags = ["1.0.0"]
+options.PATRON_NFT_DEPLOYER = ""
+options.PATRON_NFT_OWNER = ""
+options.PATRON_NFT_SALT = "PATRON-NFT"
+options.PATRON_NFT_NAME = "Infinex Patrons"
+options.PATRON_NFT_SYMBOL = "XPATRON"
+options.PATRON_NFT_MINT_DESTINATION = "<%= imports.InfinexPatronDistributor.contracts.PatronDistributor.address %>"
+options.PATRON_NFT_ROYALTY_RECEIVER = ""
+options.PATRON_NFT_FEE_NUMERATOR = "0"
+options.PATRON_NFT_BASE_TOKEN_URI = "https://infinex.xyz/api/patron/metadata/"
