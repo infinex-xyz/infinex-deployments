@@ -1,0 +1,25 @@
+#  pnpm cannon build infinex-patron/nft/infinex-patron-nft.ethereum.toml --chain-id 1 --dry-run  
+#  pnpm cannon publish infinex-patron-nft:1.0.0@patron-nft --chain-id 1 --exclude-cloned  
+#  pnpm cannon verify infinex-patron-nft:1.0.0@patron-nft --chain-id 1 --api-key  
+name = "infinex-patron-nft"  
+preset = "patron-nft"
+version = "1.0.0"
+description = "The Infinex Patron NFT"
+
+
+[pull.InfinexPatronDistributor]
+source = "infinex-patron-distributor:1.0.0@patron-distributor"
+
+[clone.InfinexPatronNFT]
+source = "infinex:1.0.0@patron-nft"
+target = "infinex:1.0.0@patron-nft"
+tags = ["1.0.0"]
+options.PATRON_NFT_DEPLOYER = "0x93eA007C15384f439150c6B93cCe4359D3B39a81"
+options.PATRON_NFT_OWNER = "0xbE62686bDaE4b938e40e5A09C4e2Be3B5Bc74ba9"
+options.PATRON_NFT_SALT = "PATRON-NFT"
+options.PATRON_NFT_NAME = "Infinex Patrons"
+options.PATRON_NFT_SYMBOL = "XPATRON"
+options.PATRON_NFT_MINT_DESTINATION = "<%= imports.InfinexPatronDistributor.imports.InfinexPatronDistrutor.contracts.PatronDistributor.address %>"
+options.PATRON_NFT_ROYALTY_RECEIVER = "0xbE62686bDaE4b938e40e5A09C4e2Be3B5Bc74ba9"
+options.PATRON_NFT_FEE_NUMERATOR = "0"
+options.PATRON_NFT_BASE_TOKEN_URI = "https://infinex.xyz/api/patron/metadata/"
