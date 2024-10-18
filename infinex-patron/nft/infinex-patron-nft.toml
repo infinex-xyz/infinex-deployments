@@ -1,3 +1,6 @@
+#  pnpm cannon build infinex-patron/nft/infinex-patron-nft.ethereum.toml --chain-id 1 --dry-run
+#  pnpm cannon publish infinex-patron-nft:1.0.0@patron-nft --chain-id 1 --exclude-cloned
+#  pnpm cannon verify infinex-patron-nft:1.0.0@patron-nft --chain-id 1 --api-key
 name = "infinex-patron-nft"
 preset = "patron-nft"
 version = "1.0.0"
