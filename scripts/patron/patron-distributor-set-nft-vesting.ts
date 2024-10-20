@@ -4,47 +4,28 @@ import { generatePrivateKey, privateKeyToAccount } from 'viem/accounts';
 import { mainnet, sepolia } from 'viem/chains';
 
 import { PatronDistributor } from './PatronDistributor';
+import { createContext } from './common';
 
 async function main() {
-  // Load environment variables
-  const RPC_URL = process.env.RPC_URL;
-  const PRIVATE_KEY = process.env.PRIVATE_KEY;
-  const PATRON_DISTRIBUTOR_ADDRESS = process.env.PATRON_DISTRIBUTOR_ADDRESS;
+
   const PATRON_NFT_ADDRESS = process.env.PATRON_NFT_ADDRESS;
   const PATRON_VESTING_ADDRESS = process.env.PATRON_VESTING_ADDRESS;
 
   if (
-    !RPC_URL ||
-    !PRIVATE_KEY ||
-    !PATRON_DISTRIBUTOR_ADDRESS ||
     !PATRON_NFT_ADDRESS ||
     !PATRON_VESTING_ADDRESS
   ) {
-    throw new Error('Missing required environment variables');
+    throw new Error('Missing PATRON_NFT_ADDRESS or PATRON_VESTING_ADDRESS environment variables');
   }
 
-  // Create clients
-  const account = privateKeyToAccount(PRIVATE_KEY as `0x${string}`);
-  const publicClient = createPublicClient({
-    chain: sepolia,
-    transport: http(RPC_URL),
-  });
-  const walletClient = createWalletClient({
-    account,
-    chain: sepolia,
-    transport: http(RPC_URL),
-  });
+  const { account, publicClient, walletClient, patronDistributor } = createContext();
+
   let totalGasUsed: bigint = 0n;
   // Read initial ETH balance
   const initialBalance = await publicClient.getBalance({
     address: account.address,
   });
   console.log(`Initial ETH balance: ${initialBalance} wei`);
-
-  const patronDistributor = {
-    address: PATRON_DISTRIBUTOR_ADDRESS as `0x${string}`,
-    abi: PatronDistributor,
-  };
 
   const patronNft = PATRON_NFT_ADDRESS as `0x${string}`;
   const vestingContract = PATRON_VESTING_ADDRESS as `0x${string}`;
