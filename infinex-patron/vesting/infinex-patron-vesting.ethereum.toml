@@ -1,0 +1,57 @@
+# pnpm cannon build deployments/patron-nft/infinex-patron-vesting.sepolia.toml --dry-run --chain-id 11155111
+
+name = "infinex-patron-vesting"
+preset = "patron-vesting"
+version = "1.0.1"
+description = "Smart Contracts used for the Vesting of the Infinex Patron NFT"
+
+[pull.InfinexCore]
+source = "infinex-core:latest@core"
+
+[pull.PatronNFT]
+source = "infinex-patron-nft:latest@patron-nft"
+
+[pull.InfinexPatronDistributor]
+source = "infinex-patron-distributor:latest@patron-distributor"
+
+[clone.InfinexPatronVesting]
+depends = ["pull.InfinexCore", "pull.PatronNFT", "pull.InfinexPatronDistributor"]
+source = "infinex:1.0.1@patron-vesting"
+target = "infinex:1.0.1@patron-vesting"
+tags = ["1.0.1"]
+options.VESTING_DEPLOYER = ""
+options.VESTING_FORWARDER = "<%= imports.InfinexCore.imports.infinex.contracts.Forwarder.address %>" # Forwarder contract address
+options.VESTING_OWNER = "0x1548c73d55e3D3000B5351852790B05fC67d2B28" #ethereum council multisig
+options.VESTING_PATRON_DISTRIBUTOR = "<%=  imports.InfinexPatronDistributor.imports.InfinexPatronDistrutor.contracts.PatronDistributor.address %>"
+options.VESTING_PATRON_NFT = "<%= imports.PatronNFT.imports.InfinexPatronNFT.contracts.PatronNFT.address %>"
+options.VESTING_SALT = "PATRON-VESTING"
+
+[invoke.addTier2]
+target = ["InfinexPatronVesting.PatronVesting"]
+func = "addTier"
+args = [2, "0x0000000000000000000000000000000000000000", 0, 0, 31556952, 0] # 0 lockup, 1 year release
+fromCall.func = "owner"
+
+[invoke.addTier3]
+target = ["InfinexPatronVesting.PatronVesting"]
+func = "addTier"
+args = [3, "0x0000000000000000000000000000000000000000", 0, 31556952, 63113904, 0] # 1 year lockup, 2 year release
+fromCall.func = "owner"
+
+[invoke.addTier4]
+target = ["InfinexPatronVesting.PatronVesting"]
+func = "addTier"
+args = [4, "0xbE62686bDaE4b938e40e5A09C4e2Be3B5Bc74ba9",0, 0, 31556952, 1]
+fromCall.func = "owner"
+
+[invoke.addTier5]
+target = ["InfinexPatronVesting.PatronVesting"]
+func = "addTier"
+args = [5, "0xbE62686bDaE4b938e40e5A09C4e2Be3B5Bc74ba9", 0, 31556952, 63113904, 1]
+fromCall.func = "owner"
+
+[invoke.addTier6]
+target = ["InfinexPatronVesting.PatronVesting"]
+func = "addTier"
+args = [6, "", 0, 31556952, 63113904, 2]
+fromCall.func = "owner"
