@@ -1,47 +1,20 @@
 import 'dotenv/config';
 
-import { createPublicClient, createWalletClient, http } from 'viem';
-import { privateKeyToAccount } from 'viem/accounts';
-import { mainnet } from 'viem/chains';
-
-import { PatronDistributor } from './PatronDistributor';
+import { createContext } from './common';
 
 async function main() {
   // Load environment variables
-  const RPC_URL = process.env.RPC_URL;
-  const PRIVATE_KEY = process.env.PRIVATE_KEY;
-  const PATRON_DISTRIBUTOR_ADDRESS = process.env.PATRON_DISTRIBUTOR_ADDRESS;
   const BATCHES_TO_PROCESS = parseInt(process.env.BATCHES_TO_PROCESS || '100');
   const TIER_TO_PROCESS = parseInt(process.env.TIER_TO_PROCESS || '1');
   const MAX_GAS_THRESHOLD = BigInt(process.env.MAX_GAS_THRESHOLD || '15000000000');
   const WAIT_TIME = parseInt(process.env.WAIT_TIME || '30000');
 
-  if (!RPC_URL || !PRIVATE_KEY || !PATRON_DISTRIBUTOR_ADDRESS || !MAX_GAS_THRESHOLD || !WAIT_TIME) {
-    throw new Error('Missing required environment variables');
-  }
+  const { account, publicClient, walletClient, patronDistributor } = createContext();
 
   console.log('Processing tier', TIER_TO_PROCESS);
   console.log('Processing', BATCHES_TO_PROCESS, 'batches');
-  console.log('Using RPC URL:', RPC_URL);
-  console.log('Using PATRON_DISTRIBUTOR_ADDRESS:', PATRON_DISTRIBUTOR_ADDRESS);
-
-  const account = privateKeyToAccount(PRIVATE_KEY as `0x${string}`);
-
-  const publicClient = createPublicClient({
-    chain: mainnet,
-    transport: http(RPC_URL),
-  });
-
-  const walletClient = createWalletClient({
-    account,
-    chain: mainnet,
-    transport: http(RPC_URL),
-  });
-
-  const patronDistributor = {
-    address: PATRON_DISTRIBUTOR_ADDRESS as `0x${string}`,
-    abi: PatronDistributor,
-  };
+  console.log('Using RPC URL:', publicClient.transport.url);
+  console.log('Using PATRON_DISTRIBUTOR_ADDRESS:', patronDistributor.address);
 
   let totalGasUsed: bigint = 0n;
   let numberOfTransactions = 0;
@@ -92,7 +65,7 @@ async function main() {
       }
       if (tierRecipients.length > 0) {
         distributeTx = await walletClient.writeContract({
-          address: PATRON_DISTRIBUTOR_ADDRESS as `0x${string}`,
+          address: patronDistributor.address,
           abi: patronDistributor.abi,
           functionName: 'distributeNextBatch',
           args: [TIER_TO_PROCESS],
