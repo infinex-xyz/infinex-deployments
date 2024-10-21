@@ -53,5 +53,5 @@ fromCall.func = "owner"
 [invoke.addTier6]
 target = ["InfinexPatronVesting.PatronVesting"]
 func = "addTier"
-args = [6, "", 0, 31536000, 63072000, 2] # 1 year lockup, 2 year release
+args = [6, "0x96aF826169F4f0Dabd4D69E9d9046e5de2Af7170", 0, 31536000, 63072000, 2] # 1 year lockup, 2 year release
 fromCall.func = "owner"
