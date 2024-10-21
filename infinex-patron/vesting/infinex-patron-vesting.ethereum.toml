@@ -41,17 +41,17 @@ fromCall.func = "owner"
 [invoke.addTier4]
 target = ["InfinexPatronVesting.PatronVesting"]
 func = "addTier"
-args = [4, "0xbE62686bDaE4b938e40e5A09C4e2Be3B5Bc74ba9",0, 0, 31536000, 1]
+args = [4, "0xbE62686bDaE4b938e40e5A09C4e2Be3B5Bc74ba9",0, 0, 31536000, 1] # 0 lockup, 1 year release
 fromCall.func = "owner"
 
 [invoke.addTier5]
 target = ["InfinexPatronVesting.PatronVesting"]
 func = "addTier"
-args = [5, "0xbE62686bDaE4b938e40e5A09C4e2Be3B5Bc74ba9", 0, 31536000, 63072000, 1]
+args = [5, "0xbE62686bDaE4b938e40e5A09C4e2Be3B5Bc74ba9", 0, 31536000, 63072000, 1] # 1 year lockup, 2 year release
 fromCall.func = "owner"
 
 [invoke.addTier6]
 target = ["InfinexPatronVesting.PatronVesting"]
 func = "addTier"
-args = [6, "", 0, 31536000, 63072000, 2]
+args = [6, "", 0, 31536000, 63072000, 2] # 1 year lockup, 2 year release
 fromCall.func = "owner"
