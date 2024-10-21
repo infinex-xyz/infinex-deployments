@@ -10,9 +10,10 @@ source = "infinex-core:latest@core"
 source = "infinex:1.0.0@patron-distributor"
 target = "infinex:1.0.0@patron-distributor"
 tags = ["1.0.0"]
-options.DISTRIBUTOR_DEPLOYER = "0x62fee1cc510a7BF48802080DC6aD29FF7584cb0a"
-options.DISTRIBUTOR_FORWARDER = "<%= imports.InfinexCoreTest.imports.infinex.contracts.Forwarder.address %>" # Forwarder contract address
-options.DISTRIBUTOR_OWNER = "0x62fee1cc510a7BF48802080DC6aD29FF7584cb0a"
-options.DISTRIBUTOR_TRUSTED_REGISTRATION_KEEPER = "0x4f61e5795709C7A7E950Ea48c1cF5035F596d8A0" # evmPatronAuthorizedSignerAddress
+options.DISTRIBUTOR_DEPLOYER = "0x93eA007C15384f439150c6B93cCe4359D3B39a81"
+options.DISTRIBUTOR_FORWARDER = "<%= imports.InfinexCore.imports.infinex.contracts.Forwarder.address %>" # Forwarder contract address
+options.DISTRIBUTOR_OWNER = "0x93eA007C15384f439150c6B93cCe4359D3B39a81"
+options.DISTRIBUTOR_TRUSTED_REGISTRATION_KEEPER = "0x892FFa43350037352eC511b6e66a06a06ec58e3D" # evmPatronAuthorizedSignerAddress
 options.DISTRIBUTOR_TRUSTED_DISTRIBUTION_KEEPER = "0x19bf2D61F8A43F05C2Fe652C60A4bD51A69b6385" # EOA responsible for distribution
 options.DISTRIBUTOR_SALT = "PATRON-DISTRIBUTOR"
+  
