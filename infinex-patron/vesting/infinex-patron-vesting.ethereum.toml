@@ -6,13 +6,13 @@ version = "1.0.1"
 description = "Smart Contracts used for the Vesting of the Infinex Patron NFT"
 
 [pull.InfinexCore]
-source = "infinex-core:latest@core"
+source = "infinex-core:3.0.0@core"
 
 [pull.PatronNFT]
-source = "infinex-patron-nft:latest@patron-nft"
+source = "infinex-patron-nft:1.0.0@patron-nft"
 
 [pull.InfinexPatronDistributor]
-source = "infinex-patron-distributor:latest@patron-distributor"
+source = "infinex-patron-distributor:1.0.0@patron-distributor"
 
 [clone.InfinexPatronVesting]
 depends = ["pull.InfinexCore", "pull.PatronNFT", "pull.InfinexPatronDistributor"]
