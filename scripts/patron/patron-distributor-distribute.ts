@@ -1,120 +1,143 @@
-import 'dotenv/config';
+import "dotenv/config";
 
-import { createContext } from './common';
+import { createContext } from "./common";
+import { formatEther, formatGwei } from "viem";
 
 async function main() {
   // Load environment variables
-  const BATCHES_TO_PROCESS = parseInt(process.env.BATCHES_TO_PROCESS || '100');
-  const TIER_TO_PROCESS = parseInt(process.env.TIER_TO_PROCESS || '1');
-  const MAX_GAS_THRESHOLD = BigInt(process.env.MAX_GAS_THRESHOLD || '15000000000');
-  const WAIT_TIME = parseInt(process.env.WAIT_TIME || '30000');
+  const TIER_TO_PROCESS = parseInt(process.env.TIER_TO_PROCESS || "1");
+  const MAX_GAS_THRESHOLD = BigInt(
+    process.env.MAX_GAS_THRESHOLD || "15000000000"
+  );
+  const WAIT_TIME = parseInt(process.env.WAIT_TIME || "30000");
 
-  const { account, publicClient, walletClient, patronDistributor } = createContext();
+  const { account, publicClient, walletClient, patronDistributor } =
+    createContext();
 
-  console.log('Processing tier', TIER_TO_PROCESS);
-  console.log('Processing', BATCHES_TO_PROCESS, 'batches');
-  console.log('Using RPC URL:', publicClient.transport.url);
-  console.log('Using PATRON_DISTRIBUTOR_ADDRESS:', patronDistributor.address);
+  console.log("Processing tier", TIER_TO_PROCESS);
+  console.log("Using RPC URL:", publicClient.transport.url);
+  console.log("Using PATRON_DISTRIBUTOR_ADDRESS:", patronDistributor.address);
 
   let totalGasUsed: bigint = 0n;
   let numberOfTransactions = 0;
   let NFTsDistributed = 0n;
   let maxGas = 0n;
 
-  let distributeTx: any;
-  const initalBalance: bigint = await publicClient.getBalance({
+  let distributeTx: `0x${string}`;
+  const initialBalance: bigint = await publicClient.getBalance({
     address: account.address,
   });
-  console.log('Initial ETH balance:', initalBalance);
+  console.log(
+    "Initial ETH balance:",
+    formatEther(initialBalance) + " ETH"
+  );
   const batchSize = await publicClient.readContract({
     address: patronDistributor.address,
     abi: patronDistributor.abi,
-    functionName: 'batchSize',
+    functionName: "batchSize",
   });
   let maxFeePerGas, maxPriorityFeePerGas, tierRecipients;
 
-  for (let i = 0; i < BATCHES_TO_PROCESS; i++) {
+  while (true) {
     try {
       tierRecipients = await publicClient.readContract({
         address: patronDistributor.address,
         abi: patronDistributor.abi,
-        functionName: 'getRecipientAddressesByTier',
+        functionName: "getRecipientAddressesByTier",
         args: [TIER_TO_PROCESS],
       });
       console.log(
-        'number of tier',
+        "number of tier",
         TIER_TO_PROCESS,
-        ' Recipients',
-        tierRecipients.length,
+        " Recipients",
+        tierRecipients.length
       );
 
-      // eslint-disable-next-line no-constant-condition
-      while (true) {
-        const gasEstimate = await publicClient.estimateFeesPerGas();
-        maxFeePerGas = gasEstimate.maxFeePerGas;
-        maxPriorityFeePerGas = gasEstimate.maxPriorityFeePerGas;
-
-        if (maxFeePerGas <= MAX_GAS_THRESHOLD) {
-          break;
-        }
-
-        console.log(
-          `Gas price too high (${maxFeePerGas}). Waiting ${WAIT_TIME / 1000} seconds...`,
-        );
-        await new Promise((resolve) => setTimeout(resolve, WAIT_TIME));
-      }
-      if (tierRecipients.length > 0) {
-        distributeTx = await walletClient.writeContract({
-          address: patronDistributor.address,
-          abi: patronDistributor.abi,
-          functionName: 'distributeNextBatch',
-          args: [TIER_TO_PROCESS],
-        });
-        const distributeReceipt = await publicClient.waitForTransactionReceipt({
-          hash: distributeTx,
-        });
-        totalGasUsed += distributeReceipt.gasUsed;
-        numberOfTransactions++;
-        NFTsDistributed += batchSize;
-        if (distributeReceipt.gasUsed > maxGas) {
-          maxGas = distributeReceipt.gasUsed;
-        }
-        console.log(
-          `Transaction ${numberOfTransactions} complete: Total gas used: ${totalGasUsed}, Max gas: ${maxGas}, Recent gas: ${distributeReceipt.gasUsed}, NFTs distributed: ${NFTsDistributed}`,
-        );
-        await new Promise((resolve) => setTimeout(resolve, WAIT_TIME));
-      } else {
+      if (tierRecipients.length === 0) {
+        console.log("No more recipients to process. Exiting loop.");
         break;
       }
+
+      const gasEstimate = await publicClient.estimateFeesPerGas();
+      maxFeePerGas = gasEstimate.maxFeePerGas;
+      maxPriorityFeePerGas = gasEstimate.maxPriorityFeePerGas;
+
+      console.log("Estimated max fee per gas:", formatGwei(maxFeePerGas || 0n), "Gwei");
+      console.log("Estimated max priority fee per gas:", formatGwei(maxPriorityFeePerGas || 0n), "Gwei");
+
+      while (maxFeePerGas && maxFeePerGas > MAX_GAS_THRESHOLD) {
+        console.log(
+          `Gas price too high (${formatGwei(maxFeePerGas)} Gwei). Waiting ${
+            WAIT_TIME / 1000
+          } seconds...`
+        );
+        await new Promise((resolve) => setTimeout(resolve, WAIT_TIME));
+        const newGasEstimate = await publicClient.estimateFeesPerGas();
+        maxFeePerGas = newGasEstimate.maxFeePerGas;
+        maxPriorityFeePerGas = newGasEstimate.maxPriorityFeePerGas;
+      }
+
+      console.log("Distributing next batch...");
+      distributeTx = await walletClient.writeContract({
+        address: patronDistributor.address,
+        abi: patronDistributor.abi,
+        functionName: "distributeNextBatch",
+        args: [TIER_TO_PROCESS],
+      });
+      console.log("Transaction hash:", distributeTx);
+      const distributeReceipt = await publicClient.waitForTransactionReceipt({
+        hash: distributeTx,
+      });
+      totalGasUsed += distributeReceipt.gasUsed;
+      numberOfTransactions++;
+      NFTsDistributed += batchSize;
+      if (distributeReceipt.gasUsed > maxGas) {
+        maxGas = distributeReceipt.gasUsed;
+      }
+      console.log(
+        `Transaction ${numberOfTransactions} complete: Transaction fee: ${
+          maxFeePerGas ? formatEther(totalGasUsed * maxFeePerGas) : 'N/A'
+        } ETH, Gas price: ${
+          maxFeePerGas ? formatGwei(maxFeePerGas) : 'N/A'
+        } Gwei, NFTs distributed: ${NFTsDistributed}`
+      );
     } catch (error) {
-      console.error('Error distributing NFTs:', error);
-      return;
+      console.error("Error distributing NFTs:", error);
+      break;
     }
-    // Add a 15-second wait between iterations
-    await new Promise((resolve) => setTimeout(resolve, 15000));
   }
+
   const finalBalance: bigint = await publicClient.getBalance({
     address: account.address,
   });
-  console.log('Final ETH balance:', finalBalance);
   console.log(
-    'Total ETH spent:',
-    ((initalBalance - finalBalance) / BigInt(1e18)).toString() + ' ETH',
+    "Final ETH balance:",
+    formatEther(finalBalance) + " ETH"
   );
-  console.log('Total transactions:', numberOfTransactions);
-  console.log('Total gas used:', totalGasUsed);
-  console.log('NFTsDistributed:', NFTsDistributed);
-  console.log('batchSize:', batchSize);
-  console.log('NFTsDistributed / batchSize:', NFTsDistributed / batchSize);
   console.log(
-    'Total ETH spent / NFTsDistributed:',
-    (initalBalance - finalBalance) / NFTsDistributed,
+    "Total ETH spent:",
+    formatEther(initialBalance - finalBalance) + " ETH"
   );
-  console.log('maxGas:', maxGas);
-  console.log('Average gas used per NFT:', totalGasUsed / NFTsDistributed);
+  console.log("Total transactions:", numberOfTransactions);
   console.log(
-    'Average gas used per transaction:',
-    totalGasUsed / BigInt(numberOfTransactions),
+    "Transaction fee:",
+    maxFeePerGas ? formatEther(totalGasUsed * maxFeePerGas) + " ETH" : 'N/A'
+  );
+  console.log("NFTsDistributed:", NFTsDistributed);
+  console.log("batchSize:", batchSize);
+  console.log("NFTsDistributed / batchSize:", NFTsDistributed / batchSize);
+  console.log(
+    "Total ETH spent / NFTsDistributed:",
+    formatEther((initialBalance - finalBalance) / NFTsDistributed) + " ETH"
+  );
+  console.log("Max gas fee:", maxFeePerGas ? formatEther(maxGas * maxFeePerGas) + " ETH" : 'N/A');
+  console.log(
+    "Average gas used per NFT:",
+    maxFeePerGas ? formatEther((totalGasUsed * maxFeePerGas) / NFTsDistributed) + " ETH" : 'N/A'
+  );
+  console.log(
+    "Average gas used per transaction:",
+    maxFeePerGas ? formatEther((totalGasUsed * maxFeePerGas) / BigInt(numberOfTransactions)) + " ETH" : 'N/A'
   );
 }
 
