@@ -1,7 +1,7 @@
 import "dotenv/config";
 
 import { createContext } from "./common";
-import { formatEther, formatGwei } from "viem";
+import { formatEther, formatGwei, parseGwei } from "viem";
 
 async function main() {
   // Load environment variables
@@ -36,7 +36,8 @@ async function main() {
     abi: patronDistributor.abi,
     functionName: "batchSize",
   });
-  let maxFeePerGas, maxPriorityFeePerGas, tierRecipients;
+  let maxFeePerGas, tierRecipients;
+  const maxPriorityFeePerGas = parseGwei("0.05");
 
   console.log(`Starting distribution process...`);
   let batchCount = 0;
@@ -63,7 +64,6 @@ async function main() {
 
       const gasEstimate = await publicClient.estimateFeesPerGas();
       maxFeePerGas = gasEstimate.maxFeePerGas;
-      maxPriorityFeePerGas = gasEstimate.maxPriorityFeePerGas;
 
       console.log(
         "Estimated max fee per gas:",
@@ -71,8 +71,8 @@ async function main() {
         "Gwei"
       );
       console.log(
-        "Estimated max priority fee per gas:",
-        formatGwei(maxPriorityFeePerGas || 0n),
+        "Using max priority fee per gas:",
+        formatGwei(maxPriorityFeePerGas),
         "Gwei"
       );
 
@@ -85,7 +85,6 @@ async function main() {
         await new Promise((resolve) => setTimeout(resolve, WAIT_TIME));
         const newGasEstimate = await publicClient.estimateFeesPerGas();
         maxFeePerGas = newGasEstimate.maxFeePerGas;
-        maxPriorityFeePerGas = newGasEstimate.maxPriorityFeePerGas;
       }
 
       // Simulate the transaction before sending
@@ -108,6 +107,7 @@ async function main() {
         abi: patronDistributor.abi,
         functionName: "distributeNextBatch",
         args: [TIER_TO_PROCESS],
+        maxPriorityFeePerGas,
       });
       console.log("Transaction hash:", distributeTx);
       let distributeReceipt;
