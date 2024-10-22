@@ -1,9 +1,4 @@
 import 'dotenv/config';
-import { createPublicClient, createWalletClient, http } from 'viem';
-import { generatePrivateKey, privateKeyToAccount } from 'viem/accounts';
-import { mainnet, sepolia } from 'viem/chains';
-
-import { PatronDistributor } from './PatronDistributor';
 import { createContext } from './common';
 
 async function main() {
