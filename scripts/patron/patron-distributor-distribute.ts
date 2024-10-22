@@ -5,7 +5,7 @@ import { formatEther, formatGwei } from "viem";
 
 async function main() {
   // Load environment variables
-  const BATCHES_TO_PROCESS = parseInt(process.env.BATCHES_TO_PROCESS || "100");
+  const BATCHES_TO_PROCESS = process.env.BATCHES_TO_PROCESS ? parseInt(process.env.BATCHES_TO_PROCESS) : Infinity;
   const TIER_TO_PROCESS = parseInt(process.env.TIER_TO_PROCESS || "1");
   const MAX_GAS_THRESHOLD = BigInt(
     process.env.MAX_GAS_THRESHOLD || "15000000000"
@@ -39,9 +39,10 @@ async function main() {
   });
   let maxFeePerGas, maxPriorityFeePerGas, tierRecipients;
 
-  console.log(`Starting distribution process for ${BATCHES_TO_PROCESS} batches...`);
-  for (let i = 0; i < BATCHES_TO_PROCESS; i++) {
-    console.log(`Processing batch ${i + 1} of ${BATCHES_TO_PROCESS}`);
+  console.log(`Starting distribution process...`);
+  let batchCount = 0;
+  while (batchCount < BATCHES_TO_PROCESS) {
+    console.log(`Processing batch ${batchCount + 1}`);
     try {
       tierRecipients = await publicClient.readContract({
         address: patronDistributor.address,
@@ -104,12 +105,13 @@ async function main() {
           maxFeePerGas ? formatGwei(maxFeePerGas) : 'N/A'
         } Gwei, NFTs distributed: ${NFTsDistributed}`
       );
+      batchCount++;
     } catch (error) {
       console.error("Error distributing NFTs:", error);
       break;
     }
   }
-  console.log(`Distribution process completed. Processed ${numberOfTransactions} out of ${BATCHES_TO_PROCESS} batches.`);
+  console.log(`Distribution process completed. Processed ${numberOfTransactions} batches.`);
 
   const finalBalance: bigint = await publicClient.getBalance({
     address: account.address,
