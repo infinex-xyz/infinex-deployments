@@ -5,12 +5,14 @@ import { formatEther, formatGwei } from "viem";
 
 async function main() {
   // Load environment variables
-  const BATCHES_TO_PROCESS = process.env.BATCHES_TO_PROCESS ? parseInt(process.env.BATCHES_TO_PROCESS) : Infinity;
+  const BATCHES_TO_PROCESS = process.env.BATCHES_TO_PROCESS
+    ? parseInt(process.env.BATCHES_TO_PROCESS)
+    : Infinity;
   const TIER_TO_PROCESS = parseInt(process.env.TIER_TO_PROCESS || "1");
   const MAX_GAS_THRESHOLD = BigInt(
     process.env.MAX_GAS_THRESHOLD || "15000000000"
   );
-  const WAIT_TIME = parseInt(process.env.WAIT_TIME || "30000");
+  const WAIT_TIME = parseInt(process.env.WAIT_TIME || "13000");
 
   const { account, publicClient, walletClient, patronDistributor } =
     createContext();
@@ -28,10 +30,7 @@ async function main() {
   const initialBalance: bigint = await publicClient.getBalance({
     address: account.address,
   });
-  console.log(
-    "Initial ETH balance:",
-    formatEther(initialBalance) + " ETH"
-  );
+  console.log("Initial ETH balance:", formatEther(initialBalance) + " ETH");
   const batchSize = await publicClient.readContract({
     address: patronDistributor.address,
     abi: patronDistributor.abi,
@@ -66,8 +65,16 @@ async function main() {
       maxFeePerGas = gasEstimate.maxFeePerGas;
       maxPriorityFeePerGas = gasEstimate.maxPriorityFeePerGas;
 
-      console.log("Estimated max fee per gas:", formatGwei(maxFeePerGas || 0n), "Gwei");
-      console.log("Estimated max priority fee per gas:", formatGwei(maxPriorityFeePerGas || 0n), "Gwei");
+      console.log(
+        "Estimated max fee per gas:",
+        formatGwei(maxFeePerGas || 0n),
+        "Gwei"
+      );
+      console.log(
+        "Estimated max priority fee per gas:",
+        formatGwei(maxPriorityFeePerGas || 0n),
+        "Gwei"
+      );
 
       while (maxFeePerGas && maxFeePerGas > MAX_GAS_THRESHOLD) {
         console.log(
@@ -81,6 +88,20 @@ async function main() {
         maxPriorityFeePerGas = newGasEstimate.maxPriorityFeePerGas;
       }
 
+      // Simulate the transaction before sending
+      try {
+        await publicClient.simulateContract({
+          address: patronDistributor.address,
+          abi: patronDistributor.abi,
+          functionName: "distributeNextBatch",
+          args: [TIER_TO_PROCESS],
+          account: account.address,
+        });
+      } catch (simulationError) {
+        console.error("Transaction simulation failed:", simulationError);
+        throw new Error("Transaction simulation failed");
+      }
+
       console.log("Distributing next batch...");
       distributeTx = await walletClient.writeContract({
         address: patronDistributor.address,
@@ -89,9 +110,23 @@ async function main() {
         args: [TIER_TO_PROCESS],
       });
       console.log("Transaction hash:", distributeTx);
-      const distributeReceipt = await publicClient.waitForTransactionReceipt({
-        hash: distributeTx,
-      });
+      let distributeReceipt;
+      try {
+        distributeReceipt = await publicClient.waitForTransactionReceipt({
+          hash: distributeTx,
+        });
+        if (distributeReceipt.status === "reverted") {
+          console.error(distributeReceipt);
+          throw new Error("Transaction reverted");
+        }
+      } catch (error) {
+        console.error("Error in transaction:", error);
+        if (error instanceof Error) {
+          console.error("Error message:", error.message);
+        }
+        throw error; // Re-throw the error to be caught by the outer try-catch block
+      }
+
       totalGasUsed += distributeReceipt.gasUsed;
       numberOfTransactions++;
       NFTsDistributed += batchSize;
@@ -100,9 +135,9 @@ async function main() {
       }
       console.log(
         `Transaction ${numberOfTransactions} complete: Transaction fee: ${
-          maxFeePerGas ? formatEther(totalGasUsed * maxFeePerGas) : 'N/A'
+          maxFeePerGas ? formatEther(totalGasUsed * maxFeePerGas) : "N/A"
         } ETH, Gas price: ${
-          maxFeePerGas ? formatGwei(maxFeePerGas) : 'N/A'
+          maxFeePerGas ? formatGwei(maxFeePerGas) : "N/A"
         } Gwei, NFTs distributed: ${NFTsDistributed}`
       );
       batchCount++;
@@ -111,15 +146,15 @@ async function main() {
       break;
     }
   }
-  console.log(`Distribution process completed. Processed ${numberOfTransactions} batches.`);
+
+  console.log(
+    `Distribution process completed. Processed ${numberOfTransactions} batches.`
+  );
 
   const finalBalance: bigint = await publicClient.getBalance({
     address: account.address,
   });
-  console.log(
-    "Final ETH balance:",
-    formatEther(finalBalance) + " ETH"
-  );
+  console.log("Final ETH balance:", formatEther(finalBalance) + " ETH");
   console.log(
     "Total ETH spent:",
     formatEther(initialBalance - finalBalance) + " ETH"
@@ -127,23 +162,37 @@ async function main() {
   console.log("Total transactions:", numberOfTransactions);
   console.log(
     "Transaction fee:",
-    maxFeePerGas ? formatEther(totalGasUsed * maxFeePerGas) + " ETH" : 'N/A'
+    maxFeePerGas ? formatEther(totalGasUsed * maxFeePerGas) + " ETH" : "N/A"
   );
   console.log("NFTsDistributed:", NFTsDistributed);
   console.log("batchSize:", batchSize);
-  console.log("NFTsDistributed / batchSize:", batchSize !== 0n ? NFTsDistributed / batchSize : 'N/A');
+  console.log(
+    "NFTsDistributed / batchSize:",
+    batchSize !== 0n ? NFTsDistributed / batchSize : "N/A"
+  );
   console.log(
     "Total ETH spent / NFTsDistributed:",
-    NFTsDistributed !== 0n ? formatEther((initialBalance - finalBalance) / NFTsDistributed) + " ETH" : 'N/A'
+    NFTsDistributed !== 0n
+      ? formatEther((initialBalance - finalBalance) / NFTsDistributed) + " ETH"
+      : "N/A"
   );
-  console.log("Max gas fee:", maxFeePerGas ? formatEther(maxGas * maxFeePerGas) + " ETH" : 'N/A');
+  console.log(
+    "Max gas fee:",
+    maxFeePerGas ? formatEther(maxGas * maxFeePerGas) + " ETH" : "N/A"
+  );
   console.log(
     "Average gas used per NFT:",
-    NFTsDistributed !== 0n && maxFeePerGas ? formatEther((totalGasUsed * maxFeePerGas) / NFTsDistributed) + " ETH" : 'N/A'
+    NFTsDistributed !== 0n && maxFeePerGas
+      ? formatEther((totalGasUsed * maxFeePerGas) / NFTsDistributed) + " ETH"
+      : "N/A"
   );
   console.log(
     "Average gas used per transaction:",
-    numberOfTransactions !== 0 && maxFeePerGas ? formatEther((totalGasUsed * maxFeePerGas) / BigInt(numberOfTransactions)) + " ETH" : 'N/A'
+    numberOfTransactions !== 0 && maxFeePerGas
+      ? formatEther(
+          (totalGasUsed * maxFeePerGas) / BigInt(numberOfTransactions)
+        ) + " ETH"
+      : "N/A"
   );
 }
 
