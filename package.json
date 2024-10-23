@@ -13,7 +13,7 @@
   "devDependencies": {
     "@infinex/infinex-sdk": "1.0.12-viem",
     "@types/node": "^20.14.2",
-    "@usecannon/cli": "2.17.1",
+    "@usecannon/cli": "2.18.2",
     "commander": "^12.1.0",
     "tsx": "^4.15.4"
   }

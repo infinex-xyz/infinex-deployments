@@ -2,7 +2,7 @@
 #  pnpm cannon publish infinex-omnibus-test:latest@omnibus --chain-id 11155111 --exclude-cloned
 
 name = "infinex-omnibus-test"
-version = "3.0.0"
+version = "3.0.3"
 preset = "omnibus"
 description = "All Infinex Deployments"
 
@@ -26,3 +26,12 @@ source = "infinex-multichain:1.0.0@apps"
 
 [pull.PatronPurchaseAppV1]
 source = "infinex-patron-test:1.0.0@patron-purchase"
+
+[pull.PatronVesting]
+source = "infinex-patron-test:1.0.1@patron-vesting"
+
+[pull.PatronDistributor]
+source = "infinex-patron-test:1.0.0@patron-distributor"
+
+[pull.PatronNft]
+source = "infinex-patron-test:1.0.0@patron-nft"
