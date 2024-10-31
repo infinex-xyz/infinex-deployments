@@ -15,7 +15,9 @@
     "@types/node": "^20.14.2",
     "@usecannon/cli": "2.18.2",
     "commander": "^12.1.0",
-    "tsx": "^4.15.4"
+    "tsx": "4.15.4",
+    "viem": "2.19.2",
+    "dotenv": "16.4.5"
   },
   "packageManager": "pnpm@9.12.1"
 }
