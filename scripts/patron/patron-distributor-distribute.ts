@@ -88,6 +88,21 @@ async function main() {
       }
 
       // Simulate the transaction before sending
+      let gasEstimation;
+      try {
+        gasEstimation = await publicClient.estimateContractGas({
+          address: patronDistributor.address,
+          abi: patronDistributor.abi,
+          functionName: "distributeNextBatch",
+          args: [TIER_TO_PROCESS],
+          account: account.address,
+        });
+        console.log("Estimated gas:", gasEstimation.toString());
+      } catch (simulationError) {
+        console.error("Gas estimation failed:", simulationError);
+        throw new Error("Gas estimation failed");
+      }
+
       try {
         await publicClient.simulateContract({
           address: patronDistributor.address,
@@ -101,6 +116,14 @@ async function main() {
         throw new Error("Transaction simulation failed");
       }
 
+      walletClient.sendTransaction({
+        to: patronDistributor.address,
+        data: patronDistributor.abi.encodeFunctionData("distributeNextBatch", [TIER_TO_PROCESS]),
+        maxPriorityFeePerGas,
+        gas: gasEstimation,
+        
+      })
+
       console.log("Distributing next batch...");
       distributeTx = await walletClient.writeContract({
         address: patronDistributor.address,
@@ -108,6 +131,7 @@ async function main() {
         functionName: "distributeNextBatch",
         args: [TIER_TO_PROCESS],
         maxPriorityFeePerGas,
+        gas: gasEstimation,
       });
       console.log("Transaction hash:", distributeTx);
       let distributeReceipt;
