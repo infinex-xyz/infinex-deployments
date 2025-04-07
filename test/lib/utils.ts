@@ -39,7 +39,7 @@ export type InfinexAddresses = {
 };
 
 export async function getPlatformConfig(env: Env) {
-  const url = `${platformApiUrls[env]}/public/config`;
+  const url = `${platformApiUrls[env]}/config`;
   const response = await fetch(url, {
     headers: {
       accept: "application/json",
