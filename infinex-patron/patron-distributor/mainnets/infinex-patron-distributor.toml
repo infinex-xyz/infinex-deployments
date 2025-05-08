@@ -1,0 +1,19 @@
+name = "infinex-patron-distributor"
+preset = "patron-distributor"
+version = "1.0.0"
+description = "Smart Contracts used for the Distribution of the Infinex Patron NFT"
+
+[pull.InfinexCore]
+source = "infinex-core:latest@core"
+
+[clone.InfinexPatronDistrutor]
+source = "infinex:1.0.0@patron-distributor"
+target = "infinex:1.0.0@patron-distributor"
+tags = ["1.0.0"]
+options.DISTRIBUTOR_DEPLOYER = "0x93eA007C15384f439150c6B93cCe4359D3B39a81"
+options.DISTRIBUTOR_FORWARDER = "<%= imports.InfinexCore.imports.infinex.contracts.Forwarder.address %>" # Forwarder contract address
+options.DISTRIBUTOR_OWNER = "0x93eA007C15384f439150c6B93cCe4359D3B39a81"
+options.DISTRIBUTOR_TRUSTED_REGISTRATION_KEEPER = "0x892FFa43350037352eC511b6e66a06a06ec58e3D" # evmPatronAuthorizedSignerAddress
+options.DISTRIBUTOR_TRUSTED_DISTRIBUTION_KEEPER = "0x19bf2D61F8A43F05C2Fe652C60A4bD51A69b6385" # EOA responsible for distribution
+options.DISTRIBUTOR_SALT = "PATRON-DISTRIBUTOR"
+  
